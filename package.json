@@ -1,0 +1,32 @@
+{
+  "name": "polar-ebook-reader",
+  "version": "1.0.0",
+  "description": "A pdf an eBook reader built with electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/burtonator/polar-ebook-reader",
+  "keywords": [
+    "Electron",
+    "PDF",
+    "viewer",
+    "PDF.js",
+    "ebook",
+    "annotations"
+  ],
+  "contributors": [
+
+    {
+      "name": "Praharsh Jain"
+    },
+
+    {
+      "name": "Kevin Burton"
+    }
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^2.0.1"
+  }
+}
