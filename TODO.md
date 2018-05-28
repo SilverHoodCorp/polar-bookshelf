@@ -1,3 +1,7 @@
+- ability to disable PDF links as they would impact our ability to annotate but
+  maybe they have to click the annotation button (highlight, highlight region)
+  so that the links are then disabled.
+
 - get chrome dev tools to work
 
     app.commandLine.appendSwitch('remote-debugging-port', '8315');
@@ -10,3 +14,4 @@
 - actual packages (install on my MacOS box)
 
 - manage basic page marks
+
