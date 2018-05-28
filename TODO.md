@@ -15,6 +15,9 @@
 
 - manage basic page marks
 
+-  cmaps are disabled when loading from file URLs so I need to look into this
+   problem and this might cause problems with some PDFs.
+
 
 - learn how to re-draw the page so that just the canvas BACKGROUND is grey.
   We have to re-draw the entire page because if we just replace the white

@@ -43,5 +43,4 @@ function createPagemark(page) {
 
 }
 
-var page = document.querySelectorAll(".page")[0];
-createPagemark(page);
+console.log("Annotation code loaded.");

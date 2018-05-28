@@ -59,7 +59,15 @@ const template = [{
                                 filepath = path;
                                 if (path.constructor === Array)
                                     path = path[0];
+
+                                // FIXME: cmaps are disabled when loading from file URLs so I need to look into this problem...
                                 mainWindow.loadURL('file://' + __dirname + '/pdfviewer/web/viewer.html?file=' + encodeURIComponent(path), options);
+
+                                // mainWindow.webContents.on('did-finish-load', function() {
+                                //     console.log("Finished loading. Now injecting customizations.");
+                                //     injectCustomizations(mainWindow.webContents);
+                                // });
+
                             }
                         });
                     }
@@ -198,6 +206,19 @@ app.on('activate', function() {
     // dock icon is clicked and there are no other windows open.
     if (mainWindow === null) { createWindow(); }
 });
+
+/**
+ * Inject our customization around PDFs including custom CSS and custom scripts.
+ */
+function injectCustomizations(webContents) {
+
+    // inject our customizations manually so that we can just depend on the
+    // stock pdf.js viewer.html application.
+
+    // TODO: is there a smaller way to encode this?
+    webContents.executeJavaScript("var script = document.createElement('script'); script.setAttribute('src', '../../web/annotations.js'); document.head.appendChild(script);")
+
+}
 
 function createWindow() {
     // Create the browser window.
