@@ -23,6 +23,23 @@ function sleep(millis) {
     do { curDate = new Date(); }
     while (curDate - date < millis);
 }
+
+// enable the debugging port for chrome for now.  We should probably have an
+// --enable-remote-debugging command line flag that would need to be set
+// because I don't want to have to keep this port open all the time.
+
+const REMOTE_DEBUGGING_PORT = '8315';
+
+if (process.argv.includes("--enable-remote-debugging")) {
+
+    console.log(`Remote debugging port enabled on port ${REMOTE_DEBUGGING_PORT}.`);
+    console.log(`You may connect via http://localhost:${REMOTE_DEBUGGING_PORT}`);
+
+    app.commandLine.appendSwitch('remote-debugging-port', REMOTE_DEBUGGING_PORT);
+    app.commandLine.appendSwitch('host-rules', 'MAP * 127.0.0.1');
+
+}
+
 crashReporter.start({ productName: 'Polar eBook Reader', companyName: 'Praharsh', submitURL: 'https://praharsh.xyz/projects/PDFViewer/crash', autoSubmit: false });
 //creating menus for menu bar
 const template = [{
