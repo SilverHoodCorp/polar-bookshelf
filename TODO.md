@@ -15,3 +15,9 @@
 
 - manage basic page marks
 
+
+- learn how to re-draw the page so that just the canvas BACKGROUND is grey.
+  We have to re-draw the entire page because if we just replace the white
+  characters we could mutate a figure or some other part of the graphic.  the
+  best way to do this would be to inject some code into the pdf.js page
+  rendering.
