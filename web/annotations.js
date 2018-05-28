@@ -27,8 +27,10 @@ function createPagemark(page) {
     let canvasWrapper = page.querySelector(".canvasWrapper");
     let textLayer = page.querySelector(".textLayer");
 
-    // this must be above the pagemark layer.
-    textLayer.style.zIndex = "1";
+    // this must be above the pagemark layer or you won't be able to select text
+    // visually.
+
+    textLayer.style.zIndex = "2";
 
     page.insertBefore(pagemark, canvasWrapper);
 
@@ -36,21 +38,11 @@ function createPagemark(page) {
     // call this event listener once, then it's removed so we should create the
     // pagemark, then put in protection code so that if it's removed, it will
     // go back in if the page is ever redrawn.
-    // FIXME: this is no longer being called ...
     page.addEventListener('DOMNodeInserted', function(event) {
-
-        console.log("called now!!!");
-
-        // listen to the pageto see when its width/height change then adjust
-        // accordingly once the page has been redrawn.
-
-        console.log("got event: ", event);
-        console.log("got event target: ", event.target);
-        console.log("got event target classname: ", event.target.className);
 
         if (event.target && event.target.className === "endOfContent") {
 
-            console.log("working to resize content now...");
+            console.log("Adding page mark again");
 
             // make sure to first remove all the existing pagemarks if there
             // are any
