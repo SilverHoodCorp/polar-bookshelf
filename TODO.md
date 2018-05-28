@@ -2,10 +2,10 @@
   maybe they have to click the annotation button (highlight, highlight region)
   so that the links are then disabled.
 
-- get chrome dev tools to work
+- TODO: don't use the minified version of the app.  It makes it harder to work with.
 
-    app.commandLine.appendSwitch('remote-debugging-port', '8315');
-    app.commandLine.appendSwitch('host-rules', 'MAP * 127.0.0.1');
+- TODO: try to inject jquery as it would be nice to have this functionality
+
 
 - take the filename on the command line
 

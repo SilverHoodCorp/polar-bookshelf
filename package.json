@@ -26,5 +26,8 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^2.0.1"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1"
   }
 }
