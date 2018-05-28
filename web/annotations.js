@@ -10,15 +10,6 @@ function createPagemark(page) {
         return;
     }
 
-    // FIXME: listen to canvasWrapper parent to see when its width/height change
-    // then adjust accordingly once the page has been redrawn.
-
-    // TODO: how do I reliably:
-
-    // get the page width?
-
-    // tell when the page is reloaded?
-
     let pagemark = document.createElement("div");
 
     // make sure we have a reliable CSS classname to work with.
@@ -41,18 +32,56 @@ function createPagemark(page) {
 
     page.insertBefore(pagemark, canvasWrapper);
 
+    // add an event listener to listen for when the page is redrawn.  We only
+    // call this event listener once, then it's removed so we should create the
+    // pagemark, then put in protection code so that if it's removed, it will
+    // go back in if the page is ever redrawn.
+    // FIXME: this is no longer being called ...
+    page.addEventListener('DOMNodeInserted', function(event) {
+
+        console.log("called now!!!");
+
+        // listen to the pageto see when its width/height change then adjust
+        // accordingly once the page has been redrawn.
+
+        console.log("got event: ", event);
+        console.log("got event target: ", event.target);
+        console.log("got event target classname: ", event.target.className);
+
+        if (event.target && event.target.className === "endOfContent") {
+
+            console.log("working to resize content now...");
+
+            // make sure to first remove all the existing pagemarks if there
+            // are any
+            removePagemarks(page);
+
+            // we're done all the canvas and text nodes... so place the pagemark
+            // back in again.
+
+            createPagemark(page);
+
+            // done listening so remove myself...
+            page.removeEventListener('DOMNodeInserted',arguments.callee,false);
+
+        }
+
+    }, false );
+
 }
 
-function removePagemark(page) {
+function removePagemarks(page) {
 
-    let pagemark = page.querySelector(".pagemark");
+    console.log("Removing pagemarks...");
 
-    if (pagemark) {
+    let pagemarks = page.querySelectorAll(".pagemark");
+
+    pagemarks.forEach(function (pagemark) {
         page.removeChild(pagemark);
         console.log("Removed pagemark.");
-    } else {
-        console.log("No pagemark removed.");
-    }
+    });
+
+    console.log("Removing pagemarks...done");
 
 }
 
@@ -124,7 +153,7 @@ function keyBindingPagemarkUpToMouse(event) {
 function keyBindingRemovePagemark(event) {
     console.log("Removing pagemark.");
     let page = getCurrentPage();
-    removePagemark(page);
+    removePagemarks(page);
 }
 
 function keyBindingListener(event) {
@@ -159,11 +188,22 @@ function keyBindingListener(event) {
 }
 
 function registerKeyBindings() {
+
+    if(polar.state.registerKeyBindings) {
+        return;
+    }
+
     document.addEventListener("keyup", keyBindingListener);
+
+    polar.state.registerKeyBindings = true;
+
     console.log("Key bindings registered");
+
 }
 
 registerKeyBindings();
 //getCurrentPage();
 
 console.log("Annotation code loaded.");
+
+

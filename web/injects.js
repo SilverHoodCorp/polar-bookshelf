@@ -14,6 +14,7 @@ function injectAllScripts() {
     // inject our customizations manually so that we can just depend on the
     // stock pdf.js viewer.html application.
 
+    injectScript('../../web/polar.js');
     injectScript('../../web/annotations.js');
     injectScript('../../node_modules/jquery/dist/jquery.min.js');
 
