@@ -17,8 +17,9 @@ function createPagemark(page) {
 
     // set CSS style
 
-    pagemark.style.backgroundColor="rgb(198, 198, 198)";
-    pagemark.style.opacity="0.5";
+    //pagemark.style.backgroundColor="rgb(198, 198, 198)";
+    pagemark.style.backgroundColor="#00CCFF";
+    pagemark.style.opacity="0.3";
 
     pagemark.style.position="absolute";
     pagemark.style.left = "0";

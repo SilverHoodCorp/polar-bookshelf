@@ -46,6 +46,7 @@
                            FIXME: an area highlight should have these too.
 
  PAGEMARK extends ANNOTATION_WITH_NOTE
+    coverage: float 0.0 -> 1.0
 
  AUTHOR:
     id
@@ -64,10 +65,19 @@
     format: MARKDOWN|HTML
 
 
-
  */
 
-function createDocument(path) {
+// if I do it like this I can't use the browser unless I use commons-js I think.
+
+module.exports.readFromDisk = function(path) {
+
+};
+
+module.exports.writeToDisk = function(path, docMeta) {
+
+};
+
+function create(path) {
 
     return { title: null,
              path: null,

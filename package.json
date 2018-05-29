@@ -28,6 +28,8 @@
     "electron": "^2.0.1"
   },
   "dependencies": {
-    "jquery": "^3.3.1"
+    "jquery": "^3.3.1",
+    "webpack": "^4.10.0",
+    "webpack-cli": "^2.1.4"
   }
 }
