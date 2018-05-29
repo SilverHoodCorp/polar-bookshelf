@@ -24,6 +24,24 @@ function sleep(millis) {
     while (curDate - date < millis);
 }
 
+const BROWSER_WINDOW_OPTIONS = {
+    minWidth: 400,
+    minHeight: 300,
+    width: 800,
+    height: 600,
+    show: false,
+    icon: app_icon,
+    webPreferences: {
+        // TODO:
+        // https://github.com/electron/electron/pull/794
+        //
+        // reconsider using nodeIntegration here as this might be a security
+        // issue
+        nodeIntegration: true,
+        defaultEncoding: 'UTF-8'
+    }
+};
+
 // enable the debugging port for chrome for now.  We should probably have an
 // --enable-remote-debugging command line flag that would need to be set
 // because I don't want to have to keep this port open all the time.
@@ -46,7 +64,12 @@ if (process.argv.includes("--enable-remote-debugging")) {
 
 }
 
-crashReporter.start({ productName: 'Polar eBook Reader', companyName: 'Praharsh', submitURL: 'https://praharsh.xyz/projects/PDFViewer/crash', autoSubmit: false });
+// TODO: enable this again but only when we have a good receiver URL.
+//crashReporter.start({ productName: 'Polar eBook Reader',
+//                      companyName: 'Polar Contributors',
+//                      submitURL: 'https://praharsh.xyz/projects/PDFViewer/crash',
+//                      autoSubmit: false });
+
 //creating menus for menu bar
 const template = [{
         label: 'File',
@@ -235,7 +258,7 @@ function injectCustomizations(webContents) {
 
 function createWindow() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({ minWidth: 400, minHeight: 300, width: 800, height: 600, show: false, icon: app_icon, webPreferences: { nodeIntegration: false, defaultEncoding: 'UTF-8' } });
+    mainWindow = new BrowserWindow(BROWSER_WINDOW_OPTIONS);
     mainWindow.on('close', function(e) {
         e.preventDefault();
         mainWindow.webContents.clearHistory();

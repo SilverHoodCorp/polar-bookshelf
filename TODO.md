@@ -1,9 +1,7 @@
 
-- pagemarks not working in the electron process.
+- persist + restore to disk
 
 - actual packages (install on my MacOS box)
-
-- persist + restore to disk
 
 - change the page marks to light blue.
 
