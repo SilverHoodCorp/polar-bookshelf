@@ -16,13 +16,17 @@ function createPagemark(page) {
     pagemark.className="pagemark";
 
     // set CSS style
-    pagemark.style.backgroundColor="rgb(198, 198, 198, 0.5)";
+
+    pagemark.style.backgroundColor="rgb(198, 198, 198)";
+    pagemark.style.opacity="0.5";
+
     pagemark.style.position="absolute";
     pagemark.style.left = "0";
     pagemark.style.top = "0";
     pagemark.style.width = page.style.width;
     pagemark.style.height = page.style.height;
     pagemark.style.zIndex = "0";
+
 
     let canvasWrapper = page.querySelector(".canvasWrapper");
     let textLayer = page.querySelector(".textLayer");

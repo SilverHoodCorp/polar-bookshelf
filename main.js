@@ -30,6 +30,12 @@ function sleep(millis) {
 
 const REMOTE_DEBUGGING_PORT = '8315';
 
+// TODO: if the __dirname has a space in it then I think the file URL will be
+// wrong.
+
+const DEFAULT_URL = 'file://' + __dirname + '/default.html';
+//const DEFAULT_URL = 'file://' + __dirname + '/web/test-pagemark.html';
+
 if (process.argv.includes("--enable-remote-debugging")) {
 
     console.log(`Remote debugging port enabled on port ${REMOTE_DEBUGGING_PORT}.`);
@@ -66,6 +72,8 @@ const template = [{
                                 mainWindow.webContents.on('did-finish-load', function() {
                                     console.log("Finished loading. Now injecting customizations.");
                                     injectCustomizations(mainWindow.webContents);
+                                    console.log("Toggling dev tools...");
+                                    mainWindow.toggleDevTools();
                                 });
 
                             }
@@ -92,7 +100,7 @@ const template = [{
                 label: 'Close',
                 accelerator: 'Shift+CmdOrCtrl+Z',
                 click: function(item, focusedWindow) {
-                    if (focusedWindow) focusedWindow.loadURL('file://' + __dirname + '/default.html', options);
+                    if (focusedWindow) focusedWindow.loadURL(DEFAULT_URL, options);
                 }
             },
             {
@@ -251,7 +259,7 @@ function createWindow() {
         e.preventDefault();
         shell.openExternal(url);
     });
-    mainWindow.loadURL('file://' + __dirname + '/default.html', options);
+    mainWindow.loadURL(DEFAULT_URL, options);
     mainWindow.once('ready-to-show', () => {
         splashwindow.close();
         splashwindow = null;
