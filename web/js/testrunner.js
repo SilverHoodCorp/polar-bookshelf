@@ -4,6 +4,7 @@ var assert = chai.assert;
 var expect = chai.expect;
 
 chai.config.truncateThreshold = 0;
+chai.use(chaiDiff);
 
 console.log("FIXME: diff" , chai.config.showDiff)
 
@@ -73,20 +74,6 @@ describe('testing metadata', function() {
 
         expect(new ISODateTime(date).toJSON()).to.equal("2018-05-30T02:47:44.411Z");
 
-
-
-        //console.log("FIXME1: " + new ISODateTime(date).toJSON());
-//
-//         console.log("FIXME: ", JSON.stringify(new ISODateTime(date)));
-//
-//         console.log("FIXME: ", JSON.stringify(Note.create("hello", date)));
-//
-// // FIXME: how do we parse now...
-//         console.log("FIXME: ", JSON.stringify(Note.create("hello", date)));
-
-
-
-
     });
 
     it('Note serialization', function() {
@@ -101,16 +88,6 @@ describe('testing metadata', function() {
         let note = deserialize(new Note(), `{"text":"hello","created":"2018-05-30T02:47:44.411Z"}`);
 
         expect(note).to.deep.equal({ text: 'hello', created: '2018-05-30T02:47:44.411Z' });
-
-        //console.log("FIXME1: " + new ISODateTime(date).toJSON());
-//
-//         console.log("FIXME: ", JSON.stringify(new ISODateTime(date)));
-//
-//         console.log("FIXME: ", JSON.stringify(Note.create("hello", date)));
-//
-// // FIXME: how do we parse now...
-//         console.log("FIXME: ", JSON.stringify(Note.create("hello", date)));
-
 
     });
 
@@ -137,3 +114,87 @@ describe('testing pagemarks', function() {
     });
 
 });
+
+
+describe('testing model interaction', function() {
+
+    class MockView extends View {
+
+        constructor(model) {
+            super(model);
+
+            this.pagemarks = [];
+
+            this.model.registerListenerForCreatePagemark(function (pagemark) {
+                this.pagemarks.push(pagemark);
+            }.bind(this));
+
+        }
+
+    }
+
+    it('Test basic model support.', function() {
+
+        var datastore = new MemoryDatastore();
+        var model = new Model(datastore);
+        var view = new MockView(model);
+
+        let fingerprint = "fake-fingerprint";
+
+        var docMeta = model.documentLoaded(fingerprint, 1);
+
+        assertJSON(docMeta, "{\n" +
+                            "  \"docInfo\": {\n" +
+                            "    \"title\": null,\n" +
+                            "    \"url\": null,\n" +
+                            "    \"nrPages\": 1,\n" +
+                            "    \"fingerprint\": \"fake-fingerprint\"\n" +
+                            "  },\n" +
+                            "  \"pageMetas\": [\n" +
+                            "    {\n" +
+                            "      \"pageInfo\": {\n" +
+                            "        \"num\": 1\n" +
+                            "      },\n" +
+                            "      \"pagemarks\": {}\n" +
+                            "    }\n" +
+                            "  ],\n" +
+                            "  \"version\": 1\n" +
+                            "}");
+        //
+        // // FIXME: the pagemarks structure in the object should be updated now.
+        // model.createPagemark(1);
+        //
+        // // verify that we have a pagemark now...
+        // docMeta = datastore.getDocMeta(fingerprint);
+        //
+        // assertJSON(docMeta, "");
+
+    });
+
+});
+
+function assertJSON(actual,expected) {
+
+    // first convert both to JSON if necessary.
+    actual = toJSON(actual);
+    expected = toJSON(expected);
+
+    if ( actual !== expected) {
+        console.log(actual);
+    }
+
+    //assert.equal(actual,expected);
+
+    expect(expected).not.differentFrom(actual);
+
+}
+
+function toJSON(obj) {
+
+    if(typeof obj === "string") {
+        return obj;
+    }
+
+    return JSON.stringify(obj, null, "  ");
+
+}

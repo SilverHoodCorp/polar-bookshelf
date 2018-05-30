@@ -7,13 +7,20 @@
 <body>
 <script src="../node_modules/mocha/mocha.js"></script>
 <script src="../node_modules/chai/chai.js"></script>
+<script src="../node_modules/diff/dist/diff.js"></script>
+<script src="../node_modules/chai-diff/chai-diff.js"></script>
 <script>mocha.setup({ui: 'bdd', hideDiff: false})</script>
 
 <!-- load code you want to test here -->
 
 <!--<script src="js/optional.js"></script>-->
+<script src="js/polar.js"></script>
+<script src="js/annotations.js"></script>
 <script src="js/metadata.js"></script>
+<script src="js/model.js"></script>
+<script src="js/view.js"></script>
 <script src="js/controller.js"></script>
+<script src="js/datastore/datastore.js"></script>
 
 <!-- load your test files here -->
 

@@ -7,6 +7,7 @@ class Model {
         this.reactor = new Reactor();
         this.reactor.registerEvent('documentLoaded');
         this.reactor.registerEvent('createPagemark');
+        this.reactor.registerEvent('erasePagemark');
 
         // The currently loaded document.
         this.docMeta = null;
@@ -26,11 +27,16 @@ class Model {
 
         if(this.docMeta == null) {
             // this is a new document...
-            this.docMeta = DocMeta.create(nrPages);
-            this.datastore.sync(fingerprint, docMeta);
+            this.docMeta = DocMeta.create(fingerprint, nrPages);
+            this.datastore.sync(fingerprint, this.docMeta);
         }
 
         this.reactor.dispatchEvent('documentLoaded', {fingerprint, nrPages});
+
+        // FIXME: go through and fire createPagemark events since we just
+        // loaded this data from the datastore.
+
+        return this.docMeta;
 
     }
 
@@ -39,7 +45,20 @@ class Model {
     }
 
     createPagemark(num) {
+
         this.reactor.dispatchEvent('createPagemark', {num});
+
+        // FIXME: we need a fingerprint in the docInfo too.
+
+        // TODO: consider only marking the page read once the datastore has
+        //        been written.
+        this.datastore.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
+
+    }
+
+    erasePagemark(num) {
+
+        this.reactor.dispatchEvent('erasePagemark', {num});
 
         // FIXME: we need a fingerprint in the docInfo too.
 
@@ -51,6 +70,10 @@ class Model {
 
     registerListenerForCreatePagemark(eventListener) {
         this.reactor.addEventListener('createPagemark', eventListener);
+    }
+
+    registerListenerForErasePagemark(eventListener) {
+        this.reactor.addEventListener('erasePagemark', eventListener);
     }
 
 }

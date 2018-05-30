@@ -39,17 +39,23 @@ class MemoryDatastore extends Datastore {
         this.docMetas = {}
     }
 
-
-    addDocMeta(id, docMeta) {
-        this.docMetas[id] = docMeta;
+    /**
+     * Get the DocMeta object we currently in the datastore for this given
+     * fingerprint or null if it does not exist.
+     */
+    getDocMeta(fingerprint) {
+        return this.docMetas[fingerprint];
     }
 
-    status() {
+    /**
+     * Write the datastore to disk.
+     */
+    sync(fingerprint, docMeta) {
 
-    }
-
-    sync() {
-        // this is a noop for the in memory version.
+        // create a copy of the docMeta so that the version we store is NOT
+        // the same version we have in memory.
+        docMeta = MetadataSerializer.deserialize(new DocMeta(), MetadataSerializer.serialize(docMeta));
+        this.docMetas[fingerprint] = docMeta;
     }
 
 }

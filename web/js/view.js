@@ -21,6 +21,13 @@ class WebView extends View {
 
         console.log("View updating on page mark read.");
 
+        // FIXME: get the page ID and then the page element, then call createPagemark
+
+    }
+
+    onErasePagemark(event) {
+        console.log("Erasing pagemark");
+
     }
 
     /**
