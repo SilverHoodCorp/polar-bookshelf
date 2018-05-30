@@ -232,6 +232,28 @@ class DocMeta extends SerializedObject {
         ]);
     }
 
+    /**
+     * Create the basic DocInfo structure that we can use with required / basic
+     * field structure.
+     * @param nrPages The number of pages in this document.
+     * @returns {DocMeta}
+     */
+    static create(nrPages) {
+
+        let docInfo = new DocInfo({nrPages});
+
+        let pageMetas = [];
+        let pageInfo = new PageInfo({num: 1});
+
+        for(let idx = 0; idex <= nrPages; ++nrPages) {
+            let pageMeta = new PageMeta({pageInfo: pageInfo});
+            pageMetas.push(pageMeta);
+        }
+
+        return new DocMeta({docInfo, pageMetas});
+
+    }
+
 };
 
 /**

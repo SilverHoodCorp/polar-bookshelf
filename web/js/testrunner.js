@@ -29,7 +29,7 @@ describe('testing docMeta creation', function() {
 
         let serialized = MetadataSerializer.serialize(docMeta, "");
 
-        expect(serialized).to.equal("{\"docInfo\":{\"title\":null,\"url\":null,\"nrPages\":10},\"pageMetas\":{}}");
+        expect(serialized).to.equal("{\"docInfo\":{\"title\":null,\"url\":null,\"nrPages\":10},\"pageMetas\":{},\"version\":1}");
 
     });
 
@@ -46,7 +46,7 @@ describe('testing docMeta creation', function() {
 
         let serialized = MetadataSerializer.serialize(docMeta, "");
 
-        expect(serialized).to.equal("{\"docInfo\":{\"title\":null,\"url\":null,\"nrPages\":1},\"pageMetas\":{\"1\":{\"pageInfo\":{\"num\":1},\"pagemarks\":{}}}}");
+        expect(serialized).to.equal("{\"docInfo\":{\"title\":null,\"url\":null,\"nrPages\":1},\"pageMetas\":{\"1\":{\"pageInfo\":{\"num\":1},\"pagemarks\":{}}},\"version\":1}");
 
     });
 

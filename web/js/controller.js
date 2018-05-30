@@ -7,7 +7,9 @@ class Controller {
 
         /**
          * The document fingerprint that we have loaded to detect when the
-         * documents have changed.
+         * documents have changed.  Note that this isn't a secure fingerprint
+         * so we might want to change it in the future.
+         *
          * @type string
          */
         this.docFingerprint = null;
@@ -37,24 +39,29 @@ class Controller {
             window.PDFViewerApplication.pdfDocument.pdfInfo &&
             window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint != this.docFingerprint) {
 
-            this.onNewDocumentFingerprint(window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint);
+            let newDocumentFingerprint = window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
+            let nrPages = window.PDFViewerApplication.pagesCount;
+
+            this.onNewDocumentFingerprint(newDocumentFingerprint, nrPages);
 
         }
 
     }
 
-    onNewDocumentFingerprint(newDocumentFingerprint) {
+    onNewDocumentFingerprint(newDocumentFingerprint, nrPages) {
 
-        console.log("New document loaded: " + newDocumentFingerprint);
+        console.log(`New document loaded (fingerprint=${newDocumentFingerprint}, nrPages=${nrPages})`);
 
         this.docFingerprint = newDocumentFingerprint;
+
+        this.onDocumentLoaded(fingerprint, nrPages);
 
     }
 
     /**
      * A new document was opened...
      */
-    onDocumentLoaded() {
+    onDocumentLoaded(fingerprint, nrPages) {
 
     }
 
