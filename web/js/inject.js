@@ -21,6 +21,7 @@ function injectAllScripts() {
     injectScript('../../web/js/annotations.js');
     injectScript('../../web/js/metadata.js');
     injectScript('../../web/js/controller.js');
+    injectScript('../../web/js/datastore/datastore.js');
 
 }
 

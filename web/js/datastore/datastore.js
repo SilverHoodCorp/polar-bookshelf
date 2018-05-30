@@ -2,6 +2,13 @@
 class Datastore {
 
     /**
+     * Init the datastore, potentially reading files of disk, the network, etc.
+     */
+    init() {
+
+    }
+
+    /**
      * Get the DocMeta object we currently in the datastore.
      */
     getDocMetas() {
