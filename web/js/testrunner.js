@@ -264,6 +264,32 @@ describe('testing model interaction', function() {
                             "  \"version\": 1\n" +
                             "}");
 
+        model.erasePagemark(1);
+
+        // TODO: test failure around marking the wrong pages.
+
+        // verify that we have a pagemark now...
+        docMeta = datastore.getDocMeta(fingerprint);
+
+        assertJSON(docMeta, "{\n" +
+                            "  \"docInfo\": {\n" +
+                            "    \"title\": null,\n" +
+                            "    \"url\": null,\n" +
+                            "    \"nrPages\": 1,\n" +
+                            "    \"fingerprint\": \"fake-fingerprint\"\n" +
+                            "  },\n" +
+                            "  \"pageMetas\": {\n" +
+                            "    \"1\": {\n" +
+                            "      \"pageInfo\": {\n" +
+                            "        \"num\": 1\n" +
+                            "      },\n" +
+                            "      \"pagemarks\": {}\n" +
+                            "    }\n" +
+                            "  },\n" +
+                            "  \"version\": 1\n" +
+                            "}");
+
+
     });
 
 });

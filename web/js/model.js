@@ -51,16 +51,13 @@ class Model {
      */
     createPagemark(num) {
 
-        if(num == null)
-            throw new Error("Must specify page num");
-
-        if(num <= 0) {
-            throw new Error("Page numbers begin at 1");
-        }
+        this.assertPageNum(num);
 
         this.reactor.dispatchEvent('createPagemark', {num});
 
         // FIXME: determine the type and the column
+
+        // FIXME: just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by default.
 
         let pagemark = new Pagemark({
             created: this.clock.getDate(),
@@ -69,11 +66,7 @@ class Model {
             column: 0
         } );
 
-        let pageMeta = this.docMeta.pageMetas[num];
-
-        if (!pageMeta) {
-            throw new Error("Note pageMeta for page: " + num);
-        }
+        let pageMeta = this.docMeta.getPageMeta(num);
 
         // set the pagemark that we just created.
         pageMeta.pagemarks[pagemark.column] = pagemark;
@@ -88,13 +81,30 @@ class Model {
 
     erasePagemark(num) {
 
+        this.assertPageNum(num);
+
         this.reactor.dispatchEvent('erasePagemark', {num});
+
+        let pageMeta = this.docMeta.getPageMeta(num);
+
+        pageMeta.pagemarks = {};
 
         // FIXME: we need a fingerprint in the docInfo too.
 
         // TODO: consider only marking the page read once the datastore has
         //        been written.
-        this.datastore.sync(this.docMeta.docInfo.fingerprint, docMeta);
+        this.datastore.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
+
+    }
+
+    assertPageNum(num) {
+
+        if(num == null)
+            throw new Error("Must specify page num");
+
+        if(num <= 0) {
+            throw new Error("Page numbers begin at 1");
+        }
 
     }
 

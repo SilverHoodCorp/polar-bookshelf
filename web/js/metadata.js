@@ -223,6 +223,18 @@ class DocMeta extends SerializedObject {
 
     }
 
+    getPageMeta(num) {
+
+        let pageMeta = this.pageMetas[num];
+
+        if (!pageMeta) {
+            throw new Error("No pageMeta for page: " + num);
+        }
+
+        return pageMeta;
+        
+    }
+
     validate() {
 
         this.validateMembers([
