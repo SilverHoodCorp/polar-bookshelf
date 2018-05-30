@@ -149,6 +149,10 @@ class ISODateTime {
         return this.date.toISOString();
     }
 
+    toString() {
+        return this.date.toISOString();
+    }
+
 }
 
 class Symbol {
@@ -213,7 +217,8 @@ class Note {
         }
 
         if(typeof val === "object") {
-            assignOwnProperties(val, this);
+
+            Object.assign(this, val);
 
             if(!this.text) {
                 this.text = "";
@@ -237,13 +242,13 @@ class Note {
          * The time this annotation was created
          * @type ISODateTime
          */
-        this.created = created;
+        this.created = null;
 
         /**
          * The last time this annotation was updated (note changed, moved, etc).
          * @type ISODateTime
          */
-        this.lastUpdated = lastUpdated;
+        this.lastUpdated = null;
 
         // TODO: add tags for annotations. This might be overkill but it might
         // be a good way to manage some of these types.
@@ -253,7 +258,8 @@ class Note {
         }
 
         if(typeof val === "object") {
-            assignOwnProperties(val, this);
+
+            Object.assign(this, val);
 
             if(!this.created) {
                 throw new Error("Created is required");
@@ -261,6 +267,15 @@ class Note {
 
             if(!this.lastUpdated) {
                 this.lastUpdated = this.created;
+            }
+
+            // FIXME: make this into its own function
+            if(!this.created instanceof ISODateTime) {
+                throw new Error("Member created has wrong type: ", typeof this.created);
+            }
+
+            if(!this.lastUpdated instanceof ISODateTime) {
+                throw new Error("Member lastUpdated has wrong type: ", typeof this.lastUpdated);
             }
 
         }
@@ -273,12 +288,14 @@ class AnnotationWithNote extends Annotation {
 
     constructor(val) {
 
+        super(val);
+
         /**
          * The note for this annotation.
          *
          * @type Note
          */
-        this.note = note;
+        this.note = null;
 
         if(arguments.length > 1) {
             throw new Error("Too many arguments");
@@ -286,12 +303,10 @@ class AnnotationWithNote extends Annotation {
 
         if(typeof val === "object") {
 
-            if(!this.created) {
-                throw new Error("Created is required");
-            }
+            Object.assign(this, val);
 
-            if(!this.lastUpdated) {
-                this.lastUpdated = this.created;
+            if(!this.note) {
+                this.note = new Note({text: "", created: this.created});
             }
 
         }
@@ -300,11 +315,89 @@ class AnnotationWithNote extends Annotation {
 
 }
 
+const PagemarkType = {
+    SINGLE_COLUMN: new Symbol("SINGLE_COLUMN"),
+    DOUBLE_COLUMN: new Symbol("DOUBLE_COLUMN")
+}
+
 
 class Pagemark extends AnnotationWithNote {
 
-    // FIXME: type (whether we have 1, 2 or three column pagemarks)
-    // FIXME: percentage - the percentage of the page the pagemark covers
+    constructor(val) {
+
+        super(val);
+
+        /**
+         * The note for this annotation.
+         *
+         * @type PagemarkType
+         */
+        this.type = null;
+
+        /**
+         * The vertical percentage of the page that is covered with the page
+         * mark.  From 0 to 100.
+         * @type number
+         */
+        this.percentage = null;
+
+        /**
+         * The column number we're working on.
+         *
+         * @type {null}
+         */
+        this.column = null;
+
+        if(arguments.length > 1) {
+            throw new Error("Too many arguments");
+        }
+
+        if(typeof val === "object") {
+
+            Object.assign(this, val);
+
+            if(!this.type) {
+                this.type = PagemarkType.SINGLE_COLUMN;
+            }
+
+            if(!this.percentage) {
+                this.percentage = 100;
+            }
+
+            if(!this.column) {
+                this.column = 0;
+            }
+
+        }
+
+    }
+
+
+    // toJSON() {
+    //     return MetadataSerializer.serialize(this);
+    // }
+
+    toString() {
+        return MetadataSerializer.serialize(this);
+    }
+
+}
+
+class MetadataSerializer {
+
+    static replacer(key, value) {
+        if(value instanceof ISODateTime) {
+            return value.toJSON();
+        }
+
+        return value;
+
+    }
+
+    static serialize(object, spacing) {
+        //return JSON.stringify(object, MetadataSerializer.replacer, "");
+        return JSON.stringify(object, null, spacing);
+    }
 
 }
 
@@ -322,19 +415,6 @@ function deserialize(obj,data) {
     let parsed = JSON.parse(`{"text":"hello","created":"2018-05-30T02:47:44.411Z"}`);
     Object.assign(obj, parsed);
     return obj;
-}
-
-function assignOwnProperties(source, target) {
-
-    for (var prop in source) {
-        console.log("FIXME: " + prop)
-        if (source.hasOwnProperty(prop)) {
-
-            console.log("FIXME2: " + prop)
-            target[prop] = source[prop];
-            console.log("FIXME3: " + target[prop]);
-        }
-    }
 }
 
 // FIXME: use a create() for the default constructor.. the default constructor
