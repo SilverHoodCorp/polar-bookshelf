@@ -252,7 +252,7 @@ function injectCustomizations(webContents) {
 
     // for now, inject one script, which in the browser context, injects
     // the rest of the scripts.
-    injectScript(webContents, '../../web/inject.js');
+    injectScript(webContents, '../../web/js/inject.js');
 
 }
 

@@ -2,10 +2,10 @@ var path = require('path');
 
 module.exports = {
     mode: 'development',
-    entry: path.resolve(__dirname, 'web/wp-entry.js'),
+    entry: path.resolve(__dirname, 'web/js/wp-entry.js'),
     output: {
-        path: path.resolve(__dirname, 'web'),
+        path: path.resolve(__dirname, 'web/js'),
         filename: 'bundle.js',
-        publicPath: '/web'
+        publicPath: '/web/js'
     }
 };

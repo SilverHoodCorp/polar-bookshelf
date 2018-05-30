@@ -17,8 +17,8 @@ function injectAllScripts() {
     window.$ = window.jQuery = require('../../node_modules/jquery/dist/jquery.min.js');
 
     //injectScript('../../node_modules/jquery/dist/jquery.min.js');
-    injectScript('../../web/polar.js');
-    injectScript('../../web/annotations.js');
+    injectScript('../../web/js/polar.js');
+    injectScript('../../web/js/annotations.js');
 
 }
 
