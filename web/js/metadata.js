@@ -238,9 +238,9 @@ class DocMeta extends SerializedObject {
      * @param nrPages The number of pages in this document.
      * @returns {DocMeta}
      */
-    static create(nrPages) {
+    static create(fingerprint, nrPages) {
 
-        let docInfo = new DocInfo({nrPages});
+        let docInfo = new DocInfo({fingerprint, nrPages});
 
         let pageMetas = [];
 
@@ -285,13 +285,20 @@ class DocInfo extends SerializedObject {
          */
         this.nrPages = null;
 
+        /**
+         * A fingerprint for the document created from PDF.js
+         * @type string
+         */
+        this.fingerprint = null;
+
         this.init(val);
 
     }
 
     validate() {
         this.validateMembers([
-            {name: 'nrPages', type: "number"}
+            {name: 'nrPages', type: "number"},
+            {name: 'fingerprint', type: "string"}
         ]);
     }
 

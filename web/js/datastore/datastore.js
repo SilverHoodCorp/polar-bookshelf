@@ -17,17 +17,9 @@ class Datastore {
     }
 
     /**
-     * Add a new docMeta to the store with the given ID.
-     *
-     */
-    addDocMeta(id, docMeta) {
-
-    }
-
-    /**
      * Write the datastore to disk.
      */
-    sync() {
+    sync(fingerprint, docMeta) {
 
     }
 

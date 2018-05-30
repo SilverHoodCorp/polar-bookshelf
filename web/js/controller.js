@@ -18,9 +18,9 @@ class Controller {
     /**
      * Mark the given page number as read.
      */
-    onMarkPageRead(num) {
-        console.log("Controller sees page marked read: " + num);
-        this.model.markPageRead(num);
+    onCreatePagemark(num) {
+        console.log("Controller sees pagemark created: " + num);
+        this.model.createPagemark(num);
     }
 
 }
@@ -152,7 +152,7 @@ class WebController extends Controller {
 
         let pageNum = parseInt(dataPageNum);
 
-        this.onMarkPageRead(pageNum);
+        this.onCreatePagemark(pageNum);
 
         createPagemark(pageElement);
 

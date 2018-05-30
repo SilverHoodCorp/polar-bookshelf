@@ -6,7 +6,10 @@ class Model {
 
         this.reactor = new Reactor();
         this.reactor.registerEvent('documentLoaded');
-        this.reactor.registerEvent('markPageRead');
+        this.reactor.registerEvent('createPagemark');
+
+        // The currently loaded document.
+        this.docMeta = null;
 
     }
 
@@ -19,11 +22,13 @@ class Model {
 
         console.log("New document loaded!");
 
-        let docMeta = DocMeta.create(nrPages);
+        this.docMeta = this.datastore.getDocMeta(fingerprint);
 
-        // TODO: track the fingerprint too?
-
-        this.datastore.addDocMeta(fingerprint,docMeta);
+        if(this.docMeta == null) {
+            // this is a new document...
+            this.docMeta = DocMeta.create(nrPages);
+            this.datastore.sync(fingerprint, docMeta);
+        }
 
         this.reactor.dispatchEvent('documentLoaded', {fingerprint, nrPages});
 
@@ -33,12 +38,19 @@ class Model {
         this.reactor.addEventListener('documentLoaded', eventListener);
     }
 
-    markPageRead(num) {
-        this.reactor.dispatchEvent('markPageRead', {num});
+    createPagemark(num) {
+        this.reactor.dispatchEvent('createPagemark', {num});
+
+        // FIXME: we need a fingerprint in the docInfo too.
+
+        // TODO: consider only marking the page read once the datastore has
+        //        been written.
+        this.datastore.sync(this.docMeta.docInfo.fingerprint, docMeta);
+
     }
 
-    registerListenerForMarkPageRead(eventListener) {
-        this.reactor.addEventListener('markPageRead', eventListener);
+    registerListenerForCreatePagemark(eventListener) {
+        this.reactor.addEventListener('createPagemark', eventListener);
     }
 
 }

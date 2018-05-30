@@ -21,7 +21,7 @@ describe('testing docMeta creation', function() {
 
     it('Create basic docMeta objects', function() {
 
-        let docInfo = new DocInfo({nrPages: 10});
+        let docInfo = new DocInfo({nrPages: 10, fingerprint: '0xdecafbad'});
 
         expect(docInfo.nrPages).to.equal(10);
 
@@ -29,13 +29,13 @@ describe('testing docMeta creation', function() {
 
         let serialized = MetadataSerializer.serialize(docMeta, "");
 
-        expect(serialized).to.equal("{\"docInfo\":{\"title\":null,\"url\":null,\"nrPages\":10},\"pageMetas\":{},\"version\":1}");
+        expect(serialized).to.equal("{\"docInfo\":{\"title\":null,\"url\":null,\"nrPages\":10,\"fingerprint\":\"0xdecafbad\"},\"pageMetas\":{},\"version\":1}");
 
     });
 
     it('Create basic docMeta objects with pages', function() {
 
-        let docInfo = new DocInfo({nrPages: 1});
+        let docInfo = new DocInfo({nrPages: 1, fingerprint: '0xdecafbad'});
 
         expect(docInfo.nrPages).to.equal(1);
 
@@ -46,17 +46,19 @@ describe('testing docMeta creation', function() {
 
         let serialized = MetadataSerializer.serialize(docMeta, "");
 
-        expect(serialized).to.equal("{\"docInfo\":{\"title\":null,\"url\":null,\"nrPages\":1},\"pageMetas\":{\"1\":{\"pageInfo\":{\"num\":1},\"pagemarks\":{}}},\"version\":1}");
+        expect(serialized).to.equal("{\"docInfo\":{\"title\":null,\"url\":null,\"nrPages\":1,\"fingerprint\":\"0xdecafbad\"},\"pageMetas\":{\"1\":{\"pageInfo\":{\"num\":1},\"pagemarks\":{}}},\"version\":1}");
 
     });
 
     it('Create basic DocMeta.create', function() {
 
-        let docMeta = DocMeta.create(2);
+        let fingerprint = "0xdecafbad";
+
+        let docMeta = DocMeta.create(fingerprint, 2);
 
         let serialized = MetadataSerializer.serialize(docMeta, "");
 
-        expect(serialized).to.equal("{\"docInfo\":{\"title\":null,\"url\":null,\"nrPages\":2},\"pageMetas\":[{\"pageInfo\":{\"num\":1},\"pagemarks\":{}},{\"pageInfo\":{\"num\":2},\"pagemarks\":{}}],\"version\":1}");
+        expect(serialized).to.equal("{\"docInfo\":{\"title\":null,\"url\":null,\"nrPages\":2,\"fingerprint\":\"0xdecafbad\"},\"pageMetas\":[{\"pageInfo\":{\"num\":1},\"pagemarks\":{}},{\"pageInfo\":{\"num\":2},\"pagemarks\":{}}],\"version\":1}");
 
     });
 
