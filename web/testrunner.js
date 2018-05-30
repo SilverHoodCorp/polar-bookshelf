@@ -34,6 +34,9 @@ describe('testing metadata', function() {
 
         expect(JSON.stringify(Note.create("hello", date))).to.equal(`{"text":"hello","created":"2018-05-30T02:47:44.411Z"}`);
 
+        let note = deserialize(new Note(), `{"text":"hello","created":"2018-05-30T02:47:44.411Z"}`);
+
+        expect(note).to.deep.equal({ text: 'hello', created: '2018-05-30T02:47:44.411Z' });
 
         //console.log("FIXME1: " + new ISODateTime(date).toJSON());
 //
@@ -43,8 +46,6 @@ describe('testing metadata', function() {
 //
 // // FIXME: how do we parse now...
 //         console.log("FIXME: ", JSON.stringify(Note.create("hello", date)));
-
-
 
 
     });
