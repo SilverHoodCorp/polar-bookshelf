@@ -82,7 +82,11 @@ class WebController extends Controller {
             let newDocumentFingerprint = window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
             let nrPages = window.PDFViewerApplication.pagesCount;
 
-            this.onNewDocumentFingerprint(newDocumentFingerprint, nrPages);
+            var pages = document.querySelectorAll("#viewer .page");
+
+            if (pages.length === nrPages) {
+                this.onNewDocumentFingerprint(newDocumentFingerprint, nrPages);
+            }
 
         }
 

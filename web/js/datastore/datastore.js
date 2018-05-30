@@ -44,6 +44,11 @@ class MemoryDatastore extends Datastore {
      * fingerprint or null if it does not exist.
      */
     getDocMeta(fingerprint) {
+
+        var nrDocs = Object.keys(this.docMetas).length;
+
+        console.log(`Fetching document from datastore with fingerprint ${fingerprint} of ${nrDocs} docs.`)
+
         return this.docMetas[fingerprint];
     }
 

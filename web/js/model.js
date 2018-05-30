@@ -34,6 +34,23 @@ class Model {
 
         this.reactor.dispatchEvent('documentLoaded', {fingerprint, nrPages});
 
+        // go through all the pagemarks and other annotations fire the events
+        // necessary for them so that the view can update...
+        forDict(this.docMeta.pageMetas, function (pageNum, pageMeta) {
+            forDict(pageMeta.pagemarks, function (pagemarkId, pagemark) {
+
+                // FIXME: this is wrong and we should fire with the right
+                // pagemark type.
+
+                // FIXME: this IS working but the document isn't finished
+                // loading yet.  We can SEE that a new document was loaded
+                // but not that it was finished loading...
+
+                this.reactor.dispatchEvent('createPagemark', {num: pageNum});
+
+            }.bind(this));
+        }.bind(this));
+
         // FIXME: go through and fire createPagemark events since we just
         // loaded this data from the datastore.
 
@@ -160,3 +177,9 @@ class Reactor {
 
 }
 
+function forDict(dict, callback) {
+    Object.keys(dict).forEach(function (key) {
+        let value = dict[key];
+        callback(key,value);
+    })
+}

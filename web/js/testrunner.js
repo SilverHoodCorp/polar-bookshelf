@@ -292,6 +292,48 @@ describe('testing model interaction', function() {
 
     });
 
+    it('Test existing pagemark event firing in view.', function() {
+
+
+        class MockView extends View {
+
+            constructor(model) {
+                super(model);
+
+                this.pagemarks = [];
+
+                this.model.registerListenerForCreatePagemark(function (pagemarkEvent) {
+                    if( ! pagemarkEvent.num){
+                        throw new Error("No pagemark number");
+                    }
+                    this.pagemarks.push(pagemarkEvent);
+                }.bind(this));
+
+            }
+
+        }
+
+        var clock = new SyntheticClock();
+        var datastore = new MemoryDatastore();
+        var model = new Model(datastore, clock);
+        var view = new MockView(model);
+
+        let fingerprint = "fake-fingerprint";
+
+        var docMeta = model.documentLoaded(fingerprint, 1);
+        assert.equal(view.pagemarks.length, 0);
+
+        model.createPagemark(1);
+
+        assert.equal(view.pagemarks.length, 1);
+
+        // now reload the model to trigger more pagemarks
+        docMeta = model.documentLoaded(fingerprint, 1);
+
+        assert.equal(view.pagemarks.length, 2);
+
+    });
+
 });
 
 function assertJSON(actual,expected) {

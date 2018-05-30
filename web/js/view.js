@@ -20,6 +20,10 @@ class WebView extends View {
 
     getPageElementByNum(num) {
 
+        if(!num) {
+            throw new Error("Page number not specified");
+        }
+
         var pageElements = document.querySelectorAll(".page");
 
         // note that elements are 0 based indexes but our pages are 1 based
