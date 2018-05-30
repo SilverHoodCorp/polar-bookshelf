@@ -243,9 +243,9 @@ class DocMeta extends SerializedObject {
         let docInfo = new DocInfo({nrPages});
 
         let pageMetas = [];
-        let pageInfo = new PageInfo({num: 1});
 
-        for(let idx = 0; idex <= nrPages; ++nrPages) {
+        for(let idx = 1; idx <= nrPages; ++idx) {
+            let pageInfo = new PageInfo({num: idx});
             let pageMeta = new PageMeta({pageInfo: pageInfo});
             pageMetas.push(pageMeta);
         }

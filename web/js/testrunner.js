@@ -50,6 +50,17 @@ describe('testing docMeta creation', function() {
 
     });
 
+    it('Create basic DocMeta.create', function() {
+
+        let docMeta = DocMeta.create(2);
+
+        let serialized = MetadataSerializer.serialize(docMeta, "");
+
+        expect(serialized).to.equal("{\"docInfo\":{\"title\":null,\"url\":null,\"nrPages\":2},\"pageMetas\":[{\"pageInfo\":{\"num\":1},\"pagemarks\":{}},{\"pageInfo\":{\"num\":2},\"pagemarks\":{}}],\"version\":1}");
+
+    });
+
+
     // FIXME: test deserializing BROKEN json and validating the objects.
 
 });
