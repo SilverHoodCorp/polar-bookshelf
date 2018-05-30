@@ -1,12 +1,12 @@
 /**
  * Create a pagemark on the given page which marks it read.
- * @param page
+ * @param pageElement
  */
-function createPagemark(page) {
+function createPagemark(pageElement) {
 
     // do nothing if the current page already has a pagemark.
 
-    if (page.querySelector(".pagemark")) {
+    if (pageElement.querySelector(".pagemark")) {
         return;
     }
 
@@ -24,26 +24,26 @@ function createPagemark(page) {
     pagemark.style.position="absolute";
     pagemark.style.left = "0";
     pagemark.style.top = "0";
-    pagemark.style.width = page.style.width;
-    pagemark.style.height = page.style.height;
+    pagemark.style.width = pageElement.style.width;
+    pagemark.style.height = pageElement.style.height;
     pagemark.style.zIndex = "0";
 
 
-    let canvasWrapper = page.querySelector(".canvasWrapper");
-    let textLayer = page.querySelector(".textLayer");
+    let canvasWrapper = pageElement.querySelector(".canvasWrapper");
+    let textLayer = pageElement.querySelector(".textLayer");
 
     // this must be above the pagemark layer or you won't be able to select text
     // visually.
 
     textLayer.style.zIndex = "2";
 
-    page.insertBefore(pagemark, canvasWrapper);
+    pageElement.insertBefore(pagemark, canvasWrapper);
 
     // add an event listener to listen for when the page is redrawn.  We only
     // call this event listener once, then it's removed so we should create the
     // pagemark, then put in protection code so that if it's removed, it will
     // go back in if the page is ever redrawn.
-    page.addEventListener('DOMNodeInserted', function(event) {
+    pageElement.addEventListener('DOMNodeInserted', function(event) {
 
         if (event.target && event.target.className === "endOfContent") {
 
@@ -51,15 +51,15 @@ function createPagemark(page) {
 
             // make sure to first remove all the existing pagemarks if there
             // are any
-            removePagemarks(page);
+            removePagemarks(pageElement);
 
             // we're done all the canvas and text nodes... so place the pagemark
             // back in again.
 
-            createPagemark(page);
+            createPagemark(pageElement);
 
             // done listening so remove myself...
-            page.removeEventListener('DOMNodeInserted',arguments.callee,false);
+            pageElement.removeEventListener('DOMNodeInserted',arguments.callee,false);
 
         }
 
@@ -67,14 +67,14 @@ function createPagemark(page) {
 
 }
 
-function removePagemarks(page) {
+function removePagemarks(pageElement) {
 
     console.log("Removing pagemarks...");
 
-    let pagemarks = page.querySelectorAll(".pagemark");
+    let pagemarks = pageElement.querySelectorAll(".pagemark");
 
     pagemarks.forEach(function (pagemark) {
-        page.removeChild(pagemark);
+        pageElement.removeChild(pagemark);
         console.log("Removed pagemark.");
     });
 
