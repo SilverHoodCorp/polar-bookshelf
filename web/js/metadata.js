@@ -89,6 +89,44 @@ function createDocMeta(path) {
 
 }
 
+
+/**
+ * Basic serialized object pattern. Take a closure as an argument to init,
+ * and then assign the fields.  Then setup and validate that we have our
+ * required data structures.
+ */
+class SerializedObject {
+
+    constructor(val) {
+        // noop
+    }
+
+    init(val) {
+
+        if(arguments.length > 1) {
+            throw new Error("Too many arguments");
+        }
+
+        if(typeof val === "object") {
+
+            Object.assign(this, val);
+            this.setup();
+            this.validate();
+
+        }
+
+    }
+
+    setup() {
+
+    }
+
+    validate() {
+
+    }
+
+}
+
 /**
  * Root metadata for a document including page metadata, and metadata for
  * the specific document.
@@ -230,44 +268,6 @@ class Symbol {
 
 }
 
-/**
- * Basic serialized object pattern. Take a closure as an argument to init,
- * and then assign the fields.  Then setup and validate that we have our
- * required data structures.
- */
-class SerializedObject {
-
-    constructor(val) {
-        // noop
-    }
-
-    init(val) {
-
-        if(arguments.length > 1) {
-            throw new Error("Too many arguments");
-        }
-
-        if(typeof val === "object") {
-
-            Object.assign(this, val);
-            this.setup();
-            this.validate();
-
-        }
-
-    }
-
-    setup() {
-
-    }
-
-    validate() {
-
-    }
-
-}
-
-
 // this is I think a better pattern for typesafe enum:
 // http://2ality.com/2016/01/enumify.html
 const TextType = {
@@ -299,9 +299,11 @@ class Text extends SerializedObject {
 
 }
 
-class Note {
+class Note extends SerializedObject {
 
     constructor(val) {
+
+        super(val);
 
         /**
          * The text of this note.
@@ -315,17 +317,7 @@ class Note {
          */
         this.created = null;
 
-        if(arguments.length > 1) {
-            throw new Error("Too many arguments");
-        }
-
-        if(typeof val === "object") {
-
-            Object.assign(this, val);
-            this.setup();
-            this.validate();
-
-        }
+        this.init(val);
 
     };
 
@@ -368,17 +360,7 @@ class Note {
         // TODO: add tags for annotations. This might be overkill but it might
         // be a good way to manage some of these types.
 
-        if(arguments.length > 1) {
-            throw new Error("Too many arguments");
-        }
-
-        if(typeof val === "object") {
-
-            Object.assign(this, val);
-            this.setup();
-            this.validate();
-
-        }
+        this.init(val);
 
     }
 
@@ -422,17 +404,8 @@ class AnnotationWithNote extends Annotation {
          */
         this.note = null;
 
-        if(arguments.length > 1) {
-            throw new Error("Too many arguments");
-        }
+        this.init();
 
-        if(typeof val === "object") {
-
-            Object.assign(this, val);
-
-            this.validate();
-
-        }
 
     }
 
