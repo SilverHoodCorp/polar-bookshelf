@@ -281,18 +281,28 @@ class Note {
         if(typeof val === "object") {
 
             Object.assign(this, val);
-
-            if(!this.text) {
-                this.text = "";
-            }
-
-            if(!this.created) {
-                throw new Error("The field `created` is required.");
-            }
+            this.setup();
+            this.validate();
 
         }
 
     };
+
+    setup() {
+
+        if(!this.text) {
+            this.text = "";
+        }
+
+    }
+
+    validate() {
+
+        if(!this.created) {
+            throw new Error("The field `created` is required.");
+        }
+
+    }
 
 }
 
@@ -322,24 +332,34 @@ class Note {
         if(typeof val === "object") {
 
             Object.assign(this, val);
+            this.setup();
+            this.validate();
 
-            if(!this.created) {
-                throw new Error("Created is required");
-            }
+        }
 
-            if(!this.lastUpdated) {
-                this.lastUpdated = this.created;
-            }
+    }
 
-            // FIXME: make this into its own function
-            if(!this.created instanceof ISODateTime) {
-                throw new Error("Member created has wrong type: ", typeof this.created);
-            }
+    setup() {
 
-            if(!this.lastUpdated instanceof ISODateTime) {
-                throw new Error("Member lastUpdated has wrong type: ", typeof this.lastUpdated);
-            }
+        if(!this.lastUpdated && this.created) {
+            this.lastUpdated = this.created;
+        }
 
+    }
+
+    validate() {
+
+        if(!this.created) {
+            throw new Error("Created is required");
+        }
+
+        // FIXME: make this into its own function
+        if(!this.created instanceof ISODateTime) {
+            throw new Error("Member created has wrong type: ", typeof this.created);
+        }
+
+        if(!this.lastUpdated instanceof ISODateTime) {
+            throw new Error("Member lastUpdated has wrong type: ", typeof this.lastUpdated);
         }
 
     }
@@ -367,12 +387,24 @@ class AnnotationWithNote extends Annotation {
 
             Object.assign(this, val);
 
-            if(!this.note) {
-                this.note = new Note({text: "", created: this.created});
-            }
+            this.validate();
 
         }
 
+    }
+
+    setup() {
+
+        super.setup();
+
+        if(!this.note) {
+            this.note = new Note({text: "", created: this.created});
+        }
+
+    }
+
+    validate() {
+        super.validate();
     }
 
 }
@@ -417,21 +449,33 @@ class Pagemark extends AnnotationWithNote {
         if(typeof val === "object") {
 
             Object.assign(this, val);
-
-            if(!this.type) {
-                this.type = PagemarkType.SINGLE_COLUMN;
-            }
-
-            if(!this.percentage) {
-                this.percentage = 100;
-            }
-
-            if(!this.column) {
-                this.column = 0;
-            }
+            this.setup();
+            this.validate();
 
         }
 
+    }
+
+    setup() {
+
+        super.setup();
+
+        if(!this.type) {
+            this.type = PagemarkType.SINGLE_COLUMN;
+        }
+
+        if(!this.percentage) {
+            this.percentage = 100;
+        }
+
+        if(!this.column) {
+            this.column = 0;
+        }
+
+    }
+
+    validate() {
+        super.validate();
     }
 
 
