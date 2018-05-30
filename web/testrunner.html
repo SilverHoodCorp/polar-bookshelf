@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mocha Tests</title>
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css">
+</head>
+<body>
+<script src="../node_modules/mocha/mocha.js"></script>
+<script src="../node_modules/chai/chai.js"></script>
+<script>mocha.setup({ui: 'bdd', hideDiff: false})</script>
+
+<!-- load code you want to test here -->
+
+<!--<script src="js/optional.js"></script>-->
+<script src="metadata.js"></script>
+
+<!-- load your test files here -->
+
+<script src="testrunner.js"></script>
+
+<script>
+</script>
+
+<script>
+    window.onload = function() {
+        mocha.run(function () {
+            console.log("done");
+        });
+    };
+</script>
+
+<div id="mocha"></div>
+
+</body>
+</html>

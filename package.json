@@ -25,7 +25,9 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "electron": "^2.0.1"
+    "chai": "^4.1.2",
+    "electron": "^2.0.1",
+    "mocha": "^5.2.0"
   },
   "dependencies": {
     "jquery": "^3.3.1",

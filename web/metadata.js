@@ -232,24 +232,5 @@ class DocMetaWriter {
 
 }
 
-var date = new Date(Date.parse("2018-05-30T02:47:44.411Z"));
-
-// FIXME: move this into a test framework...
-
-console.log("FIXME: " + typeof date)
-console.log("FIXME1: " + date);
-console.log("FIXME1: " + date.toISOString());
-
-console.log("FIXME1: " + new ISODateTime(date).toJSON());
-
-console.log("FIXME: ", JSON.stringify(new ISODateTime(date)));
-
-console.log("FIXME: ", JSON.stringify(Note.create("hello", date)));
-
-// FIXME: how do we parse now...
-console.log("FIXME: ", JSON.stringify(Note.create("hello", date)));
-
-
-
 // FIXME: use a create() for the default constructor.. the default constructor
 // is otherwise used for creating JSON.
