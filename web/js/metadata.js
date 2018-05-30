@@ -230,6 +230,44 @@ class Symbol {
 
 }
 
+/**
+ * Basic serialized object pattern. Take a closure as an argument to init,
+ * and then assign the fields.  Then setup and validate that we have our
+ * required data structures.
+ */
+class SerializedObject {
+
+    constructor(val) {
+        // noop
+    }
+
+    init(val) {
+
+        if(arguments.length > 1) {
+            throw new Error("Too many arguments");
+        }
+
+        if(typeof val === "object") {
+
+            Object.assign(this, val);
+            this.setup();
+            this.validate();
+
+        }
+
+    }
+
+    setup() {
+
+    }
+
+    validate() {
+
+    }
+
+}
+
+
 // this is I think a better pattern for typesafe enum:
 // http://2ality.com/2016/01/enumify.html
 const TextType = {
@@ -237,10 +275,11 @@ const TextType = {
     HTML: new Symbol("HTML")
 }
 
-class Text {
+class Text extends SerializedObject {
 
-    constructor() {
+    constructor(val) {
 
+        super(val);
         /**
          * The actual body of this text.
          *
@@ -253,6 +292,8 @@ class Text {
          * @type {number}
          */
         this.type = TextType.MARKDOWN;
+
+        this.init();
 
     }
 
@@ -306,9 +347,11 @@ class Note {
 
 }
 
-/* abstract */ class Annotation {
+/* abstract */ class Annotation extends SerializedObject {
 
     constructor(val) {
+
+        super(val);
 
         /**
          * The time this annotation was created
