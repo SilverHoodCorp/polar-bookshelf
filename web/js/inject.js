@@ -20,6 +20,8 @@ function injectAllScripts() {
     injectScript('../../web/js/polar.js');
     injectScript('../../web/js/annotations.js');
     injectScript('../../web/js/metadata.js');
+    injectScript('../../web/js/model.js');
+    injectScript('../../web/js/view.js');
     injectScript('../../web/js/controller.js');
     injectScript('../../web/js/datastore/datastore.js');
     injectScript('../../web/js/controller-dev.js');

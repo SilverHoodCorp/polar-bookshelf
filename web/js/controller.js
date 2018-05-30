@@ -1,21 +1,26 @@
 
 class Controller {
 
+    constructor(datastore, model) {
+        this.datastore = datastore;
+        this.model = model;
+    }
+
     /**
      * Called when a new document has been loaded.
      */
     onDocumentLoaded(fingerprint, nrPages) {
 
-        // TODO: test this method.
+        this.model.documentLoaded(fingerprint, nrPages);
 
-        console.log("New document loaded!");
+    }
 
-        let docMeta = DocMeta.create(nrPages);
-
-        // TODO: track the fingerprint too?
-
-        this.datastore.addDocMeta(fingerprint,docMeta);
-
+    /**
+     * Mark the given page number as read.
+     */
+    onMarkPageRead(num) {
+        console.log("Controller sees page marked read: " + num);
+        this.model.markPageRead(num);
     }
 
 }
@@ -24,8 +29,8 @@ class Controller {
 
 class WebController extends Controller {
 
-    constructor(datastore) {
-        super(datastore);
+    constructor(datastore, model) {
+        super(datastore, model);
 
         this.datastore = datastore;
 
@@ -142,6 +147,13 @@ class WebController extends Controller {
         console.log("Marking entire page as read.");
 
         let pageElement = this.getCurrentPageElement();
+
+        let dataPageNum = pageElement.getAttribute("data-page-number");
+
+        let pageNum = parseInt(dataPageNum);
+
+        this.onMarkPageRead(pageNum);
+
         createPagemark(pageElement);
 
     }
