@@ -125,15 +125,75 @@ class SerializedObject {
 
     }
 
+    validateMemberExists(name) {
+
+        if(!this[name]) {
+            throw new Error(`Member field '${name}' missing.`);
+        }
+
+    }
+
+    /**
+     * Validate that the member is defined and that it has the given type.
+     *
+     * These are instance types compared via instanceof
+     *
+     * @param name The name of the member.
+     * @param instanceType The instance type we expect
+     */
+    validateMemberInstanceOf(name, instance) {
+        this.validateMemberExists(name);
+
+        if( ! this[name] instanceof instance) {
+            throw new Error(`Member field '${name}' is not a instance of ${instance}`);
+        }
+    }
+
+    /**
+     * Validate that the given member exists and it is a typeof of 'type'
+     *
+     * The types in this case are primitive types compared with typeof
+     *
+     * @param name The name of the member.
+     * @param instanceType The instance type we expect
+     */
+    validateMemberTypeOf(name, type) {
+        this.validateMemberExists(name);
+
+        if( ! typeof this[name] === type) {
+            throw new Error(`Member field '${name}' is not a type of ${type}`);
+        }
+    }
+
+    validateMembers(members) {
+
+        // TODO: needs testing.
+
+        members.forEach(function (member) {
+
+            if (member.instance) {
+                this.validateMemberInstanceOf(member.name, member.instance);
+            } else if(member.type) {
+                this.validateMemberTypeOf(member.name, member.type);
+            } else {
+                throw new Error("Unable to handle member: ", member);
+            }
+
+        });
+
+    }
+
 }
 
 /**
  * Root metadata for a document including page metadata, and metadata for
  * the specific document.
  */
-class DocMeta {
+class DocMeta extends SerializedObject {
 
     constructor(val) {
+
+        super(val);
 
         /**
          * The DocInfo which includes information like title, nrPages, etc.
@@ -149,15 +209,23 @@ class DocMeta {
 
     }
 
+    validate() {
+        this.validateMembers([
+            {name: 'docInfo', instance: DocInfo}
+        ]);
+    }
+
 };
 
 /**
  * Lightweight metadata about a document. We do not include full page metadata
  * with this object which makes it lightweight to pass around.
  */
-class DocInfo {
+class DocInfo extends SerializedObject {
 
     constructor(val) {
+
+        super(val);
 
         /**
          * The title for the document.
@@ -179,6 +247,14 @@ class DocInfo {
         this.nrPages = null;
 
     }
+
+
+    validate() {
+        this.validateMembers([
+            {name: 'nrPages', type: "number"}
+        ]);
+    }
+
 
 }
 
