@@ -25,3 +25,9 @@
   characters we could mutate a figure or some other part of the graphic.  the
   best way to do this would be to inject some code into the pdf.js page
   rendering.
+
+- I could use chrome headless via fork() to print my own PDFs of URLs within
+  electron since I'm running in the OS as a top level project.
+
+    - this would give me the ability to import a specific URL or to send a URL
+      from chrome to polar.
