@@ -6,8 +6,6 @@ var expect = chai.expect;
 chai.config.truncateThreshold = 0;
 chai.use(chaiDiff);
 
-console.log("FIXME: diff" , chai.config.showDiff)
-
 // stable reference date for all tests.
 var date = new Date(Date.parse("2018-05-30T02:47:44.411Z"));
 
@@ -83,9 +81,6 @@ describe('testing docMeta creation', function() {
 
 
     });
-
-
-    // FIXME: test deserializing BROKEN json and validating the objects.
 
 });
 
@@ -232,9 +227,9 @@ describe('testing model interaction', function() {
 
         assert.isNotNull(docMeta.pageMetas[1]);
 
-        //
-        // // FIXME: the pagemarks structure in the object should be updated now.
         model.createPagemark(1);
+
+        // TODO: test failure around marking the wrong pages.
 
         // verify that we have a pagemark now...
         docMeta = datastore.getDocMeta(fingerprint);
