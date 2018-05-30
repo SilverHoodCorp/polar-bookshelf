@@ -31,6 +31,7 @@ class Datastore {
 class MemoryDatastore extends Datastore {
 
     constructor() {
+        super();
         /**
          *
          * @type map<string,DocMeta>
@@ -41,6 +42,10 @@ class MemoryDatastore extends Datastore {
 
     addDocMeta(id, docMeta) {
         this.docMetas[id] = docMeta;
+    }
+
+    status() {
+
     }
 
 }

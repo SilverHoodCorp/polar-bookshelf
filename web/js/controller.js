@@ -5,6 +5,8 @@ class Controller {
 
     constructor(datastore) {
 
+        this.datastore = datastore;
+
         /**
          * The document fingerprint that we have loaded to detect when the
          * documents have changed.  Note that this isn't a secure fingerprint
@@ -18,6 +20,7 @@ class Controller {
 
     startListeners() {
         this.listenForDocumentFingerprint();
+        console.log("Controller listeners registered.");
     }
 
     listenForDocumentFingerprint() {
@@ -50,11 +53,11 @@ class Controller {
 
     onNewDocumentFingerprint(newDocumentFingerprint, nrPages) {
 
-        console.log(`New document loaded (fingerprint=${newDocumentFingerprint}, nrPages=${nrPages})`);
+        console.log(`Detected new document fingerprint (fingerprint=${newDocumentFingerprint}, nrPages=${nrPages})`);
 
         this.docFingerprint = newDocumentFingerprint;
 
-        this.onDocumentLoaded(fingerprint, nrPages);
+        this.onDocumentLoaded(newDocumentFingerprint, nrPages);
 
     }
 
@@ -63,34 +66,16 @@ class Controller {
      */
     onDocumentLoaded(fingerprint, nrPages) {
 
+        // TODO: test this method.
+
+        console.log("New document loaded!");
+
+        let docMeta = DocMeta.create(nrPages);
+
+        // TODO: track the fingerprint too?
+
+        this.datastore.addDocMeta(fingerprint,docMeta);
+
     }
-
-}
-
-function test() {
-    var docFingerprint = null;
-
-
-    var viewer = document.querySelector("#viewer");
-
-    // this allows us to work with the reader...
-    // window.PDFViewerApplication.pdfViewer.currentPageNumber=4
-
-    // TODO: I don't think we can listen to the PDFViewerApplication lifecycle
-    // properly but I might be wrong.
-
-    viewer.addEventListener('DOMNodeInserted', function(event) {
-
-        if (window.PDFViewerApplication &&
-            window.PDFViewerApplication.pdfDocument &&
-            window.PDFViewerApplication.pdfDocument.pdfInfo &&
-            window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint != docFingerprint) {
-
-            console.log("New document loaded");
-
-            docFingerprint = window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
-        }
-
-    }, false );
 
 }
