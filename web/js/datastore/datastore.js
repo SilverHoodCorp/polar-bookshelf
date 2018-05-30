@@ -10,7 +10,7 @@ class Datastore {
 
     /**
      * Get the DocMeta object we currently in the datastore for this given
-     * fingerprint.
+     * fingerprint or null if it does not exist.
      */
     getDocMeta(fingerprint) {
 

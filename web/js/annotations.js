@@ -82,7 +82,7 @@ function removePagemarks(pageElement) {
 
 }
 
-function getCurrentPage() {
+function getCurrentPageElement() {
 
     // TODO: It is probably easier to use pdf.pageNum but I'm not sure if this
     // is actively updated or not.
@@ -135,11 +135,13 @@ function calculateVisibilityForDiv(div) {
 
 }
 
+// FUNCTION these events need to be moved to the controller....
+
 function keyBindingPagemarkEntirePage(event) {
     console.log("Marking entire page as read.");
 
-    let page = getCurrentPage();
-    createPagemark(page);
+    let pageElement = getCurrentPageElement();
+    createPagemark(pageElement);
 
 }
 
@@ -149,8 +151,8 @@ function keyBindingPagemarkUpToMouse(event) {
 
 function keyBindingRemovePagemark(event) {
     console.log("Removing pagemark.");
-    let page = getCurrentPage();
-    removePagemarks(page);
+    let pageElement = getCurrentPageElement();
+    removePagemarks(pageElement);
 }
 
 function keyBindingListener(event) {
@@ -199,7 +201,7 @@ function registerKeyBindings() {
 }
 
 registerKeyBindings();
-//getCurrentPage();
+//getCurrentPageElement();
 
 console.log("Annotation code loaded.");
 

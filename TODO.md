@@ -31,3 +31,6 @@
 
     - this would give me the ability to import a specific URL or to send a URL
       from chrome to polar.
+
+
+- chagge REMOVE to ERASE to avid confusion with 'read'
