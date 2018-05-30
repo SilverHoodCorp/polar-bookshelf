@@ -9,9 +9,10 @@ class Datastore {
     }
 
     /**
-     * Get the DocMeta object we currently in the datastore.
+     * Get the DocMeta object we currently in the datastore for this given
+     * fingerprint.
      */
-    getDocMetas() {
+    getDocMeta(fingerprint) {
 
     }
 
@@ -20,6 +21,13 @@ class Datastore {
      *
      */
     addDocMeta(id, docMeta) {
+
+    }
+
+    /**
+     * Write the datastore to disk.
+     */
+    sync() {
 
     }
 
@@ -46,6 +54,10 @@ class MemoryDatastore extends Datastore {
 
     status() {
 
+    }
+
+    sync() {
+        // this is a noop for the in memory version.
     }
 
 }
