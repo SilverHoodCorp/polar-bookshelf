@@ -68,7 +68,10 @@ describe('testing pagemarks', function() {
 
         //expect(pagemark).to.deep.equal({});
 
-        expect(MetadataSerializer.serialize(pagemark, "  ")).to.equal("");
+
+        let serialized = MetadataSerializer.serialize(pagemark, "");
+        console.log(serialized);
+        expect(serialized).to.equal("{\"created\":\"2018-05-30T02:47:44.411Z\",\"lastUpdated\":\"2018-05-30T02:47:44.411Z\",\"note\":{\"text\":\"\",\"created\":\"2018-05-30T02:47:44.411Z\"},\"type\":\"SINGLE_COLUMN\",\"percentage\":100,\"column\":0}");
 
     });
 
