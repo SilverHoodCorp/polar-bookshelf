@@ -142,6 +142,7 @@ class SerializedObject {
      * @param instanceType The instance type we expect
      */
     validateMemberInstanceOf(name, instance) {
+
         this.validateMemberExists(name);
 
         if( ! this[name] instanceof instance) {
@@ -158,10 +159,23 @@ class SerializedObject {
      * @param instanceType The instance type we expect
      */
     validateMemberTypeOf(name, type) {
+
         this.validateMemberExists(name);
 
         if( ! typeof this[name] === type) {
             throw new Error(`Member field '${name}' is not a type of ${type}`);
+        }
+
+    }
+
+    validateMember(member) {
+
+        if (member.instance) {
+            this.validateMemberInstanceOf(member.name, member.instance);
+        } else if(member.type) {
+            this.validateMemberTypeOf(member.name, member.type);
+        } else {
+            throw new Error("Unable to handle member: ", member);
         }
     }
 
@@ -169,17 +183,9 @@ class SerializedObject {
 
         // TODO: needs testing.
 
-        members.forEach(function (member) {
+        var caller = this;
 
-            if (member.instance) {
-                this.validateMemberInstanceOf(member.name, member.instance);
-            } else if(member.type) {
-                this.validateMemberTypeOf(member.name, member.type);
-            } else {
-                throw new Error("Unable to handle member: ", member);
-            }
-
-        });
+        members.forEach(this.validateMember.bind(this));
 
     }
 
@@ -207,11 +213,15 @@ class DocMeta extends SerializedObject {
          */
         this.pages = {}
 
+        this.init(val);
+
     }
 
     validate() {
+
         this.validateMembers([
-            {name: 'docInfo', instance: DocInfo}
+            {name: 'docInfo', instance: DocInfo},
+            {name: 'pages', type: "object"}
         ]);
     }
 
@@ -246,8 +256,9 @@ class DocInfo extends SerializedObject {
          */
         this.nrPages = null;
 
-    }
+        this.init(val);
 
+    }
 
     validate() {
         this.validateMembers([
@@ -258,9 +269,11 @@ class DocInfo extends SerializedObject {
 
 }
 
-class PageMeta {
+class PageMeta extends SerializedObject {
 
     constructor(val) {
+
+        super(val);
 
         /**
          * The pageInfo for this page.
@@ -275,13 +288,23 @@ class PageMeta {
          */
         this.pagemarks = {};
 
+        this.init(val);
+
+    }
+
+    validate() {
+        this.validateMembers([
+            {name: 'pageInfo', instance: PageInfo}
+        ]);
     }
 
 }
 
-class PageInfo {
+class PageInfo extends SerializedObject {
 
     constructor(val) {
+
+        super(val);
 
         /**
          * The page number of this page.
@@ -290,6 +313,14 @@ class PageInfo {
          */
         this.num = null;
 
+        this.init(val);
+
+    }
+
+    validate() {
+        this.validateMembers([
+           {name: 'num', type: "number"}
+        ]);
     }
 
 }
@@ -369,7 +400,7 @@ class Text extends SerializedObject {
          */
         this.type = TextType.MARKDOWN;
 
-        this.init();
+        this.init(val);
 
     }
 
@@ -454,7 +485,7 @@ class Note extends SerializedObject {
             throw new Error("Created is required");
         }
 
-        // FIXME: make this into its own function
+        // FIXME: move this to validateMembers
         if(!this.created instanceof ISODateTime) {
             throw new Error("Member created has wrong type: ", typeof this.created);
         }
@@ -480,7 +511,7 @@ class AnnotationWithNote extends Annotation {
          */
         this.note = null;
 
-        this.init();
+        this.init(val);
 
 
     }
@@ -571,6 +602,10 @@ class Pagemark extends AnnotationWithNote {
 
 }
 
+/**
+ * All JSON must go through the metadata serializer so we can handle proper
+ * serialization but also object validation once they are deserialized.
+ */
 class MetadataSerializer {
 
     static replacer(key, value) {
@@ -584,6 +619,9 @@ class MetadataSerializer {
 
     static serialize(object, spacing) {
         //return JSON.stringify(object, MetadataSerializer.replacer, "");
+
+        // FIXME: if this is a SerializedObject, call validate() before we return it
+
         return JSON.stringify(object, null, spacing);
     }
 
@@ -604,8 +642,3 @@ function deserialize(obj,data) {
     Object.assign(obj, parsed);
     return obj;
 }
-
-// FIXME: use a create() for the default constructor.. the default constructor
-// is otherwise used for creating JSON.
-
-console.log(typeof Note);
