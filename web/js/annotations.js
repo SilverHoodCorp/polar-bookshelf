@@ -69,7 +69,7 @@ function createPagemark(pageElement) {
 
 function removePagemarks(pageElement) {
 
-    console.log("Removing pagemarks...");
+    console.log("Erasing pagemarks...");
 
     let pagemarks = pageElement.querySelectorAll(".pagemark");
 
@@ -78,130 +78,10 @@ function removePagemarks(pageElement) {
         console.log("Removed pagemark.");
     });
 
-    console.log("Removing pagemarks...done");
+    console.log("Erasing pagemarks...done");
 
 }
 
-function getCurrentPageElement() {
-
-    // TODO: It is probably easier to use pdf.pageNum but I'm not sure if this
-    // is actively updated or not.
-    let pages = document.querySelectorAll(".page");
-
-    let result = { element: null, visibility: 0};
-
-    pages.forEach(function (page) {
-        let visibility = calculateVisibilityForDiv(page);
-
-        if ( visibility > result.visibility) {
-            result.element = page;
-            result.visibility = visibility;
-        }
-
-    });
-
-    return result.element;
-
-}
-
-function calculateVisibilityForDiv(div) {
-
-    if(div == null)
-        throw Error("Not given a div");
-
-    var windowHeight = $(window).height(),
-        docScroll = $(document).scrollTop(),
-        divPosition = $(div).offset().top,
-        divHeight = $(div).height();
-
-    var hiddenBefore = docScroll - divPosition,
-        hiddenAfter = (divPosition + divHeight) - (docScroll + windowHeight);
-
-    if ((docScroll > divPosition + divHeight) || (divPosition > docScroll + windowHeight)) {
-        return 0;
-    } else {
-        var result = 100;
-
-        if (hiddenBefore > 0) {
-            result -= (hiddenBefore * 100) / divHeight;
-        }
-
-        if (hiddenAfter > 0) {
-            result -= (hiddenAfter * 100) / divHeight;
-        }
-
-        return result;
-    }
-
-}
-
-// FUNCTION these events need to be moved to the controller....
-
-function keyBindingPagemarkEntirePage(event) {
-    console.log("Marking entire page as read.");
-
-    let pageElement = getCurrentPageElement();
-    createPagemark(pageElement);
-
-}
-
-function keyBindingPagemarkUpToMouse(event) {
-    console.log("Marking page as read up to mouse point");
-}
-
-function keyBindingRemovePagemark(event) {
-    console.log("Removing pagemark.");
-    let pageElement = getCurrentPageElement();
-    removePagemarks(pageElement);
-}
-
-function keyBindingListener(event) {
-
-    if (event.ctrlKey && event.altKey) {
-
-        const mCode = 77;
-        const nCode = 78;
-        const rCode = 82;
-
-        switch (event.which) {
-
-            case mCode:
-                keyBindingPagemarkUpToMouse(event);
-                break;
-
-            case nCode:
-                keyBindingPagemarkEntirePage(event);
-                break;
-
-            case rCode:
-                keyBindingRemovePagemark(event);
-                break;
-
-            default:
-                break;
-
-        }
-
-    }
-
-}
-
-function registerKeyBindings() {
-
-    if(polar.state.registerKeyBindings) {
-        return;
-    }
-
-    document.addEventListener("keyup", keyBindingListener);
-
-    polar.state.registerKeyBindings = true;
-
-    console.log("Key bindings registered");
-
-}
-
-registerKeyBindings();
-//getCurrentPageElement();
 
 console.log("Annotation code loaded.");
 

@@ -2,7 +2,7 @@
 function launchDev() {
 
     var datastore = new MemoryDatastore();
-    var controller = new Controller(datastore);
+    var controller = new WebController(datastore);
     controller.startListeners();
     console.log("Controller started in dev mode");
 

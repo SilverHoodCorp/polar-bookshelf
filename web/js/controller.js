@@ -1,9 +1,31 @@
 
-// controller for the web UI to update the model
-
 class Controller {
 
+    /**
+     * Called when a new document has been loaded.
+     */
+    onDocumentLoaded(fingerprint, nrPages) {
+
+        // TODO: test this method.
+
+        console.log("New document loaded!");
+
+        let docMeta = DocMeta.create(nrPages);
+
+        // TODO: track the fingerprint too?
+
+        this.datastore.addDocMeta(fingerprint,docMeta);
+
+    }
+
+}
+
+// controller for the web UI to update the model
+
+class WebController extends Controller {
+
     constructor(datastore) {
+        super(datastore);
 
         this.datastore = datastore;
 
@@ -20,6 +42,8 @@ class Controller {
 
     startListeners() {
         this.listenForDocumentFingerprint();
+        this.listenForKeyBindings();
+
         console.log("Controller listeners registered.");
     }
 
@@ -61,20 +85,119 @@ class Controller {
 
     }
 
-    /**
-     * A new document was opened...
-     */
-    onDocumentLoaded(fingerprint, nrPages) {
+    getCurrentPageElement() {
 
-        // TODO: test this method.
+        // TODO: It is probably easier to use pdf.pageNum but I'm not sure if this
+        // is actively updated or not.
+        let pages = document.querySelectorAll(".page");
 
-        console.log("New document loaded!");
+        let result = { element: null, visibility: 0};
 
-        let docMeta = DocMeta.create(nrPages);
+        pages.forEach(function (page) {
+            let visibility = this.calculateVisibilityForDiv(page);
 
-        // TODO: track the fingerprint too?
+            if ( visibility > result.visibility) {
+                result.element = page;
+                result.visibility = visibility;
+            }
 
-        this.datastore.addDocMeta(fingerprint,docMeta);
+        }.bind(this));
+
+        return result.element;
+
+    }
+
+    calculateVisibilityForDiv(div) {
+
+        if(div == null)
+            throw Error("Not given a div");
+
+        var windowHeight = $(window).height(),
+            docScroll = $(document).scrollTop(),
+            divPosition = $(div).offset().top,
+            divHeight = $(div).height();
+
+        var hiddenBefore = docScroll - divPosition,
+            hiddenAfter = (divPosition + divHeight) - (docScroll + windowHeight);
+
+        if ((docScroll > divPosition + divHeight) || (divPosition > docScroll + windowHeight)) {
+            return 0;
+        } else {
+            var result = 100;
+
+            if (hiddenBefore > 0) {
+                result -= (hiddenBefore * 100) / divHeight;
+            }
+
+            if (hiddenAfter > 0) {
+                result -= (hiddenAfter * 100) / divHeight;
+            }
+
+            return result;
+        }
+
+    }
+
+    keyBindingPagemarkEntirePage(event) {
+        console.log("Marking entire page as read.");
+
+        let pageElement = this.getCurrentPageElement();
+        createPagemark(pageElement);
+
+    }
+
+    keyBindingPagemarkUpToMouse(event) {
+        console.log("Marking page as read up to mouse point");
+    }
+
+    keyBindingRemovePagemark(event) {
+        console.log("Removing pagemark.");
+        let pageElement = this.getCurrentPageElement();
+        removePagemarks(pageElement);
+    }
+
+    keyBindingListener(event) {
+
+        if (event.ctrlKey && event.altKey) {
+
+            const mCode = 77;
+            const nCode = 78;
+            const rCode = 82;
+
+            switch (event.which) {
+
+                case mCode:
+                    this.keyBindingPagemarkUpToMouse(event);
+                    break;
+
+                case nCode:
+                    this.keyBindingPagemarkEntirePage(event);
+                    break;
+
+                case rCode:
+                    this.keyBindingRemovePagemark(event);
+                    break;
+
+                default:
+                    break;
+
+            }
+
+        }
+
+    }
+
+    listenForKeyBindings() {
+
+        if(polar.state.listenForKeyBindings) {
+            return;
+        }
+
+        document.addEventListener("keyup", this.keyBindingListener.bind(this));
+
+        polar.state.listenForKeyBindings = true;
+
+        console.log("Key bindings registered");
 
     }
 
