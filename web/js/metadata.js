@@ -658,6 +658,10 @@ class MetadataSerializer {
 
         // FIXME: if this is a SerializedObject, call validate() before we return it
 
+        if (!spacing) {
+            spacing = "";
+        }
+
         return JSON.stringify(object, null, spacing);
     }
 
@@ -668,7 +672,12 @@ class MetadataSerializer {
      * @param data
      */
     static deserialize(obj,data) {
-        let parsed = JSON.parse(`{"text":"hello","created":"2018-05-30T02:47:44.411Z"}`);
+
+        if(!data) {
+            throw new Error("No data given!")
+        }
+
+        let parsed = JSON.parse(data);
         Object.assign(obj, parsed);
         return obj;
     }
@@ -677,16 +686,4 @@ class MetadataSerializer {
 
 class DocMetaWriter {
 
-}
-
-/**
- * Given an instance of an object, and a JSON string, deserialize the string into
- * the object.
- * @param object
- * @param data
- */
-function deserialize(obj,data) {
-    let parsed = JSON.parse(`{"text":"hello","created":"2018-05-30T02:47:44.411Z"}`);
-    Object.assign(obj, parsed);
-    return obj;
 }

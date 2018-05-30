@@ -85,7 +85,7 @@ describe('testing metadata', function() {
             })))
             .to.equal(`{"text":{"body":"","type":"MARKDOWN"},"created":"2018-05-30T02:47:44.411Z"}`);
 
-        let note = deserialize(new Note(), `{"text":"hello","created":"2018-05-30T02:47:44.411Z"}`);
+        let note = MetadataSerializer.deserialize(new Note(), `{"text":"hello","created":"2018-05-30T02:47:44.411Z"}`);
 
         expect(note).to.deep.equal({ text: 'hello', created: '2018-05-30T02:47:44.411Z' });
 
@@ -115,6 +115,49 @@ describe('testing pagemarks', function() {
 
 });
 
+
+
+describe('testing dataserialization', function() {
+
+    it('Test basic serialization ... both ways.', function() {
+        let fingerprint = "0xdecafbad";
+
+        let docMeta = DocMeta.create(fingerprint, 2);
+
+        let serialized = MetadataSerializer.serialize(docMeta, "  ");
+
+        assertJSON(serialized, "{\n" +
+                               "  \"docInfo\": {\n" +
+                               "    \"title\": null,\n" +
+                               "    \"url\": null,\n" +
+                               "    \"nrPages\": 2,\n" +
+                               "    \"fingerprint\": \"0xdecafbad\"\n" +
+                               "  },\n" +
+                               "  \"pageMetas\": [\n" +
+                               "    {\n" +
+                               "      \"pageInfo\": {\n" +
+                               "        \"num\": 1\n" +
+                               "      },\n" +
+                               "      \"pagemarks\": {}\n" +
+                               "    },\n" +
+                               "    {\n" +
+                               "      \"pageInfo\": {\n" +
+                               "        \"num\": 2\n" +
+                               "      },\n" +
+                               "      \"pagemarks\": {}\n" +
+                               "    }\n" +
+                               "  ],\n" +
+                               "  \"version\": 1\n" +
+                               "}");
+
+        let docMetaDeserialized = MetadataSerializer.deserialize(new DocMeta(), serialized);
+
+        expect(docMetaDeserialized).to.deep.equal(docMeta);
+
+
+    });
+
+});
 
 describe('testing model interaction', function() {
 
