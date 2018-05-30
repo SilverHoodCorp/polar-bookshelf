@@ -138,6 +138,7 @@ class ISODateTime {
         } else {
             throw new Error("Invalid type: " + typeof value);
         }
+
     }
 
     toDate() {
@@ -150,8 +151,25 @@ class ISODateTime {
 
 }
 
-// FIXME: I want this serialized as 'MARKDOWN'
-var TextType = Object.freeze({"MARKDOWN":1, "HTML":2})
+class Symbol {
+
+    constructor(name) {
+        this.name = name;
+    }
+
+
+    toJSON() {
+        return this.name;
+    }
+
+}
+
+// this is I think a better pattern for typesafe enum:
+// http://2ality.com/2016/01/enumify.html
+const TextType = {
+    MARKDOWN: new Symbol("MARKDOWN"),
+    HTML: new Symbol("HTML")
+}
 
 class Text {
 
@@ -176,10 +194,11 @@ class Text {
 
 class Note {
 
-    constructor() {
+    constructor(val) {
 
         /**
          * The text of this note.
+         *
          * @type {Text}
          */
         this.text = null;
@@ -189,42 +208,103 @@ class Note {
          */
         this.created = null;
 
+        if(arguments.length > 1) {
+            throw new Error("Too many arguments");
+        }
+
+        if(typeof val === "object") {
+            assignOwnProperties(val, this);
+
+            if(!this.text) {
+                this.text = "";
+            }
+
+            if(!this.created) {
+                throw new Error("The field `created` is required.");
+            }
+
+        }
+
     };
 
-    // @VisibleForTesting
-    static create(text, created) {
-        let note = new Note();
+}
 
-        note.text = text;
+/* abstract */ class Annotation {
 
-        // since we're calling create the timestamp that this is created is
-        // obviously the current time but I should really use some type of
-        // dependency injection for the clock.
+    constructor(val) {
 
-        note.created = new ISODateTime(created);
+        /**
+         * The time this annotation was created
+         * @type ISODateTime
+         */
+        this.created = created;
 
-        return note;
+        /**
+         * The last time this annotation was updated (note changed, moved, etc).
+         * @type ISODateTime
+         */
+        this.lastUpdated = lastUpdated;
+
+        // TODO: add tags for annotations. This might be overkill but it might
+        // be a good way to manage some of these types.
+
+        if(arguments.length > 1) {
+            throw new Error("Too many arguments");
+        }
+
+        if(typeof val === "object") {
+            assignOwnProperties(val, this);
+
+            if(!this.created) {
+                throw new Error("Created is required");
+            }
+
+            if(!this.lastUpdated) {
+                this.lastUpdated = this.created;
+            }
+
+        }
+
     }
 
 }
 
-class Annotation {
+class AnnotationWithNote extends Annotation {
 
-    // FIXME: created
-    // FIXME: last updated
+    constructor(val) {
+
+        /**
+         * The note for this annotation.
+         *
+         * @type Note
+         */
+        this.note = note;
+
+        if(arguments.length > 1) {
+            throw new Error("Too many arguments");
+        }
+
+        if(typeof val === "object") {
+
+            if(!this.created) {
+                throw new Error("Created is required");
+            }
+
+            if(!this.lastUpdated) {
+                this.lastUpdated = this.created;
+            }
+
+        }
+
+    }
 
 }
 
-class AnnotationWithNote {
 
-}
-
-
-class Pagemark {
+class Pagemark extends AnnotationWithNote {
 
     // FIXME: type (whether we have 1, 2 or three column pagemarks)
-    // FIXME: percentage
-    //
+    // FIXME: percentage - the percentage of the page the pagemark covers
 
 }
 
@@ -242,6 +322,19 @@ function deserialize(obj,data) {
     let parsed = JSON.parse(`{"text":"hello","created":"2018-05-30T02:47:44.411Z"}`);
     Object.assign(obj, parsed);
     return obj;
+}
+
+function assignOwnProperties(source, target) {
+
+    for (var prop in source) {
+        console.log("FIXME: " + prop)
+        if (source.hasOwnProperty(prop)) {
+
+            console.log("FIXME2: " + prop)
+            target[prop] = source[prop];
+            console.log("FIXME3: " + target[prop]);
+        }
+    }
 }
 
 // FIXME: use a create() for the default constructor.. the default constructor
