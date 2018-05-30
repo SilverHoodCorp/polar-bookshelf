@@ -5,9 +5,17 @@ var expect = chai.expect;
 
 chai.config.truncateThreshold = 0;
 
+console.log("FIXME: diff" , chai.config.showDiff)
+
 // stable reference date for all tests.
 var date = new Date(Date.parse("2018-05-30T02:47:44.411Z"));
 
+
+// FIXME: what I want in the diff formatter
+//
+// - print the expected and actual values on different lines.
+// - colored diffs across multiple lines
+// - diff objects, not just strings.
 
 describe('testing docMeta creation', function() {
 
@@ -42,9 +50,9 @@ describe('testing docMeta creation', function() {
 
     });
 
+    // FIXME: test deserializing BROKEN json and validating the objects.
+
 });
-
-
 
 describe('testing metadata', function() {
 

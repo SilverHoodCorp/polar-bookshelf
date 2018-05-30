@@ -2,38 +2,38 @@
 class Datastore {
 
     /**
+     * Get the DocMeta object we currently in the datastore.
+     */
+    getDocMetas() {
+
+    }
+
+    /**
+     * Add a new docMeta to the store with the given ID.
      *
-     * @param path the path to the directory where we should be storing our
-     * JSON data structures.
      */
-    constructor(path) {
+    addDocMeta(id, docMeta) {
 
     }
 
-    /**
-     * Apply a function to the underlying datastore system.  The function is
-     * essentially a state transisition function.  It's given the current
-     * state as a param, mutates it, idempotently, and deterministically, and
-     * must be able to be serialized.
-     * @param func
-     */
-    apply(stateTransitionFunction) {
+}
 
-        // FIXME: the ledger should probably only support a PUT function and a
-        // path to a datastructure. the PUT should probably only take a path and
-        // a value.  It should error on arrays and other types.
-        //
-        // SET should also be a value too I think??  So SET and PUT
+/**
+ * Datastore just in memory with no on disk persistence.
+ */
+class MemoryDatastore extends Datastore {
 
-        // I would need to detect if jsonpath can mutate values... 
-
+    constructor() {
+        /**
+         *
+         * @type map<string,DocMeta>
+         */
+        this.docMetas = {}
     }
 
-    /**
-     * Get the
-     */
-    getState() {
 
+    addDocMeta(id, docMeta) {
+        this.docMetas[id] = docMeta;
     }
 
 }
