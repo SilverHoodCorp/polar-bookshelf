@@ -18,9 +18,17 @@ class Controller {
     /**
      * Mark the given page number as read.
      */
-    onCreatePagemark(num) {
+    createPagemark(num) {
         console.log("Controller sees pagemark created: " + num);
         this.model.createPagemark(num);
+    }
+
+    /**
+     * Mark the given page number as read.
+     */
+    erasePagemark(num) {
+        console.log("Controller sees pagemark erased: " + num);
+        this.model.erasePagemark(num);
     }
 
 }
@@ -143,18 +151,25 @@ class WebController extends Controller {
 
     }
 
-    keyBindingPagemarkEntirePage(event) {
-        console.log("Marking entire page as read.");
+    getPageNum(pageElement) {
 
-        let pageElement = this.getCurrentPageElement();
+        var pageElement = this.getCurrentPageElement();
 
         let dataPageNum = pageElement.getAttribute("data-page-number");
 
-        let pageNum = parseInt(dataPageNum);
+        return parseInt(dataPageNum);
 
-        this.onCreatePagemark(pageNum);
+    }
 
-        createPagemark(pageElement);
+    // FIXME: remake this binding to CreatePagemarkEntirePage
+    keyBindingPagemarkEntirePage(event) {
+
+        console.log("Marking entire page as read.");
+
+        var pageElement = this.getCurrentPageElement();
+        var pageNum = this.getPageNum(pageElement);
+
+        this.createPagemark(pageNum);
 
     }
 
@@ -162,21 +177,27 @@ class WebController extends Controller {
         console.log("Marking page as read up to mouse point");
     }
 
-    keyBindingRemovePagemark(event) {
-        console.log("Removing pagemark.");
-        let pageElement = this.getCurrentPageElement();
-        removePagemarks(pageElement);
+    keyBindingErasePagemark(event) {
+        console.log("Erasing pagemark.");
+        var pageElement = this.getCurrentPageElement();
+        let pageNum = this.getPageNum(pageElement);
+        this.erasePagemark(pageNum);
     }
 
     keyBindingListener(event) {
 
         if (event.ctrlKey && event.altKey) {
 
+            const eCode = 69;
+
             const mCode = 77;
             const nCode = 78;
-            const rCode = 82;
 
             switch (event.which) {
+
+                case eCode:
+                    this.keyBindingErasePagemark(event);
+                    break;
 
                 case mCode:
                     this.keyBindingPagemarkUpToMouse(event);
@@ -184,10 +205,6 @@ class WebController extends Controller {
 
                 case nCode:
                     this.keyBindingPagemarkEntirePage(event);
-                    break;
-
-                case rCode:
-                    this.keyBindingRemovePagemark(event);
                     break;
 
                 default:

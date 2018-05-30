@@ -51,6 +51,8 @@ class Model {
      */
     createPagemark(num) {
 
+        console.log("Model sees createPagemark");
+
         this.assertPageNum(num);
 
         this.reactor.dispatchEvent('createPagemark', {num});
@@ -64,7 +66,7 @@ class Model {
             type: PagemarkType.SINGLE_COLUMN,
             percentage: 100,
             column: 0
-        } );
+        });
 
         let pageMeta = this.docMeta.getPageMeta(num);
 
@@ -80,6 +82,8 @@ class Model {
     }
 
     erasePagemark(num) {
+
+        console.log("Model sees erasePagemark");
 
         this.assertPageNum(num);
 

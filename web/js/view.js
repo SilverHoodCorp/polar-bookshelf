@@ -14,19 +14,38 @@ class WebView extends View {
         super(model);
 
         this.model.registerListenerForCreatePagemark(this.onCreatePagemark.bind(this));
+        this.model.registerListenerForErasePagemark(this.onErasePagemark.bind(this));
 
     }
 
-    onCreatePagemark(event) {
+    getPageElementByNum(num) {
+
+        var pageElements = document.querySelectorAll(".page");
+
+        // note that elements are 0 based indexes but our pages are 1 based
+        // indexes.
+        var pageElement = pageElements[num - 1];
+
+        if(pageElement == null) {
+            throw new Error("Unable to find page element for page num: " + num);
+        }
+
+        return pageElement;
+
+    }
+
+    onCreatePagemark(pageEvent) {
 
         console.log("View updating on page mark read.");
 
-        // FIXME: get the page ID and then the page element, then call createPagemark
+        this.createPagemark(this.getPageElementByNum(pageEvent.num));
 
     }
 
-    onErasePagemark(event) {
+    onErasePagemark(pageEvent) {
         console.log("Erasing pagemark");
+
+        this.erasePagemarks(this.getPageElementByNum(pageEvent.num));
 
     }
 
@@ -99,7 +118,7 @@ class WebView extends View {
 
     }
 
-    removePagemarks(pageElement) {
+    erasePagemarks(pageElement) {
 
         console.log("Erasing pagemarks...");
 
@@ -107,7 +126,7 @@ class WebView extends View {
 
         pagemarks.forEach(function (pagemark) {
             pageElement.removeChild(pagemark);
-            console.log("Removed pagemark.");
+            console.log("Erased pagemark.");
         });
 
         console.log("Erasing pagemarks...done");
