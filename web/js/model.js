@@ -1,8 +1,9 @@
 class Model {
 
-    constructor(datastore) {
+    constructor(datastore, clock) {
 
         this.datastore = datastore;
+        this.clock = clock;
 
         this.reactor = new Reactor();
         this.reactor.registerEvent('documentLoaded');
@@ -44,9 +45,38 @@ class Model {
         this.reactor.addEventListener('documentLoaded', eventListener);
     }
 
+    /**
+     *
+     * @param num The page num to use for our created pagemark.
+     */
     createPagemark(num) {
 
+        if(num == null)
+            throw new Error("Must specify page num");
+
+        if(num <= 0) {
+            throw new Error("Page numbers begin at 1");
+        }
+
         this.reactor.dispatchEvent('createPagemark', {num});
+
+        // FIXME: determine the type and the column
+
+        let pagemark = new Pagemark({
+            created: this.clock.getDate(),
+            type: PagemarkType.SINGLE_COLUMN,
+            percentage: 100,
+            column: 0
+        } );
+
+        let pageMeta = this.docMeta.pageMetas[num];
+
+        if (!pageMeta) {
+            throw new Error("Note pageMeta for page: " + num);
+        }
+
+        // set the pagemark that we just created.
+        pageMeta.pagemarks[pagemark.column] = pagemark;
 
         // FIXME: we need a fingerprint in the docInfo too.
 

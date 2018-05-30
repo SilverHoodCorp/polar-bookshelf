@@ -1,8 +1,9 @@
 
 function launchDev() {
 
+    var clock = new SystemClock();
     var datastore = new MemoryDatastore();
-    var model = new Model(datastore);
+    var model = new Model(datastore, clock);
     var controller = new WebController(datastore, model);
     var view = new WebView(model);
 

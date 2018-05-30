@@ -85,7 +85,7 @@ function createDocMeta(path) {
     return { title: null,
              path: null,
              hashcode: null,
-             pagemarks: [] };
+             pagemarks: {} };
 
 }
 
@@ -242,12 +242,12 @@ class DocMeta extends SerializedObject {
 
         let docInfo = new DocInfo({fingerprint, nrPages});
 
-        let pageMetas = [];
+        let pageMetas = {};
 
         for(let idx = 1; idx <= nrPages; ++idx) {
             let pageInfo = new PageInfo({num: idx});
             let pageMeta = new PageMeta({pageInfo: pageInfo});
-            pageMetas.push(pageMeta);
+            pageMetas[idx] = pageMeta;
         }
 
         return new DocMeta({docInfo, pageMetas});

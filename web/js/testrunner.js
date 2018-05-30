@@ -57,9 +57,30 @@ describe('testing docMeta creation', function() {
 
         let docMeta = DocMeta.create(fingerprint, 2);
 
-        let serialized = MetadataSerializer.serialize(docMeta, "");
+        assertJSON(docMeta, "{\n" +
+                            "  \"docInfo\": {\n" +
+                            "    \"title\": null,\n" +
+                            "    \"url\": null,\n" +
+                            "    \"nrPages\": 2,\n" +
+                            "    \"fingerprint\": \"0xdecafbad\"\n" +
+                            "  },\n" +
+                            "  \"pageMetas\": {\n" +
+                            "    \"1\": {\n" +
+                            "      \"pageInfo\": {\n" +
+                            "        \"num\": 1\n" +
+                            "      },\n" +
+                            "      \"pagemarks\": {}\n" +
+                            "    },\n" +
+                            "    \"2\": {\n" +
+                            "      \"pageInfo\": {\n" +
+                            "        \"num\": 2\n" +
+                            "      },\n" +
+                            "      \"pagemarks\": {}\n" +
+                            "    }\n" +
+                            "  },\n" +
+                            "  \"version\": 1\n" +
+                            "}");
 
-        expect(serialized).to.equal("{\"docInfo\":{\"title\":null,\"url\":null,\"nrPages\":2,\"fingerprint\":\"0xdecafbad\"},\"pageMetas\":[{\"pageInfo\":{\"num\":1},\"pagemarks\":{}},{\"pageInfo\":{\"num\":2},\"pagemarks\":{}}],\"version\":1}");
 
     });
 
@@ -133,20 +154,20 @@ describe('testing dataserialization', function() {
                                "    \"nrPages\": 2,\n" +
                                "    \"fingerprint\": \"0xdecafbad\"\n" +
                                "  },\n" +
-                               "  \"pageMetas\": [\n" +
-                               "    {\n" +
+                               "  \"pageMetas\": {\n" +
+                               "    \"1\": {\n" +
                                "      \"pageInfo\": {\n" +
                                "        \"num\": 1\n" +
                                "      },\n" +
                                "      \"pagemarks\": {}\n" +
                                "    },\n" +
-                               "    {\n" +
+                               "    \"2\": {\n" +
                                "      \"pageInfo\": {\n" +
                                "        \"num\": 2\n" +
                                "      },\n" +
                                "      \"pagemarks\": {}\n" +
                                "    }\n" +
-                               "  ],\n" +
+                               "  },\n" +
                                "  \"version\": 1\n" +
                                "}");
 
@@ -178,13 +199,16 @@ describe('testing model interaction', function() {
 
     it('Test basic model support.', function() {
 
+        var clock = new SyntheticClock();
         var datastore = new MemoryDatastore();
-        var model = new Model(datastore);
+        var model = new Model(datastore, clock);
         var view = new MockView(model);
 
         let fingerprint = "fake-fingerprint";
 
         var docMeta = model.documentLoaded(fingerprint, 1);
+
+        assert.isNotNull(docMeta);
 
         assertJSON(docMeta, "{\n" +
                             "  \"docInfo\": {\n" +
@@ -193,24 +217,57 @@ describe('testing model interaction', function() {
                             "    \"nrPages\": 1,\n" +
                             "    \"fingerprint\": \"fake-fingerprint\"\n" +
                             "  },\n" +
-                            "  \"pageMetas\": [\n" +
-                            "    {\n" +
+                            "  \"pageMetas\": {\n" +
+                            "    \"1\": {\n" +
                             "      \"pageInfo\": {\n" +
                             "        \"num\": 1\n" +
                             "      },\n" +
                             "      \"pagemarks\": {}\n" +
                             "    }\n" +
-                            "  ],\n" +
+                            "  },\n" +
                             "  \"version\": 1\n" +
                             "}");
+
+        assert.isNotNull(docMeta.pageMetas);
+
+        assert.isNotNull(docMeta.pageMetas[1]);
+
         //
         // // FIXME: the pagemarks structure in the object should be updated now.
-        // model.createPagemark(1);
-        //
-        // // verify that we have a pagemark now...
-        // docMeta = datastore.getDocMeta(fingerprint);
-        //
-        // assertJSON(docMeta, "");
+        model.createPagemark(1);
+
+        // verify that we have a pagemark now...
+        docMeta = datastore.getDocMeta(fingerprint);
+
+        assertJSON(docMeta, "{\n" +
+                            "  \"docInfo\": {\n" +
+                            "    \"title\": null,\n" +
+                            "    \"url\": null,\n" +
+                            "    \"nrPages\": 1,\n" +
+                            "    \"fingerprint\": \"fake-fingerprint\"\n" +
+                            "  },\n" +
+                            "  \"pageMetas\": {\n" +
+                            "    \"1\": {\n" +
+                            "      \"pageInfo\": {\n" +
+                            "        \"num\": 1\n" +
+                            "      },\n" +
+                            "      \"pagemarks\": {\n" +
+                            "        \"0\": {\n" +
+                            "          \"created\": \"2018-05-30T02:47:44.411Z\",\n" +
+                            "          \"lastUpdated\": \"2018-05-30T02:47:44.411Z\",\n" +
+                            "          \"type\": \"SINGLE_COLUMN\",\n" +
+                            "          \"percentage\": 100,\n" +
+                            "          \"column\": 0,\n" +
+                            "          \"note\": {\n" +
+                            "            \"text\": \"\",\n" +
+                            "            \"created\": \"2018-05-30T02:47:44.411Z\"\n" +
+                            "          }\n" +
+                            "        }\n" +
+                            "      }\n" +
+                            "    }\n" +
+                            "  },\n" +
+                            "  \"version\": 1\n" +
+                            "}");
 
     });
 
