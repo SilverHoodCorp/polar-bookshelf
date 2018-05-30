@@ -209,9 +209,15 @@ class DocMeta extends SerializedObject {
 
         /**
          * A sparse dictionary of page number to page metadata.
-         * @type {{}}
+         *
+         * @type map<int,PageMeta>
          */
-        this.pages = {}
+        this.pageMetas = {}
+
+        /**
+         * The version of this DocMeta version.
+         */
+        this.version = 1;
 
         this.init(val);
 
@@ -221,7 +227,8 @@ class DocMeta extends SerializedObject {
 
         this.validateMembers([
             {name: 'docInfo', instance: DocInfo},
-            {name: 'pages', type: "object"}
+            {name: 'pageMetas', type: "object"},
+            {name: 'version', type: "number"}
         ]);
     }
 
