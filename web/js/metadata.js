@@ -95,19 +95,13 @@ function createDocMeta(path) {
  */
 class DocMeta {
 
-    constructor() {
+    constructor(val) {
 
         /**
-         * The title for the document.
-         * @type {null}
+         * The DocInfo which includes information like title, nrPages, etc.
+         * @type DocInfo
          */
-        this.title = null;
-
-        /**
-         * The network URL for the document where we originally fetched it.
-         * @type {null}
-         */
-        this.url = null;
+        this.docInfo = null;
 
         /**
          * A sparse dictionary of page number to page metadata.
@@ -120,6 +114,74 @@ class DocMeta {
 };
 
 /**
+ * Lightweight metadata about a document. We do not include full page metadata
+ * with this object which makes it lightweight to pass around.
+ */
+class DocInfo {
+
+    constructor(val) {
+
+        /**
+         * The title for the document.
+         * @type {null}
+         */
+        this.title = null;
+
+        /**
+         * The network URL for the document where we originally fetched it.
+         * @type string
+         */
+        this.url = null;
+
+        /**
+         * The number of pages in this document.
+         *
+         * @type number
+         */
+        this.nrPages = null;
+
+    }
+
+}
+
+class PageMeta {
+
+    constructor(val) {
+
+        /**
+         * The pageInfo for this page.
+         */
+        this.pageInfo = null;
+
+        /**
+         * The index of page number to pagemark which stores the data we need
+         * for keeping track of pagemarks.  The index is the pagemark column.
+         *
+         * @type map<int,pagemark>.
+         */
+        this.pagemarks = {};
+
+    }
+
+}
+
+class PageInfo {
+
+    constructor(val) {
+
+        /**
+         * The page number of this page.
+         *
+         * @type number.
+         */
+        this.num = null;
+
+    }
+
+}
+
+/**
+ *
  * Basic ISO8601 date and time format.
  */
 class ISODateTime {
