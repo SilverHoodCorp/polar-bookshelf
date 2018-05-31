@@ -57,6 +57,13 @@ async function testBasicFileOperations() {
 
     assert.equal(stat.isDirectory(), true);
 
+    // now test existsAsync
+    assert.equal(await diskDatastore.existsAsync("/tmp"), true );
+
+    assert.equal(await diskDatastore.existsAsync("/tmpasdf"), false );
+
+    assert.equal(await diskDatastore.existsAsync("/home/burton/.polar/0xmissing"), false );
+
     console.log("Worked");
 
 }
@@ -68,6 +75,10 @@ async function testDiskDatastore() {
     let fingerprint = "0x0000";
     diskDatastore.sync(fingerprint, {});
     var docMeta = await diskDatastore.getDocMeta(fingerprint)
+
+    // test for something that doesn't exits.
+    docMeta = await diskDatastore.getDocMeta("0xmissing")
+    assert.equal(docMeta, null)
 
 }
 

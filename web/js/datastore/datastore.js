@@ -71,4 +71,6 @@ class MemoryDatastore extends Datastore {
 
 }
 
-exports.Datastore = Datastore
+if(typeof exports !== "undefined") {
+    exports.Datastore = Datastore
+}

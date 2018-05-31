@@ -14,9 +14,10 @@ function injectAllScripts() {
     // inject our customizations manually so that we can just depend on the
     // stock pdf.js viewer.html application.
 
-    // window.$ = window.jQuery = require('../../node_modules/jquery/dist/jquery.min.js');
+    // TODO: make this into an if / then if we're running in a renderer process.
+     window.$ = window.jQuery = require('../../node_modules/jquery/dist/jquery.min.js');
 
-    injectScript('../../node_modules/jquery/dist/jquery.min.js');
+    //injectScript('../../node_modules/jquery/dist/jquery.min.js');
     injectScript('../../web/js/polar.js');
     //injectScript('../../web/js/annotations.js');
     injectScript('../../web/js/metadata.js');
@@ -25,7 +26,7 @@ function injectAllScripts() {
     injectScript('../../web/js/controller.js');
     injectScript('../../web/js/clock.js');
     injectScript('../../web/js/datastore/datastore.js');
-    injectScript('../../web/js/controller-dev.js');
+    injectScript('../../web/js/launcher.js');
 
 }
 

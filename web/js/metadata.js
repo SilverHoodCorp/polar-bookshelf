@@ -731,5 +731,7 @@ class DocMetaWriter {
 
 }
 
-exports.MetadataSerializer = MetadataSerializer;
-exports.DocMeta = DocMeta;
+if(typeof exports !== "undefined") {
+    exports.MetadataSerializer = MetadataSerializer;
+    exports.DocMeta = DocMeta;
+}

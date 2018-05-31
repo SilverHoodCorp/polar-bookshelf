@@ -50,10 +50,7 @@ class DiskDatastore extends datastore.Datastore {
 
         var docDir = this.dataDir + "/" + fingerprint;
 
-        var dirStat = await this.statAsync(docDir);
-
-        if ( ! dirStat.isDirectory()) {
-            // the directory for this file is missing.
+        if(! await this.existsAsync(docDir)) {
             return null;
         }
 
@@ -78,6 +75,12 @@ class DiskDatastore extends datastore.Datastore {
 
         return metadata.MetadataSerializer.deserialize(new metadata.DocMeta(), data);
 
+    }
+
+    async existsAsync(path) {
+        return await this.accessAsync(path, fs.constants.R_OK | fs.constants.W_OK)
+                  .then(() => true)
+                  .catch(() => false);
     }
 
     /**
