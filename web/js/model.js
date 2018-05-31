@@ -66,11 +66,12 @@ class Model {
         // forDict(this.docMeta.pageMetas, function (pageNum, pageMeta) {
         //     this.pageLoaded(pageNum);
         // }.bind(this));
-        
+
         return this.docMeta;
 
     }
 
+    // FIXME: remiove this:
     computeInitialPagemarkPageNumbers(docMeta, nrPages, currentPageNumber) {
 
         var result = [];
@@ -105,6 +106,7 @@ class Model {
 
         this.assertPageNum(num);
 
+        // FIXME: this can be done with a mutation listener...
         this.reactor.dispatchEvent('createPagemark', {num});
 
         // FIXME: determine the type and the column
@@ -139,6 +141,7 @@ class Model {
 
         this.assertPageNum(num);
 
+        // FIXME: this can be done with a mutation listener...
         this.reactor.dispatchEvent('erasePagemark', {num});
 
         let pageMeta = this.docMeta.getPageMeta(num);
