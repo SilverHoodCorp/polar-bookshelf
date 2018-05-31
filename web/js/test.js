@@ -1,5 +1,43 @@
 
 
+
+let docFingerprint = null;
+
+function listenToPageEvents() {
+
+    let container = document.getElementById('viewerContainer');
+
+    container.addEventListener('pagesinit', function () {
+        console.log("Got PDF event: pagesinit");
+    }.bind(this));
+
+    container.addEventListener('pagechanging', function () {
+        console.log("Got PDF event: pagechanging");
+    }.bind(this));
+
+    container.addEventListener('pagechange', function () {
+        console.log("Got PDF event: pagechange");
+    }.bind(this));
+
+    container.addEventListener('pagerendered', function () {
+        console.log("Got PDF event: pagerendered");
+    }.bind(this));
+
+    container.addEventListener('pageloaded', function (event) {
+        console.log("Got PDF event: pageloaded");
+    }.bind(this));
+
+    container.addEventListener('updateviewarea', function () {
+        console.log("Got PDF event: updateviewarea");
+    }.bind(this));
+
+    container.addEventListener('textlayerrendered', function (event) {
+        console.log("Got PDF event: textlayerrendered");
+    }.bind(this));
+
+}
+
+
 /**
  * Create a pagemark on the given page which marks it read.
  * @param pageElement
@@ -59,33 +97,88 @@ function erasePagemarks(pageElement) {
 
 }
 
-var pageElements = document.querySelectorAll(".page");
+/**
+ * Setup a document once we detect that a new one has been loaded.
+ */
+function setupDocument() {
 
-pageElements.forEach( function (pageElement) {
+    var pageElements = document.querySelectorAll(".page");
 
-    if(pageElement.querySelector("canvas") != null) {
-        this.createPagemark(pageElement);
+    pageElements.forEach( function (pageElement) {
+
+        if(pageElement.querySelector("canvas") != null) {
+            this.createPagemark(pageElement);
+        }
+
+        pageElement.addEventListener('DOMNodeInserted', function(event) {
+
+            if (event.target && event.target.className === "endOfContent") {
+
+                console.log("Adding page mark again");
+
+                // make sure to first remove all the existing pagemarks if there
+                // are any
+                this.erasePagemarks(pageElement);
+
+                // we're done all the canvas and text nodes... so place the pagemark
+                // back in again.
+
+                this.createPagemark(pageElement);
+
+            }
+
+        }.bind(this), false );
+
+    })
+
+}
+
+class WebController {
+
+    constructor() {
+
+        /**
+         * The document fingerprint that we have loaded to detect when the
+         * documents have changed.  Note that this isn't a secure fingerprint
+         * so we might want to change it in the future.
+         *
+         * @type string
+         */
+        this.docFingerprint = null;
+
     }
 
-    pageElement.addEventListener('DOMNodeInserted', function(event) {
+    listenForDocumentLoad() {
 
-        if (event.target && event.target.className === "endOfContent") {
+        let container = document.getElementById('viewerContainer');
 
-            console.log("Adding page mark again");
+        container.addEventListener('pagesinit', this.pageEventListener.bind(this));
+        container.addEventListener('updateviewarea', this.pageEventListener.bind(this));
 
-            // make sure to first remove all the existing pagemarks if there
-            // are any
-            this.erasePagemarks(pageElement);
+    }
 
-            // we're done all the canvas and text nodes... so place the pagemark
-            // back in again.
+    pageEventListener(event) {
 
-            this.createPagemark(pageElement);
+        console.log("Got event", event);
+
+        // FIXME: I think THIS is an event that we want to use to see
+        // if our new document is loaded and then read the data from the
+        // backend.  We will have to use a promise to await for the data to
+        // load though.
+
+        if (window.PDFViewerApplication &&
+            window.PDFViewerApplication.pdfDocument &&
+            window.PDFViewerApplication.pdfDocument.pdfInfo &&
+            window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint != this.docFingerprint) {
+
+            console.log("New document loaded!")
+
+            setupDocument();
 
         }
 
-    }.bind(this), false );
+    }
 
-})
+}
 
-
+new WebController().listenForDocumentLoad();
