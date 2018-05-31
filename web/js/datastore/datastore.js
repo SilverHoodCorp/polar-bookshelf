@@ -12,7 +12,7 @@ class Datastore {
      * Get the DocMeta object we currently in the datastore for this given
      * fingerprint or null if it does not exist.
      */
-    getDocMeta(fingerprint) {
+    async getDocMeta(fingerprint) {
 
     }
 
@@ -43,7 +43,7 @@ class MemoryDatastore extends Datastore {
      * Get the DocMeta object we currently in the datastore for this given
      * fingerprint or null if it does not exist.
      */
-    getDocMeta(fingerprint) {
+    async getDocMeta(fingerprint) {
 
         var nrDocs = Object.keys(this.docMetas).length;
 

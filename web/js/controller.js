@@ -54,13 +54,13 @@ class WebController extends Controller {
     }
 
     startListeners() {
-        this.listenForDocumentFingerprint();
+        this.listenForDocumentLoad();
         this.listenForKeyBindings();
 
         console.log("Controller listeners registered.");
     }
 
-    listenForDocumentFingerprint() {
+    listenForDocumentLoad() {
 
         // viewerContainer -> viewer
 
@@ -70,9 +70,69 @@ class WebController extends Controller {
 
         viewer.addEventListener('DOMNodeInserted', this.onViewerElementInserted.bind(this), false );
 
+
+        let container = document.getElementById('viewerContainer');
+
+        container.addEventListener('pagesinit', function () {
+
+            // FIXME: I think THIS is an event that we want to use to see
+            // if our new document is loaded and then read the data from the
+            // backend.  We will have to use a promise to await for the data to
+            // load though.
+
+            console.log("FIXME: pagesinit");
+
+        });
+
+        container.addEventListener('pagechanging', function () {
+            console.log("FIXME: pagesinit");
+        });
+
+        container.addEventListener('pagechange', function () {
+            console.log("FIXME: pagechange");
+
+        });
+
+        container.addEventListener('pagerendered', function () {
+            console.log("FIXME: pagerendered");
+
+        });
+
+        container.addEventListener('pageloaded', function (event) {
+            console.log("FIXME: pageloaded: ", event);
+        });
+
+        container.addEventListener('updateviewarea', function () {
+            console.log("FIXME: updateviewarea");
+        });
+
+// NOTE: we have to wait for textlayerrendered because pagerendered
+// doesn't give us the text but pagerendered is called before
+// textlayerrendered anyway so this is acceptable.
+        container.addEventListener('textlayerrendered', function (event) {
+            console.log("FIXME: textlayerrendered", event);
+
+            // event.target is div.textLayer... so from there we can see if
+            // the page needs loading...
+
+            // FIXME: this is the event I want..
+
+            var pageElement = event.target.parentElement;
+            var pageNum = getPageNum(pageElement);
+
+            console.log("Page loaded: " + pageNum);
+
+
+        });
+
+
     }
 
     onViewerElementInserted() {
+
+        // FIXME: try to use window.PDFViewerApplication.eventBus with:
+        //
+        // documentload, pagerendered, textlayerrendered, pagechange, and pagesinit...
 
         if (window.PDFViewerApplication &&
             window.PDFViewerApplication.pdfDocument &&

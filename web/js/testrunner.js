@@ -192,7 +192,7 @@ describe('testing model interaction', function() {
 
     }
 
-    it('Test basic model support.', function() {
+    it('Test basic model support.', async function() {
 
         var clock = new SyntheticClock();
         var datastore = new MemoryDatastore();
@@ -201,7 +201,7 @@ describe('testing model interaction', function() {
 
         let fingerprint = "fake-fingerprint";
 
-        var docMeta = model.documentLoaded(fingerprint, 1);
+        var docMeta = await model.documentLoaded(fingerprint, 1);
 
         assert.isNotNull(docMeta);
 
@@ -227,12 +227,12 @@ describe('testing model interaction', function() {
 
         assert.isNotNull(docMeta.pageMetas[1]);
 
-        model.createPagemark(1);
+        await model.createPagemark(1);
 
         // TODO: test failure around marking the wrong pages.
 
         // verify that we have a pagemark now...
-        docMeta = datastore.getDocMeta(fingerprint);
+        docMeta = await datastore.getDocMeta(fingerprint);
 
         assertJSON(docMeta, "{\n" +
                             "  \"docInfo\": {\n" +
@@ -269,7 +269,7 @@ describe('testing model interaction', function() {
         // TODO: test failure around marking the wrong pages.
 
         // verify that we have a pagemark now...
-        docMeta = datastore.getDocMeta(fingerprint);
+        docMeta = await datastore.getDocMeta(fingerprint);
 
         assertJSON(docMeta, "{\n" +
                             "  \"docInfo\": {\n" +
@@ -292,7 +292,7 @@ describe('testing model interaction', function() {
 
     });
 
-    it('Test existing pagemark event firing in view.', function() {
+    it('Test existing pagemark event firing in view.',async function() {
 
 
         class MockView extends View {
@@ -320,15 +320,15 @@ describe('testing model interaction', function() {
 
         let fingerprint = "fake-fingerprint";
 
-        var docMeta = model.documentLoaded(fingerprint, 1);
+        var docMeta = await model.documentLoaded(fingerprint, 1);
         assert.equal(view.pagemarks.length, 0);
 
-        model.createPagemark(1);
+        await model.createPagemark(1);
 
         assert.equal(view.pagemarks.length, 1);
 
         // now reload the model to trigger more pagemarks
-        docMeta = model.documentLoaded(fingerprint, 1);
+        docMeta = await model.documentLoaded(fingerprint, 1);
 
         assert.equal(view.pagemarks.length, 2);
 

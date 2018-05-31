@@ -18,13 +18,13 @@ class Model {
     /**
      * Called when a new document has been loaded.
      */
-    documentLoaded(fingerprint, nrPages) {
+    async documentLoaded(fingerprint, nrPages) {
 
         // TODO: test this method.
 
         console.log("New document loaded!");
 
-        this.docMeta = this.datastore.getDocMeta(fingerprint);
+        this.docMeta = await this.datastore.getDocMeta(fingerprint);
 
         if(this.docMeta == null) {
             // this is a new document...
@@ -66,7 +66,7 @@ class Model {
      *
      * @param num The page num to use for our created pagemark.
      */
-    createPagemark(num) {
+    async createPagemark(num) {
 
         console.log("Model sees createPagemark");
 
@@ -85,7 +85,7 @@ class Model {
             column: 0
         });
 
-        let pageMeta = this.docMeta.getPageMeta(num);
+        let pageMeta = await this.docMeta.getPageMeta(num);
 
         // set the pagemark that we just created.
         pageMeta.pagemarks[pagemark.column] = pagemark;
