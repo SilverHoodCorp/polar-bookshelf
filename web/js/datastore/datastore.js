@@ -4,7 +4,7 @@ class Datastore {
     /**
      * Init the datastore, potentially reading files of disk, the network, etc.
      */
-    init() {
+    async init() {
 
     }
 
@@ -31,12 +31,18 @@ class Datastore {
 class MemoryDatastore extends Datastore {
 
     constructor() {
+
         super();
         /**
          *
          * @type map<string,DocMeta>
          */
         this.docMetas = {}
+
+    }
+
+    async init() {
+
     }
 
     /**
@@ -55,7 +61,7 @@ class MemoryDatastore extends Datastore {
     /**
      * Write the datastore to disk.
      */
-    sync(fingerprint, docMeta) {
+    async sync(fingerprint, docMeta) {
 
         // create a copy of the docMeta so that the version we store is NOT
         // the same version we have in memory.
@@ -64,3 +70,5 @@ class MemoryDatastore extends Datastore {
     }
 
 }
+
+exports.Datastore = Datastore

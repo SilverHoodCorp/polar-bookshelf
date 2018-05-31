@@ -730,3 +730,6 @@ class MetadataSerializer {
 class DocMetaWriter {
 
 }
+
+exports.MetadataSerializer = MetadataSerializer;
+exports.DocMeta = DocMeta;
