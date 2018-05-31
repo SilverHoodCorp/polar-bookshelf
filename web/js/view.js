@@ -87,7 +87,17 @@ class WebView extends View {
 
     recreatePagemark(pageElement) {
 
-        //console.log("Adding page mark again");
+        if( pageElement.querySelector(".pagemark") != null &&
+            pageElement.querySelector(".canvasWrapper") != null &&
+            pageElement.querySelector(".textLayer") != null ) {
+
+            // Do not recreate the pagemark if:
+            //   - we have a .pagemark element
+            //   - we also have a .canvasWrapper and a .textLayer
+
+            return;
+
+        }
 
         // make sure to first remove all the existing pagemarks if there
         // are any
