@@ -32,40 +32,12 @@ class Model {
 
         if(this.docMeta == null) {
             // this is a new document...
-            this.docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, nrPages);
+            //this.docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, nrPages);
+            this.docMeta = DocMeta.create(fingerprint, nrPages);
             this.datastore.sync(fingerprint, this.docMeta);
         }
 
         this.reactor.dispatchEvent('documentLoaded', {fingerprint, nrPages, currentPageNumber});
-
-        // // fire events for the first N pages since we don't properly receive
-        // // events for them for some reason.
-        //
-        // // FIXME: break this out in a testable function...
-        // //
-        // // var pageStart = Math.min(1, currentPageNumber);
-        // // var pageEnd = pageStart + 3;
-        // // for(var pageNum = pageStart; pageNum < pageEnd; ++pageNum) {
-        // //
-        // //     console.log("Potential initial page load for page: " + pageNum);
-        // //
-        // //     var pageMeta = this.docMeta.pageMetas[pageNum];
-        // //
-        // //     forDict(pageMeta.pagemarks, function (pagemarkId, pagemark) {
-        // //
-        // //         console.log("Triggered initial page load for page: " + pageNum);
-        // //
-        // //         this.reactor.dispatchEvent('createPagemark', {num: pageNum});
-        // //
-        // //     }.bind(this));
-        // //
-        // // }
-        //
-        // // // go through all the pagemarks and other annotations fire the events
-        // // // necessary for them so that the view can update...
-        // forDict(this.docMeta.pageMetas, function (pageNum, pageMeta) {
-        //     this.pageLoaded(pageNum);
-        // }.bind(this));
 
         return this.docMeta;
 
@@ -205,6 +177,8 @@ class Model {
 
 // https://stackoverflow.com/questions/15308371/custom-events-model-without-using-dom-events-in-javascript
 
+// TODO: move this to a util library
+
 class Event {
 
     constructor(name) {
@@ -217,6 +191,8 @@ class Event {
     }
 
 }
+
+// TODO: move this to a util library
 
 class Reactor {
 
@@ -241,12 +217,15 @@ class Reactor {
 
 }
 
+// TODO: move this to a util library
 function forDict(dict, callback) {
     Object.keys(dict).forEach(function (key) {
         let value = dict[key];
         callback(key,value);
     })
 }
+
+// TODO: move this to a util library
 
 /**
  * Given an integer, compute the first N pages..
