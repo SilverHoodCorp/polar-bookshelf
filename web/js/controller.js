@@ -63,74 +63,42 @@ class WebController extends Controller {
 
     listenForDocumentLoad() {
 
-        // viewerContainer -> viewer
-
-        // TODO: I don't think we can listen to the PDFViewerApplication
-        // lifecycle properly but I might be wrong so in the fugure we should
-        // clean this up.
-
-        // var viewer = document.querySelector("#viewer");
-        //
-        viewer.addEventListener('DOMNodeInserted', this.onViewerElementInserted.bind(this), false );
-
-
-
         let container = document.getElementById('viewerContainer');
 
-        container.addEventListener('pagesinit', function () {
+        container.addEventListener('pagesinit', this.detectDocumentLoadedEventListener.bind(this));
+        container.addEventListener('updateviewarea', this.detectDocumentLoadedEventListener.bind(this));
 
-            // FIXME: I think THIS is an event that we want to use to see
-            // if our new document is loaded and then read the data from the
-            // backend.  We will have to use a promise to await for the data to
-            // load though.
+    }
 
-            console.log("FIXME: pagesinit");
+    detectDocumentLoadedEventListener(event) {
 
-        }.bind(this));
-        //
-        container.addEventListener('pagechanging', function () {
-            this.traceEventOnPage(event, "pagechanging");
-        }.bind(this));
-        //
-        container.addEventListener('pagechange', function () {
-            this.traceEventOnPage(event, "pagechange");
+        if (window.PDFViewerApplication &&
+            window.PDFViewerApplication.pdfDocument &&
+            window.PDFViewerApplication.pdfDocument.pdfInfo &&
+            window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint != this.docFingerprint) {
 
-        }.bind(this));
-        //
-        container.addEventListener('pagerendered', function () {
-            this.traceEventOnPage(event, "pagerendered");
-        }.bind(this));
+            console.log("New document loaded!")
 
-        //
-        container.addEventListener('pageloaded', function (event) {
-            this.traceEventOnPage(event, "pageloaded");
-        }.bind(this));
-
-        container.addEventListener('updateviewarea', function () {
-            this.traceEventOnPage(event, "updateviewarea");
-        }.bind(this));
-
-        container.addEventListener('textlayerrendered', function (event) {
-            this.traceEventOnPage(event, "textlayerrendered");
-        }.bind(this));
-
-// NOTE: we have to wait for textlayerrendered because pagerendered
-// doesn't give us the text but pagerendered is called before
-// textlayerrendered anyway so this is acceptable.
-        container.addEventListener('pagechange', function (event) {
-            console.log("FIXME: going to call pageLoaded due to pagechange event", event);
-
-            // event.target is div.textLayer... so from there we can see if
-            // the page needs loading...
-
-            // FIXME: this is the event I want..
+            let newDocumentFingerprint = window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
+            let nrPages = window.PDFViewerApplication.pagesCount;
+            var currentPageNumber = window.PDFViewerApplication.pdfViewer.currentPageNumber;
 
             var pageElement = event.target.parentElement;
             var pageNum = this.getPageNum(pageElement);
 
-            this.model.pageLoaded(pageNum);
+            this.onNewDocumentFingerprint(newDocumentFingerprint, nrPages, currentPageNumber);
 
-        }.bind(this));
+        }
+
+    }
+
+    onNewDocumentFingerprint(newDocumentFingerprint, nrPages, currentPageNumber) {
+
+        console.log(`Detected new document fingerprint (fingerprint=${newDocumentFingerprint}, nrPages=${nrPages}, currentPageNumber=${currentPageNumber})`);
+
+        this.docFingerprint = newDocumentFingerprint;
+
+        this.onDocumentLoaded(newDocumentFingerprint, nrPages, currentPageNumber);
 
     }
 
@@ -166,16 +134,6 @@ class WebController extends Controller {
             }
 
         }
-
-    }
-
-    onNewDocumentFingerprint(newDocumentFingerprint, nrPages, currentPageNumber) {
-
-        console.log(`Detected new document fingerprint (fingerprint=${newDocumentFingerprint}, nrPages=${nrPages}, currentPageNumber=${currentPageNumber})`);
-
-        this.docFingerprint = newDocumentFingerprint;
-
-        this.onDocumentLoaded(newDocumentFingerprint, nrPages, currentPageNumber);
 
     }
 

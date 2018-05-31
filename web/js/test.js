@@ -157,27 +157,7 @@ class WebController {
 
     }
 
-    pageEventListener(event) {
 
-        console.log("Got event", event);
-
-        // FIXME: I think THIS is an event that we want to use to see
-        // if our new document is loaded and then read the data from the
-        // backend.  We will have to use a promise to await for the data to
-        // load though.
-
-        if (window.PDFViewerApplication &&
-            window.PDFViewerApplication.pdfDocument &&
-            window.PDFViewerApplication.pdfDocument.pdfInfo &&
-            window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint != this.docFingerprint) {
-
-            console.log("New document loaded!")
-
-            setupDocument();
-
-        }
-
-    }
 
 }
 

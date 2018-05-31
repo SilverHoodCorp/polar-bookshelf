@@ -23,8 +23,6 @@ class Model {
      */
     async documentLoaded(fingerprint, nrPages, currentPageNumber) {
 
-        // TODO: test this method.
-
         console.log("New document loaded!");
 
         // docMetaPromise is used for future readers after the document is loaded
@@ -40,38 +38,35 @@ class Model {
 
         this.reactor.dispatchEvent('documentLoaded', {fingerprint, nrPages, currentPageNumber});
 
-        // fire events for the first N pages since we don't properly receive
-        // events for them for some reason.
-
-        // FIXME: break this out in a testable function...
+        // // fire events for the first N pages since we don't properly receive
+        // // events for them for some reason.
         //
-        // var pageStart = Math.min(1, currentPageNumber);
-        // var pageEnd = pageStart + 3;
-        // for(var pageNum = pageStart; pageNum < pageEnd; ++pageNum) {
+        // // FIXME: break this out in a testable function...
+        // //
+        // // var pageStart = Math.min(1, currentPageNumber);
+        // // var pageEnd = pageStart + 3;
+        // // for(var pageNum = pageStart; pageNum < pageEnd; ++pageNum) {
+        // //
+        // //     console.log("Potential initial page load for page: " + pageNum);
+        // //
+        // //     var pageMeta = this.docMeta.pageMetas[pageNum];
+        // //
+        // //     forDict(pageMeta.pagemarks, function (pagemarkId, pagemark) {
+        // //
+        // //         console.log("Triggered initial page load for page: " + pageNum);
+        // //
+        // //         this.reactor.dispatchEvent('createPagemark', {num: pageNum});
+        // //
+        // //     }.bind(this));
+        // //
+        // // }
         //
-        //     console.log("Potential initial page load for page: " + pageNum);
-        //
-        //     var pageMeta = this.docMeta.pageMetas[pageNum];
-        //
-        //     forDict(pageMeta.pagemarks, function (pagemarkId, pagemark) {
-        //
-        //         console.log("Triggered initial page load for page: " + pageNum);
-        //
-        //         this.reactor.dispatchEvent('createPagemark', {num: pageNum});
-        //
-        //     }.bind(this));
-        //
-        // }
-
-        // // go through all the pagemarks and other annotations fire the events
-        // // necessary for them so that the view can update...
-        forDict(this.docMeta.pageMetas, function (pageNum, pageMeta) {
-            this.pageLoaded(pageNum);
-        }.bind(this));
-
-        // FIXME: go through and fire createPagemark events since we just
-        // loaded this data from the datastore.
-
+        // // // go through all the pagemarks and other annotations fire the events
+        // // // necessary for them so that the view can update...
+        // forDict(this.docMeta.pageMetas, function (pageNum, pageMeta) {
+        //     this.pageLoaded(pageNum);
+        // }.bind(this));
+        
         return this.docMeta;
 
     }

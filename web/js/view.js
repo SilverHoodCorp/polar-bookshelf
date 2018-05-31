@@ -15,13 +15,16 @@ class WebView extends View {
 
         this.model.registerListenerForCreatePagemark(this.onCreatePagemark.bind(this));
         this.model.registerListenerForErasePagemark(this.onErasePagemark.bind(this));
+        this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
 
     }
 
     /**
      * Setup a document once we detect that a new one has been loaded.
      */
-    setupDocument() {
+    onDocumentLoaded() {
+
+        console.log("WebView.onDocumentLoaded");
 
         var pageElements = document.querySelectorAll(".page");
 
@@ -38,12 +41,12 @@ class WebView extends View {
             pageElement.addEventListener('DOMNodeInserted', function(event) {
 
                 if (event.target && event.target.className === "endOfContent") {
-                    this.recreatePagemark(pagemark);
+                    this.recreatePagemark(pageElement);
                 }
 
             }.bind(this), false );
 
-        })
+        }.bind(this));
 
     }
 
