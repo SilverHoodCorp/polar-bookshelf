@@ -18,6 +18,35 @@ class WebView extends View {
 
     }
 
+    /**
+     * Setup a document once we detect that a new one has been loaded.
+     */
+    setupDocument() {
+
+        var pageElements = document.querySelectorAll(".page");
+
+        pageElements.forEach( function (pageElement) {
+
+            // FIXME: have a new method called recreatePagemarkWhenNecessary
+            // which will look at the pagemarks and only draw the data
+            // when the model has the right data.
+
+            if(pageElement.querySelector("canvas") != null) {
+                this.createPagemark(pageElement);
+            }
+
+            pageElement.addEventListener('DOMNodeInserted', function(event) {
+
+                if (event.target && event.target.className === "endOfContent") {
+                    this.recreatePagemark(pagemark);
+                }
+
+            }.bind(this), false );
+
+        })
+
+    }
+
     getPageElementByNum(num) {
 
         if(!num) {
@@ -50,6 +79,21 @@ class WebView extends View {
         console.log("Erasing pagemark");
 
         this.erasePagemarks(this.getPageElementByNum(pageEvent.num));
+
+    }
+
+    recreatePagemark(pageElement) {
+
+        //console.log("Adding page mark again");
+
+        // make sure to first remove all the existing pagemarks if there
+        // are any
+        this.erasePagemarks(pageElement);
+
+        // we're done all the canvas and text nodes... so place the pagemark
+        // back in again.
+
+        this.createPagemark(pageElement);
 
     }
 
@@ -94,36 +138,6 @@ class WebView extends View {
         //textLayer.style.zIndex = "2";
 
         pageElement.insertBefore(pagemark, canvasWrapper);
-
-        // add an event listener to listen for when the page is redrawn.  We only
-        // call this event listener once, then it's removed so we should create the
-        // pagemark, then put in protection code so that if it's removed, it will
-        // go back in if the page is ever redrawn.
-
-        // FIXME: removing or now.. might not need it.
-        // pageElement.addEventListener('DOMNodeInserted', function(event) {
-        //
-        //     if (event.target && event.target.className === "endOfContent") {
-        //
-        //         console.log("Adding page mark again");
-        //
-        //         // make sure to first remove all the existing pagemarks if there
-        //         // are any
-        //         this.erasePagemarks(pageElement);
-        //
-        //         // we're done all the canvas and text nodes... so place the pagemark
-        //         // back in again.
-        //
-        //         this.createPagemark(pageElement);
-        //
-        //         // FIXME: this is a bug because I dont' think think I can'
-        //
-        //         // done listening so remove myself...
-        //         pageElement.removeEventListener('DOMNodeInserted', arguments.callee, false);
-        //
-        //     }
-        //
-        // }.bind(this), false );
 
     }
 
