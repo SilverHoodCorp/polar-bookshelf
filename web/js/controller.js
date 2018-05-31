@@ -4,6 +4,7 @@ class Controller {
     constructor(datastore, model) {
         this.datastore = datastore;
         this.model = model;
+        this.docMeta = null;
     }
 
     /**
@@ -11,7 +12,7 @@ class Controller {
      */
     onDocumentLoaded(fingerprint, nrPages) {
 
-        this.model.documentLoaded(fingerprint, nrPages);
+        this.docMetaPromise = this.model.documentLoaded(fingerprint, nrPages);
 
     }
 
@@ -83,28 +84,28 @@ class WebController extends Controller {
             console.log("FIXME: pagesinit");
 
         });
-
-        container.addEventListener('pagechanging', function () {
-            console.log("FIXME: pagesinit");
-        });
-
-        container.addEventListener('pagechange', function () {
-            console.log("FIXME: pagechange");
-
-        });
-
-        container.addEventListener('pagerendered', function () {
-            console.log("FIXME: pagerendered");
-
-        });
-
-        container.addEventListener('pageloaded', function (event) {
-            console.log("FIXME: pageloaded: ", event);
-        });
-
-        container.addEventListener('updateviewarea', function () {
-            console.log("FIXME: updateviewarea");
-        });
+        //
+        // container.addEventListener('pagechanging', function () {
+        //     console.log("FIXME: pagesinit");
+        // });
+        //
+        // container.addEventListener('pagechange', function () {
+        //     console.log("FIXME: pagechange");
+        //
+        // });
+        //
+        // container.addEventListener('pagerendered', function () {
+        //     console.log("FIXME: pagerendered");
+        //
+        // });
+        //
+        // container.addEventListener('pageloaded', function (event) {
+        //     console.log("FIXME: pageloaded: ", event);
+        // });
+        //
+        // container.addEventListener('updateviewarea', function () {
+        //     console.log("FIXME: updateviewarea");
+        // });
 
 // NOTE: we have to wait for textlayerrendered because pagerendered
 // doesn't give us the text but pagerendered is called before
@@ -118,13 +119,11 @@ class WebController extends Controller {
             // FIXME: this is the event I want..
 
             var pageElement = event.target.parentElement;
-            var pageNum = getPageNum(pageElement);
+            var pageNum = this.getPageNum(pageElement);
 
-            console.log("Page loaded: " + pageNum);
+            this.model.pageLoaded(pageNum);
 
-
-        });
-
+        }.bind(this));
 
     }
 

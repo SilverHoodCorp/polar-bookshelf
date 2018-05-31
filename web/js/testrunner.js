@@ -294,7 +294,6 @@ describe('testing model interaction', function() {
 
     it('Test existing pagemark event firing in view.',async function() {
 
-
         class MockView extends View {
 
             constructor(model) {
@@ -306,6 +305,7 @@ describe('testing model interaction', function() {
                     if( ! pagemarkEvent.num){
                         throw new Error("No pagemark number");
                     }
+
                     this.pagemarks.push(pagemarkEvent);
                 }.bind(this));
 
@@ -329,6 +329,7 @@ describe('testing model interaction', function() {
 
         // now reload the model to trigger more pagemarks
         docMeta = await model.documentLoaded(fingerprint, 1);
+        await model.pageLoaded(1);
 
         assert.equal(view.pagemarks.length, 2);
 

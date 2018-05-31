@@ -19,7 +19,7 @@ class Datastore {
     /**
      * Write the datastore to disk.
      */
-    sync(fingerprint, docMeta) {
+    async sync(fingerprint, docMeta) {
 
     }
 

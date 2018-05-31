@@ -11,6 +11,9 @@ class Model {
         this.reactor.registerEvent('erasePagemark');
 
         // The currently loaded document.
+        this.docMetaPromise = null;
+
+        // FIXME: this.docMeta should go away in favor of docMetaPromise
         this.docMeta = null;
 
     }
@@ -24,7 +27,8 @@ class Model {
 
         console.log("New document loaded!");
 
-        this.docMeta = await this.datastore.getDocMeta(fingerprint);
+        this.docMetaPromise = this.datastore.getDocMeta(fingerprint);
+        this.docMeta = await this.docMetaPromise;
 
         if(this.docMeta == null) {
             // this is a new document...
@@ -34,22 +38,22 @@ class Model {
 
         this.reactor.dispatchEvent('documentLoaded', {fingerprint, nrPages});
 
-        // go through all the pagemarks and other annotations fire the events
-        // necessary for them so that the view can update...
-        forDict(this.docMeta.pageMetas, function (pageNum, pageMeta) {
-            forDict(pageMeta.pagemarks, function (pagemarkId, pagemark) {
-
-                // FIXME: this is wrong and we should fire with the right
-                // pagemark type.
-
-                // FIXME: this IS working but the document isn't finished
-                // loading yet.  We can SEE that a new document was loaded
-                // but not that it was finished loading...
-
-                this.reactor.dispatchEvent('createPagemark', {num: pageNum});
-
-            }.bind(this));
-        }.bind(this));
+        // // go through all the pagemarks and other annotations fire the events
+        // // necessary for them so that the view can update...
+        // forDict(this.docMeta.pageMetas, function (pageNum, pageMeta) {
+        //     forDict(pageMeta.pagemarks, function (pagemarkId, pagemark) {
+        //
+        //         // FIXME: this is wrong and we should fire with the right
+        //         // pagemark type.
+        //
+        //         // FIXME: this IS working but the document isn't finished
+        //         // loading yet.  We can SEE that a new document was loaded
+        //         // but not that it was finished loading...
+        //
+        //         this.reactor.dispatchEvent('createPagemark', {num: pageNum});
+        //
+        //     }.bind(this));
+        // }.bind(this));
 
         // FIXME: go through and fire createPagemark events since we just
         // loaded this data from the datastore.
@@ -115,6 +119,32 @@ class Model {
         // TODO: consider only marking the page read once the datastore has
         //        been written.
         this.datastore.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
+
+    }
+
+    /**
+     *
+     * @param num
+     */
+    async pageLoaded(num) {
+
+        let docMeta = await this.docMetaPromise;
+        let pageMeta = this.docMeta.getPageMeta(num);
+
+        forDict(pageMeta.pagemarks, function (pagemarkId, pagemark) {
+
+            // FIXME: this is wrong and we should fire with the right
+            // pagemark type.
+
+            // FIXME: this IS working but the document isn't finished
+            // loading yet.  We can SEE that a new document was loaded
+            // but not that it was finished loading...
+
+            console.log("FIXMEasdfaswdf");
+
+            this.reactor.dispatchEvent('createPagemark', {num});
+
+        }.bind(this));
 
     }
 
