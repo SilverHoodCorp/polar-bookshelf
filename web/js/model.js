@@ -27,7 +27,9 @@ class Model {
 
         console.log("New document loaded!");
 
+        // docMetaPromise is used for future readers after the document is loaded
         this.docMetaPromise = this.datastore.getDocMeta(fingerprint);
+
         this.docMeta = await this.docMetaPromise;
 
         if(this.docMeta == null) {
@@ -89,7 +91,9 @@ class Model {
             column: 0
         });
 
-        let pageMeta = await this.docMeta.getPageMeta(num);
+        let docMeta = await this.docMetaPromise;
+        
+        let pageMeta = this.docMeta.getPageMeta(num);
 
         // set the pagemark that we just created.
         pageMeta.pagemarks[pagemark.column] = pagemark;

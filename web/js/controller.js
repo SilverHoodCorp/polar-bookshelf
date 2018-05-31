@@ -94,24 +94,28 @@ class WebController extends Controller {
         //
         // });
         //
-        // container.addEventListener('pagerendered', function () {
-        //     console.log("FIXME: pagerendered");
-        //
-        // });
+        container.addEventListener('pagerendered', function () {
+            console.log("FIXME: pagerendered");
+        });
+
         //
         // container.addEventListener('pageloaded', function (event) {
         //     console.log("FIXME: pageloaded: ", event);
         // });
-        //
-        // container.addEventListener('updateviewarea', function () {
-        //     console.log("FIXME: updateviewarea");
-        // });
+
+        container.addEventListener('updateviewarea', function () {
+            console.log("FIXME: updateviewarea");
+        });
+
+        container.addEventListener('textlayerrendered', function (event) {
+            console.log("FIXME: textlayerrendered", event);
+        });
 
 // NOTE: we have to wait for textlayerrendered because pagerendered
 // doesn't give us the text but pagerendered is called before
 // textlayerrendered anyway so this is acceptable.
-        container.addEventListener('textlayerrendered', function (event) {
-            console.log("FIXME: textlayerrendered", event);
+        container.addEventListener('pagerendered', function (event) {
+            console.log("FIXME: going to call pageLoaded due to pagerendered event", event);
 
             // event.target is div.textLayer... so from there we can see if
             // the page needs loading...

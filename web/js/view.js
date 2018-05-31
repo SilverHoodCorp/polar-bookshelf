@@ -106,19 +106,25 @@ class WebView extends View {
 
                 // make sure to first remove all the existing pagemarks if there
                 // are any
-                removePagemarks(pageElement);
+                this.erasePagemarks(pageElement);
 
                 // we're done all the canvas and text nodes... so place the pagemark
                 // back in again.
 
-                createPagemark(pageElement);
+                this.createPagemark(pageElement);
+
+                // FIXME: this is a bug because I dont' think think I can'
 
                 // done listening so remove myself...
-                pageElement.removeEventListener('DOMNodeInserted',arguments.callee,false);
+                pageElement.removeEventListener('DOMNodeInserted', arguments.callee, false);
 
             }
 
-        }, false );
+        }.bind(this), false );
+
+    }
+
+    redrawPagemark() {
 
     }
 
