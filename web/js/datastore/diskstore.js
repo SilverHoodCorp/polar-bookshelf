@@ -61,7 +61,7 @@ class DiskDatastore extends datastore.Datastore {
 
         var statePathStat = await this.statAsync(statePath);
 
-        if( ! stat.isFile() ) {
+        if( ! statePathStat.isFile() ) {
             return null;
         }
 
@@ -74,9 +74,9 @@ class DiskDatastore extends datastore.Datastore {
             return null;
         }
 
-        var data = this.readAsync(statePath);
+        var data = await this.readFileAsync(statePath);
 
-        return MetadataSerializer.deserialize(new DocMeta(), data);
+        return metadata.MetadataSerializer.deserialize(new metadata.DocMeta(), data);
 
     }
 

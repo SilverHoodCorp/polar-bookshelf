@@ -65,7 +65,9 @@ async function testDiskDatastore() {
 
     diskDatastore.init();
     diskDatastore.init();
-    diskDatastore.sync("0x0000", {});
+    let fingerprint = "0x0000";
+    diskDatastore.sync(fingerprint, {});
+    var docMeta = await diskDatastore.getDocMeta(fingerprint)
 
 }
 
