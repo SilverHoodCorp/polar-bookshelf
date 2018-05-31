@@ -232,7 +232,7 @@ class DocMeta extends SerializedObject {
         }
 
         return pageMeta;
-        
+
     }
 
     validate() {
@@ -263,6 +263,37 @@ class DocMeta extends SerializedObject {
         }
 
         return new DocMeta({docInfo, pageMetas});
+
+    }
+
+    /**
+     * Create a DocMeta object but place initial pagemarks on it. This is useful
+     * for testing.
+     */
+    static createWithinInitialPagemarks(fingerprint, nrPages) {
+
+        var result = this.create(fingerprint, nrPages);
+
+        let maxPages = 3;
+        for(var pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum ) {
+
+            let pagemark = new Pagemark({
+                // TODO: this shouldn't have a hard wired date here but we don't
+                // have a dependency injector yet.
+                created: new Date(),
+                type: PagemarkType.SINGLE_COLUMN,
+                percentage: 100,
+                column: 0
+            });
+
+            let pageMeta = result.getPageMeta(pageNum);
+
+            // set the pagemark that we just created.
+            pageMeta.pagemarks[pagemark.column] = pagemark;
+
+        }
+
+        return result;
 
     }
 

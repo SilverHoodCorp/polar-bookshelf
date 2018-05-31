@@ -32,7 +32,7 @@ class Model {
 
         if(this.docMeta == null) {
             // this is a new document...
-            this.docMeta = DocMeta.create(fingerprint, nrPages);
+            this.docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, nrPages);
             this.datastore.sync(fingerprint, this.docMeta);
         }
 

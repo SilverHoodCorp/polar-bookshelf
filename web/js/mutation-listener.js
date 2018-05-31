@@ -2,6 +2,8 @@
 // basic framework on how to do a mutation listener.  We should return
 // special with registerSetListener and registerDeleteListeners and then we
 // can listen to these in the UI and also in the transaction log.
+//
+// We can use this to implement the progress bar at the bottom of the page too.
 
 const handler1 = {
 
