@@ -335,6 +335,31 @@ describe('testing model interaction', function() {
 
     });
 
+
+    // it('Test compute initial .', async function() {
+    //
+    //     var clock = new SyntheticClock();
+    //     var datastore = new MemoryDatastore();
+    //     var model = new Model(datastore, clock);
+    //     var view = new MockView(model);
+    //
+    //     let fingerprint = "fake-fingerprint";
+    //
+    //     var docMeta = await model.documentLoaded(fingerprint, 1);
+    //
+    //     assert.equal(model.computeInitialPagemarkPageNumbers(docMeta, 1), []);
+    //
+    // });
+
+    it('Test computing the range buffers.', async function() {
+
+        assert.deepEqual(computeRangeBuffer(1, 3, 1, 10), { start: 1, end: 4 });
+        assert.deepEqual(computeRangeBuffer(1, 3, 1, 3), { start: 1, end: 3 });
+        assert.deepEqual(computeRangeBuffer(3, 3, 1, 10), { start: 1, end: 6 });
+
+    });
+
+
 });
 
 function assertJSON(actual,expected) {

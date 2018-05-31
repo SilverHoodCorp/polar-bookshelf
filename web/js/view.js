@@ -40,7 +40,7 @@ class WebView extends View {
 
     onCreatePagemark(pageEvent) {
 
-        console.log("View updating on page mark read.");
+        console.log("Creating pagemark on page: " + pageEvent.num);
 
         this.createPagemark(this.getPageElementByNum(pageEvent.num));
 
@@ -62,6 +62,7 @@ class WebView extends View {
         // do nothing if the current page already has a pagemark.
 
         if (pageElement.querySelector(".pagemark")) {
+            console.warn("Pagemark already exists");
             return;
         }
 
@@ -83,14 +84,14 @@ class WebView extends View {
         pagemark.style.height = pageElement.style.height;
         pagemark.style.zIndex = "0";
 
-
         let canvasWrapper = pageElement.querySelector(".canvasWrapper");
-        let textLayer = pageElement.querySelector(".textLayer");
 
+        // TODO: I don't think this is actually true right now and that we CAN
+        // select the text layer.
         // this must be above the pagemark layer or you won't be able to select text
         // visually.
-
-        textLayer.style.zIndex = "2";
+        //let textLayer = pageElement.querySelector(".textLayer");
+        //textLayer.style.zIndex = "2";
 
         pageElement.insertBefore(pagemark, canvasWrapper);
 
@@ -98,29 +99,31 @@ class WebView extends View {
         // call this event listener once, then it's removed so we should create the
         // pagemark, then put in protection code so that if it's removed, it will
         // go back in if the page is ever redrawn.
-        pageElement.addEventListener('DOMNodeInserted', function(event) {
 
-            if (event.target && event.target.className === "endOfContent") {
-
-                console.log("Adding page mark again");
-
-                // make sure to first remove all the existing pagemarks if there
-                // are any
-                this.erasePagemarks(pageElement);
-
-                // we're done all the canvas and text nodes... so place the pagemark
-                // back in again.
-
-                this.createPagemark(pageElement);
-
-                // FIXME: this is a bug because I dont' think think I can'
-
-                // done listening so remove myself...
-                pageElement.removeEventListener('DOMNodeInserted', arguments.callee, false);
-
-            }
-
-        }.bind(this), false );
+        // FIXME: removing or now.. might not need it.
+        // pageElement.addEventListener('DOMNodeInserted', function(event) {
+        //
+        //     if (event.target && event.target.className === "endOfContent") {
+        //
+        //         console.log("Adding page mark again");
+        //
+        //         // make sure to first remove all the existing pagemarks if there
+        //         // are any
+        //         this.erasePagemarks(pageElement);
+        //
+        //         // we're done all the canvas and text nodes... so place the pagemark
+        //         // back in again.
+        //
+        //         this.createPagemark(pageElement);
+        //
+        //         // FIXME: this is a bug because I dont' think think I can'
+        //
+        //         // done listening so remove myself...
+        //         pageElement.removeEventListener('DOMNodeInserted', arguments.callee, false);
+        //
+        //     }
+        //
+        // }.bind(this), false );
 
     }
 

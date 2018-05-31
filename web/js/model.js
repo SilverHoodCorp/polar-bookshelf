@@ -21,7 +21,7 @@ class Model {
     /**
      * Called when a new document has been loaded.
      */
-    async documentLoaded(fingerprint, nrPages) {
+    async documentLoaded(fingerprint, nrPages, currentPageNumber) {
 
         // TODO: test this method.
 
@@ -38,29 +38,61 @@ class Model {
             this.datastore.sync(fingerprint, this.docMeta);
         }
 
-        this.reactor.dispatchEvent('documentLoaded', {fingerprint, nrPages});
+        this.reactor.dispatchEvent('documentLoaded', {fingerprint, nrPages, currentPageNumber});
 
-        // // go through all the pagemarks and other annotations fire the events
-        // // necessary for them so that the view can update...
-        // forDict(this.docMeta.pageMetas, function (pageNum, pageMeta) {
+        // fire events for the first N pages since we don't properly receive
+        // events for them for some reason.
+
+        // FIXME: break this out in a testable function...
+        //
+        // var pageStart = Math.min(1, currentPageNumber);
+        // var pageEnd = pageStart + 3;
+        // for(var pageNum = pageStart; pageNum < pageEnd; ++pageNum) {
+        //
+        //     console.log("Potential initial page load for page: " + pageNum);
+        //
+        //     var pageMeta = this.docMeta.pageMetas[pageNum];
+        //
         //     forDict(pageMeta.pagemarks, function (pagemarkId, pagemark) {
         //
-        //         // FIXME: this is wrong and we should fire with the right
-        //         // pagemark type.
-        //
-        //         // FIXME: this IS working but the document isn't finished
-        //         // loading yet.  We can SEE that a new document was loaded
-        //         // but not that it was finished loading...
+        //         console.log("Triggered initial page load for page: " + pageNum);
         //
         //         this.reactor.dispatchEvent('createPagemark', {num: pageNum});
         //
         //     }.bind(this));
-        // }.bind(this));
+        //
+        // }
+
+        // // go through all the pagemarks and other annotations fire the events
+        // // necessary for them so that the view can update...
+        forDict(this.docMeta.pageMetas, function (pageNum, pageMeta) {
+            this.pageLoaded(pageNum);
+        }.bind(this));
 
         // FIXME: go through and fire createPagemark events since we just
         // loaded this data from the datastore.
 
         return this.docMeta;
+
+    }
+
+    computeInitialPagemarkPageNumbers(docMeta, nrPages, currentPageNumber) {
+
+        var result = [];
+
+        var range = computeRangeBuffer(currentPageNumber, 3, 1, nrPages);
+
+        for(var pageNum = range.start; pageNum <= range.end; ++pageNum) {
+
+            var pageMeta = docMeta.pageMetas[pageNum];
+
+            forDict(pageMeta.pagemarks, function (pagemarkId, pagemark) {
+                result.push(pageNum);
+            });
+
+        }
+
+        return result;
 
     }
 
@@ -92,7 +124,7 @@ class Model {
         });
 
         let docMeta = await this.docMetaPromise;
-        
+
         let pageMeta = this.docMeta.getPageMeta(num);
 
         // set the pagemark that we just created.
@@ -144,7 +176,7 @@ class Model {
             // loading yet.  We can SEE that a new document was loaded
             // but not that it was finished loading...
 
-            console.log("FIXMEasdfaswdf");
+            console.log("Dispatching event to create pagemark for page: " + num);
 
             this.reactor.dispatchEvent('createPagemark', {num});
 
@@ -217,3 +249,13 @@ function forDict(dict, callback) {
         callback(key,value);
     })
 }
+
+/**
+ * Given an integer, compute the first N pages..
+ */
+function computeRangeBuffer(initial, offset, min, max) {
+    var start = Math.max(min, initial - offset);
+    var end = Math.min(max, initial + offset);
+    return {start, end};
+}
+

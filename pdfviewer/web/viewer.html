@@ -276,7 +276,33 @@ See https://github.com/adobe-type-tools/cmap-resources
         </menu>
 
         <div id="viewerContainer" tabindex="0">
-          <div id="viewer" class="pdfViewer"></div>
+          <div id="viewer" class="pdfViewer">
+
+          </div>
+
+          <style>
+
+            footer {
+              position: fixed;
+              left: 0;
+              bottom: 0;
+              width: 100%;
+              background-color: red;
+              color: white;
+              text-align: center;
+            }
+
+            progress {
+              width: 100%;
+            }
+
+          </style>
+
+          <footer>
+            <progress value="0.5"></progress>
+          </footer>
+
+
         </div>
 
         <div id="errorWrapper" hidden='true'>
@@ -380,6 +406,7 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     </div> <!-- outerContainer -->
     <div id="printContainer"></div>
+
   </body>
 </html>
 

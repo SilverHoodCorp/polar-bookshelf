@@ -10,9 +10,9 @@ class Controller {
     /**
      * Called when a new document has been loaded.
      */
-    onDocumentLoaded(fingerprint, nrPages) {
+    onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
 
-        this.docMetaPromise = this.model.documentLoaded(fingerprint, nrPages);
+        this.docMetaPromise = this.model.documentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
 
     }
 
@@ -69,7 +69,10 @@ class WebController extends Controller {
         // lifecycle properly but I might be wrong so in the fugure we should
         // clean this up.
 
+        // var viewer = document.querySelector("#viewer");
+        //
         viewer.addEventListener('DOMNodeInserted', this.onViewerElementInserted.bind(this), false );
+
 
 
         let container = document.getElementById('viewerContainer');
@@ -83,39 +86,39 @@ class WebController extends Controller {
 
             console.log("FIXME: pagesinit");
 
-        });
+        }.bind(this));
         //
-        // container.addEventListener('pagechanging', function () {
-        //     console.log("FIXME: pagesinit");
-        // });
+        container.addEventListener('pagechanging', function () {
+            this.traceEventOnPage(event, "pagechanging");
+        }.bind(this));
         //
-        // container.addEventListener('pagechange', function () {
-        //     console.log("FIXME: pagechange");
-        //
-        // });
+        container.addEventListener('pagechange', function () {
+            this.traceEventOnPage(event, "pagechange");
+
+        }.bind(this));
         //
         container.addEventListener('pagerendered', function () {
-            console.log("FIXME: pagerendered");
-        });
+            this.traceEventOnPage(event, "pagerendered");
+        }.bind(this));
 
         //
-        // container.addEventListener('pageloaded', function (event) {
-        //     console.log("FIXME: pageloaded: ", event);
-        // });
+        container.addEventListener('pageloaded', function (event) {
+            this.traceEventOnPage(event, "pageloaded");
+        }.bind(this));
 
         container.addEventListener('updateviewarea', function () {
-            console.log("FIXME: updateviewarea");
-        });
+            this.traceEventOnPage(event, "updateviewarea");
+        }.bind(this));
 
         container.addEventListener('textlayerrendered', function (event) {
-            console.log("FIXME: textlayerrendered", event);
-        });
+            this.traceEventOnPage(event, "textlayerrendered");
+        }.bind(this));
 
 // NOTE: we have to wait for textlayerrendered because pagerendered
 // doesn't give us the text but pagerendered is called before
 // textlayerrendered anyway so this is acceptable.
-        container.addEventListener('pagerendered', function (event) {
-            console.log("FIXME: going to call pageLoaded due to pagerendered event", event);
+        container.addEventListener('pagechange', function (event) {
+            console.log("FIXME: going to call pageLoaded due to pagechange event", event);
 
             // event.target is div.textLayer... so from there we can see if
             // the page needs loading...
@@ -128,6 +131,14 @@ class WebController extends Controller {
             this.model.pageLoaded(pageNum);
 
         }.bind(this));
+
+    }
+
+    traceEventOnPage(event, eventName) {
+        var pageElement = event.target.parentElement;
+        var pageNum = this.getPageNum(pageElement);
+
+        console.log(`Found event ${eventName} on page number ${pageNum}`);
 
     }
 
@@ -147,21 +158,24 @@ class WebController extends Controller {
 
             var pages = document.querySelectorAll("#viewer .page");
 
+            // fIXME:: I need to find the current selected page
+            var currentPageNumber = window.PDFViewerApplication.pdfViewer.currentPageNumber;
+
             if (pages.length === nrPages) {
-                this.onNewDocumentFingerprint(newDocumentFingerprint, nrPages);
+                this.onNewDocumentFingerprint(newDocumentFingerprint, nrPages, currentPageNumber);
             }
 
         }
 
     }
 
-    onNewDocumentFingerprint(newDocumentFingerprint, nrPages) {
+    onNewDocumentFingerprint(newDocumentFingerprint, nrPages, currentPageNumber) {
 
-        console.log(`Detected new document fingerprint (fingerprint=${newDocumentFingerprint}, nrPages=${nrPages})`);
+        console.log(`Detected new document fingerprint (fingerprint=${newDocumentFingerprint}, nrPages=${nrPages}, currentPageNumber=${currentPageNumber})`);
 
         this.docFingerprint = newDocumentFingerprint;
 
-        this.onDocumentLoaded(newDocumentFingerprint, nrPages);
+        this.onDocumentLoaded(newDocumentFingerprint, nrPages, currentPageNumber);
 
     }
 
