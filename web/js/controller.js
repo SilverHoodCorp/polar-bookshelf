@@ -191,13 +191,10 @@ class WebController extends Controller {
     }
 
     getPageNum(pageElement) {
-
+        // FIXME: this is wrong because we pass in pageElement AND get teh pageElement
         var pageElement = this.getCurrentPageElement();
-
         let dataPageNum = pageElement.getAttribute("data-page-number");
-
         return parseInt(dataPageNum);
-
     }
 
     // FIXME: remake this binding to CreatePagemarkEntirePage

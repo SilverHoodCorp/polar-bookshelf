@@ -35,13 +35,13 @@ class WebView extends View {
             // when the model has the right data.
 
             if(pageElement.querySelector("canvas") != null) {
-                this.createPagemark(pageElement);
+                this.recreatePagemarksWhenNecessary(pageElement);
             }
 
             pageElement.addEventListener('DOMNodeInserted', function(event) {
 
                 if (event.target && event.target.className === "endOfContent") {
-                    this.recreatePagemark(pageElement);
+                    this.recreatePagemarksWhenNecessary(pageElement);
                 }
 
             }.bind(this), false );
@@ -83,6 +83,33 @@ class WebView extends View {
 
         this.erasePagemarks(this.getPageElementByNum(pageEvent.num));
 
+    }
+
+    // FIXME: call this *FromPagemarks
+    async recreatePagemarksWhenNecessary(pageElement) {
+
+        // FIXME: when the model has a pagemark on the given page, create the
+        // pagemark in the UI..
+
+        var pageNum = this.getPageNum(pageElement);
+
+        var docMeta = this.model.docMeta;
+
+        var pageMeta = docMeta.pageMetas[pageNum];
+
+        forDict(pageMeta.pagemarks, function (column, pagemark) {
+
+            console.log("Creating pagemarks for page: " + pageNum);
+
+            this.recreatePagemark(pageElement, pagemark);
+
+        }.bind(this));
+
+    }
+
+    getPageNum(pageElement) {
+        let dataPageNum = pageElement.getAttribute("data-page-number");
+        return parseInt(dataPageNum);
     }
 
     recreatePagemark(pageElement) {
