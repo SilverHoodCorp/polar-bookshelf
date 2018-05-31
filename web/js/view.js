@@ -35,13 +35,13 @@ class WebView extends View {
             // when the model has the right data.
 
             if(pageElement.querySelector("canvas") != null) {
-                this.recreatePagemarksWhenNecessary(pageElement);
+                this.recreatePagemarksFromPagemarks(pageElement);
             }
 
             pageElement.addEventListener('DOMNodeInserted', function(event) {
 
                 if (event.target && event.target.className === "endOfContent") {
-                    this.recreatePagemarksWhenNecessary(pageElement);
+                    this.recreatePagemarksFromPagemarks(pageElement);
                 }
 
             }.bind(this), false );
@@ -85,11 +85,7 @@ class WebView extends View {
 
     }
 
-    // FIXME: call this *FromPagemarks
-    async recreatePagemarksWhenNecessary(pageElement) {
-
-        // FIXME: when the model has a pagemark on the given page, create the
-        // pagemark in the UI..
+    async recreatePagemarksFromPagemarks(pageElement) {
 
         var pageNum = this.getPageNum(pageElement);
 
