@@ -13,8 +13,6 @@ class WebView extends View {
     constructor(model) {
         super(model);
 
-        this.pagemarkRenderer = null;
-
     }
 
     init() {
@@ -22,8 +20,6 @@ class WebView extends View {
         this.model.registerListenerForCreatePagemark(this.onCreatePagemark.bind(this));
         this.model.registerListenerForErasePagemark(this.onErasePagemark.bind(this));
         this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
-
-        this.pagemarkRenderer = new MainPagemarkRenderer(this);
 
         return this;
 
@@ -71,15 +67,8 @@ class WebView extends View {
 
         console.log("WebView.onDocumentLoaded");
 
-        var pageElements = document.querySelectorAll(".page");
-
-        var pagemarkRenderer = this.pagemarkRenderer;
-
-        pageElements.forEach( function (pageElement) {
-
-            pagemarkRenderer.init(pageElement);
-
-        }.bind(this));
+        new MainPagemarkRenderer(this).setup(".page");
+        new ThumbnailPagemarkRenderer(this).setup(".thumbnail");
 
         this.updateProgress();
 
@@ -121,7 +110,7 @@ class WebView extends View {
         this.updateProgress();
     }
 
-    async recreatePagemarksFromPagemarks(pageElement) {
+    async recreatePagemarksFromPagemarks(pageElement, options) {
 
         var pageNum = this.getPageNum(pageElement);
 
@@ -133,7 +122,7 @@ class WebView extends View {
 
             console.log("Creating pagemarks for page: " + pageNum);
 
-            this.recreatePagemark(pageElement, pagemark);
+            this.recreatePagemark(pageElement, options);
 
         }.bind(this));
 
@@ -146,7 +135,7 @@ class WebView extends View {
         return parseInt(dataPageNum);
     }
 
-    recreatePagemark(pageElement) {
+    recreatePagemark(pageElement, options) {
 
         if( pageElement.querySelector(".pagemark") != null &&
             pageElement.querySelector(".canvasWrapper") != null &&
@@ -167,7 +156,7 @@ class WebView extends View {
         // we're done all the canvas and text nodes... so place the pagemark
         // back in again.
 
-        this.createPagemark(pageElement);
+        this.createPagemark(pageElement, options);
 
     }
 
@@ -191,6 +180,14 @@ class WebView extends View {
         if (! options.placementElement) {
             // TODO: move this to the object dealing with pages only.
             options.placementElement = pageElement.querySelector(".canvasWrapper");
+        }
+
+        if(! options.templateElement) {
+            throw new Error("No templateElement");
+        }
+
+        if(! options.placementElement) {
+            throw new Error("No placementElement");
         }
 
         if (pageElement.querySelector(".pagemark")) {
@@ -254,18 +251,29 @@ class PagemarkRenderer {
         this.view = view;
     }
 
+    setup(selector) {
+
+        var elements = document.querySelectorAll(selector);
+
+        console.log(`FIXME: Working with ${elements.length} elements for selector ${selector}` );
+
+        elements.forEach( function (element) {
+            this.init(element);
+        }.bind(this));
+
+    }
+
     init(pageElement) {
 
+        console.log("FIXME0");
+
         if(this.requiresPagemark(pageElement)) {
+            console.log("FIXME1");
             this.render(pageElement);
         }
 
         this.registerListener(pageElement);
 
-    }
-
-    render(pageElement) {
-        this.view.recreatePagemarksFromPagemarks(pageElement);
     }
 
     /**
@@ -282,6 +290,10 @@ class PagemarkRenderer {
 
     }
 
+    render(pageElement) {
+    }
+
+
 }
 
 /**
@@ -294,7 +306,7 @@ class MainPagemarkRenderer extends PagemarkRenderer {
     }
 
     requiresPagemark(pageElement) {
-        return pageElement.querySelector("canvas");
+        return pageElement.querySelector("canvas") != null;
     }
 
     registerListener(pageElement) {
@@ -308,6 +320,11 @@ class MainPagemarkRenderer extends PagemarkRenderer {
         }.bind(this), false );
 
     }
+
+    render(pageElement) {
+        this.view.recreatePagemarksFromPagemarks(pageElement);
+    }
+
 }
 
 /**
@@ -320,7 +337,34 @@ class ThumbnailPagemarkRenderer extends PagemarkRenderer {
     }
 
     requiresPagemark(pageElement) {
-        return pageElement.querySelector("img");
+        let thumbnailImage = pageElement.querySelector(".thumbnailImage");
+        return thumbnailImage != null && thumbnailImage.getAttribute("src") != null;
+    }
+
+    registerListener(pageElement) {
+
+        pageElement.querySelector(".thumbnailSelectionRing").addEventListener('DOMNodeInserted', function(event) {
+
+            if (event.target && event.target.className === "thumbnailImage") {
+                this.render(pageElement);
+            }
+
+        }.bind(this), false );
+
+    }
+
+    render(pageElement) {
+
+        var templateElement = pageElement.querySelector(".thumbnailImage");
+
+        if( ! templateElement) {
+            throw new Error("No templateElement");
+        }
+
+        var options = {zIndex: 1, templateElement, placementElement: templateElement};
+
+        this.view.recreatePagemarksFromPagemarks(pageElement, options);
+
     }
 
 }
@@ -332,12 +376,12 @@ class CompositePagemarkRenderer extends PagemarkRenderer {
         this.delegates = delegates;
     }
 
-
     init(pageElement) {
 
         this.delegates.forEach(function (delegate) {
-
+            delegate.init.bind(delegate)(pageElement);
         });
 
     }
+
 }
