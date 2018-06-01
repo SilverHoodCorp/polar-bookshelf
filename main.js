@@ -111,14 +111,14 @@ const template = [{
                     }
                 }
             },
-            {
-                label: 'Open Containing Folder',
-                accelerator: 'CmdOrCtrl+F',
-                click: function(item, focusedWindow) {
-                    if (focusedWindow && filepath)
-                        shell.showItemInFolder("file:///" + filepath);
-                }
-            },
+            // {
+            //     label: 'Open Containing Folder',
+            //     accelerator: 'CmdOrCtrl+F',
+            //     click: function(item, focusedWindow) {
+            //         if (focusedWindow && filepath)
+            //             shell.showItemInFolder("file:///" + filepath);
+            //     }
+            // },
             {
                 label: 'Print',
                 accelerator: 'CmdOrCtrl+P',
@@ -202,7 +202,7 @@ const template = [{
                     });
                 }
             },
-            { label: 'Learn More', click: function() { shell.openExternal('https://github.com/praharshjain/Electron-PDF-Viewer'); } },
+            { label: 'Learn More', click: function() { shell.openExternal('https://github.com/burtonator/polar-ebook-reader'); } },
         ]
     },
 ];
