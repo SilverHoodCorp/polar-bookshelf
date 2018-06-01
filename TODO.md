@@ -1,10 +1,5 @@
 
-# Release
-
-- blog / post about it
-    - get links everywhere...
-
-- actual packages (install on my MacOS box)
+# Features
 
 
 - different 'types' of pagemarks including "ignore" and "read" types so that
@@ -12,8 +7,23 @@
 
 - thumbnails highlighted in the side bar
 
+    - #thumbnailView has N A elements, one per page.
+    - with a <div> of .thumbnail with data-page-number on it
+    - with a child div of .thumbnailSelectionRing under it
+    - I can probably just re-use the existing framework
 
-- ability to disable PDF links as they would impact our ability to annotate but
+- checkpoint journaling so I have confidence that I am not losing data.
+
+# Release
+
+- Screenshots with pagemarks.
+
+- Blog / post about it.
+    - get links everywhere...
+
+- Actual packages (install on my MacOS box)
+
+- Ability to disable PDF links as they would impact our ability to annotate but
   maybe they have to click the annotation button (highlight, highlight region)
   so that the links are then disabled.
 
