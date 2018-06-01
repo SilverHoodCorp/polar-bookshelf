@@ -33,6 +33,7 @@ function injectAllScripts() {
 }
 
 
+
 function launchDev() {
 
     var clock = new SystemClock();
@@ -40,6 +41,11 @@ function launchDev() {
     var model = new Model(datastore, clock);
     var controller = new WebController(datastore, model);
     var view = new WebView(model);
+
+    // create some fake documents for our example PDFs
+    var fingerprint = "110dd61fd57444010b1ab5ff38782f0f";
+    datastore.sync(fingerprint, DocMeta.createWithinInitialPagemarks(fingerprint, 14));
+
     view.init();
 
     start(datastore, controller, "dev");
