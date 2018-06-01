@@ -29,7 +29,56 @@ function injectAllScripts() {
     injectScript('../../web/js/controller.js');
     injectScript('../../web/js/clock.js');
     injectScript('../../web/js/datastore/datastore.js');
-    injectScript('../../web/js/launcher.js');
+
+}
+
+
+function launchDev() {
+
+    var clock = new SystemClock();
+    var datastore = new MemoryDatastore();
+    var model = new Model(datastore, clock);
+    var controller = new WebController(datastore, model);
+    var view = new WebView(model);
+    view.init();
+
+    start(datastore, controller, "dev");
+
+}
+
+async function launchProd() {
+
+    const remote = require('electron').remote;
+    var datastore = remote.getGlobal("diskDatastore" );
+
+    var clock = new SystemClock();
+    var model = new Model(datastore, clock);
+    var controller = new WebController(datastore, model);
+    var view = new WebView(model);
+    view.init();
+
+    start(datastore, controller, "prod");
+
+}
+
+async function start(datastore, controller, mode) {
+
+    await datastore.init();
+
+    controller.startListeners();
+    console.log("Controller started in mode: " + mode);
+
+}
+
+function launch(launcherFunction) {
+
+    if (document.readyState === "complete" || document.readyState === "loaded") {
+        console.log("Already completed loading.");
+        launcherFunction();
+    } else {
+        console.log("Waiting for DOM content to load");
+        document.addEventListener('DOMContentLoaded', launcherFunction, true);
+    }
 
 }
 
@@ -37,4 +86,11 @@ function isElectron() {
     return typeof require !== "undefined";
 }
 
+
 injectAllScripts();
+
+if(isElectron()) {
+    launch(launchProd);
+} else {
+    launch(launchDev);
+}

@@ -22,8 +22,23 @@ The long term goal is to implement the following functionality:
  - additional annotation types like area highlight, text highlight, plus a
    complex feature set like notes and tags for these objects.
 
-Usage
-----------------
+# Usage
+
+We currently only support pagemarks but this is the main functionality I wanted
+implemented.
+
+Right now usage is only via keyboard bindings (for pagemarks).
+
+ - Control Alt N - create a new pagemark on the current page
+ - Control Alt E - erase the current pagemark
+
+The pagemarks are persisted on disk in your ```.polar``` directory and when
+you re-open a PDF your pagemarks are restored.
+
+Additionally there is a progress bar that tracks the progress of the document
+based on the number of pagemarks you've created.
+
+# Installation
 
 <!-- Download executable jar from [Releases](https://github.com/praharshjain/Electron-PDF-Viewer/releases) -->
 

@@ -46,13 +46,10 @@ class WebView extends View {
             forDict(pageMeta.pagemarks, function (column, pagemark) {
 
                 total += pagemark.percentage;
-                console.log("FIXME: Total is now: " + total);
 
             }.bind(this));
 
         }.bind(this));
-
-        console.log("FIXME: nrPages: "  + docMeta.docInfo.nrPages);
 
         var perc = total / (docMeta.docInfo.nrPages * 100);
 
@@ -69,10 +66,6 @@ class WebView extends View {
         var pageElements = document.querySelectorAll(".page");
 
         pageElements.forEach( function (pageElement) {
-
-            // FIXME: have a new method called recreatePagemarkWhenNecessary
-            // which will look at the pagemarks and only draw the data
-            // when the model has the right data.
 
             if(pageElement.querySelector("canvas") != null) {
                 this.recreatePagemarksFromPagemarks(pageElement);
@@ -143,6 +136,8 @@ class WebView extends View {
             this.recreatePagemark(pageElement, pagemark);
 
         }.bind(this));
+
+        //this.recreatePagemark(pageElement);
 
     }
 

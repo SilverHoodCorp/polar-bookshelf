@@ -23,7 +23,7 @@ class Model {
      */
     async documentLoaded(fingerprint, nrPages, currentPageNumber) {
 
-        console.log("New document loaded!");
+        console.log("model: New document loaded!");
 
         // docMetaPromise is used for future readers after the document is loaded
         this.docMetaPromise = this.datastore.getDocMeta(fingerprint);

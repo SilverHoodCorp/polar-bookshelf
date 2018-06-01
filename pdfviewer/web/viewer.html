@@ -30,14 +30,17 @@ See https://github.com/adobe-type-tools/cmap-resources
 
 
     <link rel="stylesheet" href="viewer.css">
+
+    <!-- BEGIN polar customization -->
     <link rel="stylesheet" href="../../pdfviewer-custom/polar.css">
+    <script src="../../web/js/inject.js"></script>
+    <!-- END polar customization -->
 
 
 
     <!-- This snippet is used in production (included from viewer.html) -->
-<link rel="resource" type="application/l10n" href="locale/locale.properties">
-<script src="pdf.viewer.js"></script>
-
+    <link rel="resource" type="application/l10n" href="locale/locale.properties">
+    <script src="pdf.viewer.js"></script>
 
   </head>
 
@@ -279,9 +282,11 @@ See https://github.com/adobe-type-tools/cmap-resources
 
         <div id="viewerContainer" tabindex="0">
 
+          <!-- BEGIN polar customization -->
           <div id="polar-header">
             <progress id="pagemark-process" value="0.0"></progress>
           </div>
+          <!-- END polar customization -->
 
           <div>
             <div id="viewer" class="pdfViewer">

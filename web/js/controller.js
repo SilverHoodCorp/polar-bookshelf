@@ -77,7 +77,7 @@ class WebController extends Controller {
             window.PDFViewerApplication.pdfDocument.pdfInfo &&
             window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint != this.docFingerprint) {
 
-            console.log("New document loaded!")
+            console.log("controller: New document loaded!")
 
             let newDocumentFingerprint = window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
             let nrPages = window.PDFViewerApplication.pagesCount;
