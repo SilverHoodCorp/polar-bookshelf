@@ -195,9 +195,9 @@ const template = [{
                     dialog.showMessageBox(mainWindow, {
                         type: 'info',
                         buttons: ['OK'],
-                        title: 'Polar eBook Reader 1.0',
+                        title: 'Polar Bookshelf',
                         message: 'Version 1.0',
-                        detail: 'Created By - Praharsh Jain',
+                        detail: '',
                         icon: app_icon
                     });
                 }
