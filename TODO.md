@@ -1,17 +1,6 @@
 
 # Release
 
-- The pagemarks go away if I scroll up too fast. I think it's the issue with the
-  docMeta now... maybe?
-
-    - it seems like the internal / backing pagemarks are vanishing!!!
-
-    - getting rid of the 'when necessary' code seems to resolve the problme
-      and all the pagemarks are drawn with no issues.
-
-    - write the mutation listener code so I can see when objects / pages are
-      changing.
-
 - blog / post about it
     - get links everywhere...
 
