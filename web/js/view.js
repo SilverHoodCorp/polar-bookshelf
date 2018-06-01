@@ -257,11 +257,15 @@ class PagemarkRenderer {
     init(pageElement) {
 
         if(this.requiresPagemark(pageElement)) {
-            this.view.recreatePagemarksFromPagemarks(pageElement);
+            this.render(pageElement);
         }
 
         this.registerListener(pageElement);
 
+    }
+
+    render(pageElement) {
+        this.view.recreatePagemarksFromPagemarks(pageElement);
     }
 
     /**
@@ -298,7 +302,7 @@ class MainPagemarkRenderer extends PagemarkRenderer {
         pageElement.addEventListener('DOMNodeInserted', function(event) {
 
             if (event.target && event.target.className === "endOfContent") {
-                this.view.recreatePagemarksFromPagemarks(pageElement);
+                this.render(pageElement);
             }
 
         }.bind(this), false );
@@ -328,4 +332,12 @@ class CompositePagemarkRenderer extends PagemarkRenderer {
         this.delegates = delegates;
     }
 
+
+    init(pageElement) {
+
+        this.delegates.forEach(function (delegate) {
+
+        });
+
+    }
 }
