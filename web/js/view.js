@@ -12,13 +12,21 @@ class WebView extends View {
 
     constructor(model) {
         super(model);
+
+        this.pagemarkRenderer = null;
+
     }
 
     init() {
+
         this.model.registerListenerForCreatePagemark(this.onCreatePagemark.bind(this));
         this.model.registerListenerForErasePagemark(this.onErasePagemark.bind(this));
         this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
+
+        this.pagemarkRenderer = new MainPagemarkRenderer(this);
+
         return this;
+
     }
 
     updateProgress() {
@@ -67,17 +75,11 @@ class WebView extends View {
 
         pageElements.forEach( function (pageElement) {
 
-            if(pageElement.querySelector("canvas") != null) {
+            if(this.pagemarkRenderer.requiresPagemark(pageElement)) {
                 this.recreatePagemarksFromPagemarks(pageElement);
             }
 
-            pageElement.addEventListener('DOMNodeInserted', function(event) {
-
-                if (event.target && event.target.className === "endOfContent") {
-                    this.recreatePagemarksFromPagemarks(pageElement);
-                }
-
-            }.bind(this), false );
+            this.pagemarkRenderer.registerListener(pageElement);
 
         }.bind(this));
 
@@ -188,6 +190,11 @@ class WebView extends View {
             options.templateElement = pageElement;
         }
 
+        if (! options.placementElement) {
+            // TODO: move this to the object dealing with pages only.
+            options.placementElement = pageElement.querySelector(".canvasWrapper");
+        }
+
         if (pageElement.querySelector(".pagemark")) {
             // do nothing if the current page already has a pagemark.
             console.warn("Pagemark already exists");
@@ -215,9 +222,7 @@ class WebView extends View {
         if(!pagemark.style.width)
             throw new Error("Could not determine width");
 
-        let referenceElement = pageElement.querySelector(".canvasWrapper");
-
-        referenceElement.parentElement.insertBefore(pagemark, referenceElement);
+        options.placementElement.parentElement.insertBefore(pagemark, options.placementElement);
 
     }
 
@@ -242,3 +247,74 @@ class WebView extends View {
 
 }
 
+/**
+ *
+ */
+class PagemarkRenderer {
+
+    constructor(view) {
+        this.view = view;
+    }
+
+    init() {
+    }
+
+    init(pageElement) {
+    }
+
+    /**
+     * Return true if the target needs a pagemark.
+     */
+    requiresPagemark(pageElement) {
+
+    }
+
+    /**
+     * Register future listeners to monitor status.
+     */
+    registerListener(pageElement) {
+
+    }
+
+}
+
+/**
+ * Handles attaching pagemarks to the pages (as opposed to thumbnails).
+ */
+class MainPagemarkRenderer extends PagemarkRenderer {
+
+    constructor(view) {
+        super(view);
+    }
+
+    requiresPagemark(pageElement) {
+        return pageElement.querySelector("canvas");
+    }
+
+    registerListener(pageElement) {
+
+        pageElement.addEventListener('DOMNodeInserted', function(event) {
+
+            if (event.target && event.target.className === "endOfContent") {
+                this.view.recreatePagemarksFromPagemarks(pageElement);
+            }
+
+        }.bind(this), false );
+
+    }
+}
+
+/**
+ * Handles attaching pagemarks to the pages (as opposed to thumbnails).
+ */
+class ThumbnailPagemarkRenderer extends PagemarkRenderer {
+
+    constructor(view) {
+        super(view);
+    }
+
+    requiresPagemark(pageElement) {
+        return pageElement.querySelector("img");
+    }
+
+}
