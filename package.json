@@ -1,7 +1,7 @@
 {
   "name": "polar-ebook-reader",
-  "version": "1.0.0",
-  "description": "A pdf an eBook reader built with electron",
+  "version": "1.0.0-beta1",
+  "description": "A PDF book reader build on Electron.",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
@@ -15,6 +15,10 @@
     "ebook",
     "annotations"
   ],
+  "author": {
+    "name": "contributors",
+    "email": "noone@example.com"
+  },
   "contributors": [
     {
       "name": "Praharsh Jain"

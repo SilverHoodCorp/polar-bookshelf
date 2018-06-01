@@ -216,7 +216,7 @@ var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) 
 });
 if (shouldQuit) { app.quit(); return; }
 app.on('ready', function() {
-    splashwindow = new BrowserWindow({ width: 400, height: 300, center: true, resizable: false, movable: false, alwaysOnTop: true, skipTaskbar: true, frame: false });
+    splashwindow = new BrowserWindow({ width: 600, height: 400, center: true, resizable: false, movable: false, alwaysOnTop: true, skipTaskbar: true, frame: false });
     splashwindow.loadURL('file://' + __dirname + '/splash.html');
     contextMenu = Menu.buildFromTemplate([
         { label: 'Minimize', type: 'radio', role: 'minimize' },
