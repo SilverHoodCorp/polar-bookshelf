@@ -15,9 +15,12 @@ function injectAllScripts() {
     // stock pdf.js viewer.html application.
 
     // TODO: make this into an if / then if we're running in a renderer process.
-     window.$ = window.jQuery = require('../../node_modules/jquery/dist/jquery.min.js');
+    if(isElectron()) {
+        window.$ = window.jQuery = require('../../node_modules/jquery/dist/jquery.min.js');
+    } else {
+        injectScript('../../node_modules/jquery/dist/jquery.min.js');
+    }
 
-    //injectScript('../../node_modules/jquery/dist/jquery.min.js');
     injectScript('../../web/js/polar.js');
     //injectScript('../../web/js/annotations.js');
     injectScript('../../web/js/metadata.js');
@@ -28,6 +31,10 @@ function injectAllScripts() {
     injectScript('../../web/js/datastore/datastore.js');
     injectScript('../../web/js/launcher.js');
 
+}
+
+function isElectron() {
+    return typeof require !== "undefined";
 }
 
 injectAllScripts();

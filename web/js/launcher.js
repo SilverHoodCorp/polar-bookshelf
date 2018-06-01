@@ -6,6 +6,7 @@ function launchDev() {
     var model = new Model(datastore, clock);
     var controller = new WebController(datastore, model);
     var view = new WebView(model);
+    view.init();
 
     start(datastore, controller, "dev");
 
@@ -20,6 +21,7 @@ async function launchProd() {
     var model = new Model(datastore, clock);
     var controller = new WebController(datastore, model);
     var view = new WebView(model);
+    view.init();
 
     start(datastore, controller, "prod");
 
@@ -44,4 +46,14 @@ function launch(launcherFunction) {
 
 }
 
-launch(launchProd);
+function isElectron() {
+    return typeof require !== "undefined";
+}
+
+if(isElectron()) {
+    launch(launchProd);
+} else {
+    launch(launchDev);
+}
+
+

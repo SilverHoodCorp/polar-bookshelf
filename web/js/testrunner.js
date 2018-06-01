@@ -9,12 +9,37 @@ chai.use(chaiDiff);
 // stable reference date for all tests.
 var date = new Date(Date.parse("2018-05-30T02:47:44.411Z"));
 
-
 // FIXME: what I want in the diff formatter
 //
 // - print the expected and actual values on different lines.
 // - colored diffs across multiple lines
 // - diff objects, not just strings.
+
+describe('Testing progress computation', function() {
+
+    it('Compute basic progress', function() {
+
+        let docMeta = DocMeta.createWithinInitialPagemarks("0x0000", 10);
+
+        let webView = new WebView();
+        let progress = webView.computeProgress(docMeta);
+
+        assert.equal(progress, 0.3);
+
+    });
+
+    it('Compute basic progress at 100 percent', function() {
+
+        let docMeta = DocMeta.createWithinInitialPagemarks("0x0000", 3);
+
+        let webView = new WebView();
+        let progress = webView.computeProgress(docMeta);
+
+        assert.equal(progress, 1.0);
+
+    });
+
+});
 
 describe('testing docMeta creation', function() {
 

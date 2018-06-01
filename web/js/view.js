@@ -12,11 +12,44 @@ class WebView extends View {
 
     constructor(model) {
         super(model);
+    }
 
+    init() {
         this.model.registerListenerForCreatePagemark(this.onCreatePagemark.bind(this));
         this.model.registerListenerForErasePagemark(this.onErasePagemark.bind(this));
         this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
+        return this;
+    }
 
+    updateProgress() {
+
+        var perc = this.computeProgress(this.model.docMeta);
+
+        console.log("Percentage is now: " + perc);
+
+        document.querySelector("#pagemark-process").value = perc;
+
+    }
+
+    computeProgress(docMeta) {
+
+        var total = 0;
+
+        // TODO: this isn't going to work with multiple columns...
+
+        forDict(docMeta.pageMetas, function (key, pageMeta) {
+
+            forDict(pageMeta.pagemarks, function (column, pagemark) {
+
+                total += pagemark.percentage;
+
+            }.bind(this));
+
+        }.bind(this));
+
+        var perc = total / (docMeta.docInfo.nrPages * 100);
+
+        return perc;
     }
 
     /**
@@ -48,6 +81,8 @@ class WebView extends View {
 
         }.bind(this));
 
+        this.updateProgress();
+
     }
 
     getPageElementByNum(num) {
@@ -75,6 +110,7 @@ class WebView extends View {
         console.log("Creating pagemark on page: " + pageEvent.num);
 
         this.createPagemark(this.getPageElementByNum(pageEvent.num));
+        this.updateProgress();
 
     }
 
@@ -82,7 +118,7 @@ class WebView extends View {
         console.log("Erasing pagemark");
 
         this.erasePagemarks(this.getPageElementByNum(pageEvent.num));
-
+        this.updateProgress();
     }
 
     async recreatePagemarksFromPagemarks(pageElement) {

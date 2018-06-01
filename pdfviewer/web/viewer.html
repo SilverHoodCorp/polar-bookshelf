@@ -30,10 +30,11 @@ See https://github.com/adobe-type-tools/cmap-resources
 
 
     <link rel="stylesheet" href="viewer.css">
+    <link rel="stylesheet" href="../../pdfviewer-custom/polar.css">
 
 
 
-<!-- This snippet is used in production (included from viewer.html) -->
+    <!-- This snippet is used in production (included from viewer.html) -->
 <link rel="resource" type="application/l10n" href="locale/locale.properties">
 <script src="pdf.viewer.js"></script>
 
@@ -276,30 +277,13 @@ See https://github.com/adobe-type-tools/cmap-resources
         </menu>
 
         <div id="viewerContainer" tabindex="0">
+
           <div id="viewer" class="pdfViewer">
 
           </div>
 
-          <style>
-
-            footer {
-              position: sticky;
-              left: 0;
-              bottom: 0;
-              width: 100%;
-              background-color: red;
-              color: white;
-              text-align: center;
-            }
-
-            progress {
-              width: 100%;
-            }
-
-          </style>
-
           <footer>
-            <progress value="0.5"></progress>
+            <progress id="pagemark-process" value="0.0"></progress>
           </footer>
 
         </div>
