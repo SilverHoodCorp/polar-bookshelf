@@ -73,13 +73,11 @@ class WebView extends View {
 
         var pageElements = document.querySelectorAll(".page");
 
+        var pagemarkRenderer = this.pagemarkRenderer;
+
         pageElements.forEach( function (pageElement) {
 
-            if(this.pagemarkRenderer.requiresPagemark(pageElement)) {
-                this.recreatePagemarksFromPagemarks(pageElement);
-            }
-
-            this.pagemarkRenderer.registerListener(pageElement);
+            pagemarkRenderer.init(pageElement);
 
         }.bind(this));
 
@@ -256,10 +254,14 @@ class PagemarkRenderer {
         this.view = view;
     }
 
-    init() {
-    }
-
     init(pageElement) {
+
+        if(this.requiresPagemark(pageElement)) {
+            this.view.recreatePagemarksFromPagemarks(pageElement);
+        }
+
+        this.registerListener(pageElement);
+
     }
 
     /**
@@ -315,6 +317,15 @@ class ThumbnailPagemarkRenderer extends PagemarkRenderer {
 
     requiresPagemark(pageElement) {
         return pageElement.querySelector("img");
+    }
+
+}
+
+class CompositePagemarkRenderer extends PagemarkRenderer {
+
+    constructor(view, delegates) {
+        super(view);
+        this.delegates = delegates;
     }
 
 }
