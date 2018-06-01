@@ -175,7 +175,13 @@ class WebView extends View {
      * Create a pagemark on the given page which marks it read.
      * @param pageElement
      */
-    createPagemark(pageElement) {
+    createPagemark(pageElement, options) {
+
+        if(! options) {
+            options = {
+                zIndex: 0
+            }
+        };
 
         // do nothing if the current page already has a pagemark.
 
@@ -200,9 +206,9 @@ class WebView extends View {
         pagemark.style.top = "0";
         pagemark.style.width = pageElement.style.width;
         pagemark.style.height = pageElement.style.height;
-        pagemark.style.zIndex = "0";
+        pagemark.style.zIndex = options.zIndex;
 
-        let canvasWrapper = pageElement.querySelector(".canvasWrapper");
+        let referenceElement = pageElement.querySelector(".canvasWrapper");
 
         // TODO: I don't think this is actually true right now and that we CAN
         // select the text layer.
@@ -211,7 +217,7 @@ class WebView extends View {
         //let textLayer = pageElement.querySelector(".textLayer");
         //textLayer.style.zIndex = "2";
 
-        pageElement.insertBefore(pagemark, canvasWrapper);
+        pageElement.insertBefore(pagemark, referenceElement);
 
     }
 

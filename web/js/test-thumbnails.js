@@ -6,13 +6,19 @@
 // I think I need to pass in a wrapperElement and then a referenceElement
 //
 // wrapperElement: the .page or .thumbnail which holds the object we want to
-// wrap. 
+// wrap.
 
 /**
  * Create a pagemark on the given page which marks it read.
  * @param pageElement
  */
-function createPagemark(pageElement) {
+function createPagemark(pageElement, options) {
+
+    if(! options) {
+        options = {
+            zIndex: 0
+        };
+    }
 
     // do nothing if the current page already has a pagemark.
 
@@ -46,11 +52,10 @@ function createPagemark(pageElement) {
 
     pagemark.style.width = targetStyleElement.style.width;
     pagemark.style.height = targetStyleElement.style.height;
+    pagemark.style.zIndex = options.zIndex;
 
     if(!pagemark.style.width)
         throw new Error("Could not determine width");
-
-    pagemark.style.zIndex = "1";
 
     let referenceElement = pageElement.querySelector(".thumbnailImage");
 
@@ -68,6 +73,6 @@ function createPagemark(pageElement) {
 }
 
 document.querySelectorAll(".thumbnail").forEach(function (thumbnailElement) {
-    createPagemark(thumbnailElement);
+    createPagemark(thumbnailElement, {zIndex: 1});
 })
 
