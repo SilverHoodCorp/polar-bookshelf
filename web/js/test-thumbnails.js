@@ -15,10 +15,11 @@
 function createPagemark(pageElement, options) {
 
     if(! options) {
-        options = {
-            zIndex: 0
-        };
+        options = {};
     }
+
+    if(! options.zIndex)
+        options.zIndex = 0;
 
     // do nothing if the current page already has a pagemark.
 
@@ -27,10 +28,11 @@ function createPagemark(pageElement, options) {
         return;
     }
 
-    let pagemark = document.createElement("div");
+    // the templateElement is what we should use as a reference to style our pagemark.
 
-    // the target element we use to compute the style.
-    var targetStyleElement = pageElement.querySelector("img");
+    var templateElement = pageElement.querySelector(".page, .thumbnailImage");
+
+    let pagemark = document.createElement("div");
 
     // make sure we have a reliable CSS classname to work with.
     pagemark.className="pagemark";
@@ -45,19 +47,22 @@ function createPagemark(pageElement, options) {
 
     // FIXME there is no width and height on this element so get it
 
-    console.log("FIXME: " + targetStyleElement.style.width);
-
-    pagemark.style.left = targetStyleElement.offsetLeft;
-    pagemark.style.top = targetStyleElement.offsetTop;
-
-    pagemark.style.width = targetStyleElement.style.width;
-    pagemark.style.height = targetStyleElement.style.height;
+    pagemark.style.left = templateElement.offsetLeft;
+    pagemark.style.top = templateElement.offsetTop;
+    pagemark.style.width = templateElement.style.width;
+    pagemark.style.height = templateElement.style.height;
     pagemark.style.zIndex = options.zIndex;
 
     if(!pagemark.style.width)
         throw new Error("Could not determine width");
 
-    let referenceElement = pageElement.querySelector(".thumbnailImage");
+    // FIXME: I think this is the last thing we need to refactor.. the
+    // thumbnailImage needs to be passed in and be the canvasWrapper with
+    // real pages and the thumbnailImage on other pages.
+
+    // the placement element allows us to deteremine, where in the DOM to place
+    // our pagemark element.
+    let placementElement = pageElement.querySelector(".thumbnailImage");
 
     // TODO: I don't think this is actually true right now and that we CAN
     // select the text layer.
@@ -68,11 +73,15 @@ function createPagemark(pageElement, options) {
 
     // must be BEFORE the img.. not after...
 
-    referenceElement.parentElement.insertBefore(pagemark, referenceElement);
+    targetElement.parentElement.insertBefore(pagemark, targetElement);
 
 }
 
 document.querySelectorAll(".thumbnail").forEach(function (thumbnailElement) {
+
+    if (thumbnailElement.querySelector("img") == null)
+        return;
+
     createPagemark(thumbnailElement, {zIndex: 1});
 })
 

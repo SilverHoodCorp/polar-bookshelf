@@ -588,10 +588,20 @@ class AnnotationWithNote extends Annotation {
          *
          * @type Note
          */
+        // FIXME: should be notes (plural)
+
+        // FIXME: the keys of these objects should be the hash of the time
+        // sequenece, the user, and machine that this was generated on.
+
         this.note = null;
 
-        this.init(val);
+        // FIXME: should have comments (plural)
 
+        // FIXME: should have tags (plural)
+
+        // FIXME: should have flashcards (plural) for anki usage.
+
+        this.init(val);
 
     }
 

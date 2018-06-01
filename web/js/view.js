@@ -202,22 +202,15 @@ class WebView extends View {
         pagemark.style.opacity="0.3";
 
         pagemark.style.position="absolute";
-        pagemark.style.left = "0";
-        pagemark.style.top = "0";
+        pagemark.style.left = pageElement.offsetLeft;
+        pagemark.style.top = pageElement.offsetTop;
         pagemark.style.width = pageElement.style.width;
         pagemark.style.height = pageElement.style.height;
         pagemark.style.zIndex = options.zIndex;
 
         let referenceElement = pageElement.querySelector(".canvasWrapper");
 
-        // TODO: I don't think this is actually true right now and that we CAN
-        // select the text layer.
-        // this must be above the pagemark layer or you won't be able to select text
-        // visually.
-        //let textLayer = pageElement.querySelector(".textLayer");
-        //textLayer.style.zIndex = "2";
-
-        pageElement.insertBefore(pagemark, referenceElement);
+        referenceElement.parentElement.insertBefore(pagemark, referenceElement);
 
     }
 
