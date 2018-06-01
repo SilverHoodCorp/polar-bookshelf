@@ -21,16 +21,15 @@ function createPagemark(pageElement, options) {
     if(! options.zIndex)
         options.zIndex = 0;
 
-    // do nothing if the current page already has a pagemark.
+    if( ! options.templateElement) {
+        options.templateElement = pageElement;
+    }
 
     if (pageElement.querySelector(".pagemark")) {
+        // do nothing if the current page already has a pagemark.
         console.warn("Pagemark already exists");
         return;
     }
-
-    // the templateElement is what we should use as a reference to style our pagemark.
-
-    var templateElement = pageElement.querySelector(".page, .thumbnailImage");
 
     let pagemark = document.createElement("div");
 
@@ -47,10 +46,10 @@ function createPagemark(pageElement, options) {
 
     // FIXME there is no width and height on this element so get it
 
-    pagemark.style.left = templateElement.offsetLeft;
-    pagemark.style.top = templateElement.offsetTop;
-    pagemark.style.width = templateElement.style.width;
-    pagemark.style.height = templateElement.style.height;
+    pagemark.style.left = options.templateElement.offsetLeft;
+    pagemark.style.top = options.templateElement.offsetTop;
+    pagemark.style.width = options.templateElement.style.width;
+    pagemark.style.height = options.templateElement.style.height;
     pagemark.style.zIndex = options.zIndex;
 
     if(!pagemark.style.width)
@@ -73,7 +72,7 @@ function createPagemark(pageElement, options) {
 
     // must be BEFORE the img.. not after...
 
-    targetElement.parentElement.insertBefore(pagemark, targetElement);
+    placementElement.parentElement.insertBefore(pagemark, placementElement);
 
 }
 
@@ -82,6 +81,9 @@ document.querySelectorAll(".thumbnail").forEach(function (thumbnailElement) {
     if (thumbnailElement.querySelector("img") == null)
         return;
 
-    createPagemark(thumbnailElement, {zIndex: 1});
+    var templateElement = thumbnailElement.querySelector(".thumbnailImage");
+
+    createPagemark(thumbnailElement, {zIndex: 1, templateElement});
+
 })
 

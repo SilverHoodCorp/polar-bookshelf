@@ -178,14 +178,18 @@ class WebView extends View {
     createPagemark(pageElement, options) {
 
         if(! options) {
-            options = {
-                zIndex: 0
-            }
-        };
+            options = {};
+        }
 
-        // do nothing if the current page already has a pagemark.
+        if(! options.zIndex)
+            options.zIndex = 0;
+
+        if(! options.templateElement) {
+            options.templateElement = pageElement;
+        }
 
         if (pageElement.querySelector(".pagemark")) {
+            // do nothing if the current page already has a pagemark.
             console.warn("Pagemark already exists");
             return;
         }
@@ -202,11 +206,14 @@ class WebView extends View {
         pagemark.style.opacity="0.3";
 
         pagemark.style.position="absolute";
-        pagemark.style.left = pageElement.offsetLeft;
-        pagemark.style.top = pageElement.offsetTop;
-        pagemark.style.width = pageElement.style.width;
-        pagemark.style.height = pageElement.style.height;
+        pagemark.style.left = options.templateElement.offsetLeft;
+        pagemark.style.top = options.templateElement.offsetTop;
+        pagemark.style.width = options.templateElement.style.width;
+        pagemark.style.height = options.templateElement.style.height;
         pagemark.style.zIndex = options.zIndex;
+
+        if(!pagemark.style.width)
+            throw new Error("Could not determine width");
 
         let referenceElement = pageElement.querySelector(".canvasWrapper");
 

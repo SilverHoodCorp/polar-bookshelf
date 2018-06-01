@@ -35,6 +35,17 @@
 
 - get end to end testing with pdf.js working
 
+# Marketing
+
+- pdf.js
+- news.ycombinator
+- anki forum
+- anki reddit
+- /r/medicalschool group...
+- electronjs group
+- /r/adhd
+- other spaced repitition groups
+
 # Cleanup
 
 
