@@ -1,12 +1,12 @@
 {
-  "name": "polar-ebook-reader",
+  "name": "polar-bookshelf",
   "version": "1.0.0-beta1",
-  "description": "A PDF book reader build on Electron.",
+  "description": "A PDF bookshelf for incremental reading",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/burtonator/polar-ebook-reader",
+  "repository": "https://github.com/burtonator/polar-bookshelf",
   "keywords": [
     "Electron",
     "PDF",

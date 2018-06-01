@@ -202,7 +202,7 @@ const template = [{
                     });
                 }
             },
-            { label: 'Learn More', click: function() { shell.openExternal('https://github.com/burtonator/polar-ebook-reader'); } },
+            { label: 'Learn More', click: function() { shell.openExternal('https://github.com/burtonator/polar-bookshelf'); } },
         ]
     },
 ];
