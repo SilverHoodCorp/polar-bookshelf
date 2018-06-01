@@ -78,9 +78,6 @@ class Model {
 
         this.assertPageNum(num);
 
-        // FIXME: this can be done with a mutation listener...
-        this.reactor.dispatchEvent('createPagemark', {num});
-
         // FIXME: determine the type and the column
 
         // FIXME: just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by default.
@@ -99,6 +96,9 @@ class Model {
         // set the pagemark that we just created.
         pageMeta.pagemarks[pagemark.column] = pagemark;
 
+        // FIXME: this can be done with a mutation listener...
+        this.reactor.dispatchEvent('createPagemark', {num});
+
         // FIXME: we need a fingerprint in the docInfo too.
 
         // TODO: consider only marking the page read once the datastore has
@@ -113,12 +113,12 @@ class Model {
 
         this.assertPageNum(num);
 
-        // FIXME: this can be done with a mutation listener...
-        this.reactor.dispatchEvent('erasePagemark', {num});
-
         let pageMeta = this.docMeta.getPageMeta(num);
 
         pageMeta.pagemarks = {};
+
+        // FIXME: this can be done with a mutation listener...
+        this.reactor.dispatchEvent('erasePagemark', {num});
 
         // FIXME: we need a fingerprint in the docInfo too.
 

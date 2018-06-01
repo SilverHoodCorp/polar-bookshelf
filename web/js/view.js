@@ -33,19 +33,26 @@ class WebView extends View {
 
     computeProgress(docMeta) {
 
+        // I think this is an issue of being async maybel?
+
         var total = 0;
 
         // TODO: this isn't going to work with multiple columns...
+
+        console.log(docMeta.pageMetas);
 
         forDict(docMeta.pageMetas, function (key, pageMeta) {
 
             forDict(pageMeta.pagemarks, function (column, pagemark) {
 
                 total += pagemark.percentage;
+                console.log("FIXME: Total is now: " + total);
 
             }.bind(this));
 
         }.bind(this));
+
+        console.log("FIXME: nrPages: "  + docMeta.docInfo.nrPages);
 
         var perc = total / (docMeta.docInfo.nrPages * 100);
 
