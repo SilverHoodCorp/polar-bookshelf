@@ -1,4 +1,4 @@
-<img src="https://github.com/burtonator/polar-bookshelf/blob/master/icon.ico" width="40">&nbsp;&nbsp;Polar Bookshelf
+<img src="https://github.com/burtonator/polar-bookshelf/blob/master/icon.ico" width="80">&nbsp;&nbsp;Polar Bookshelf
 ==========
 
 PDF viewer created using [Electron framework](https://electron.atom.io) and
