@@ -72,3 +72,19 @@ function createSiblingTuples(arr) {
     return result;
 
 }
+
+function elementOffset(element) {
+
+    let result = {
+        left: element.offsetLeft,
+        top: element.offsetTop,
+        width: element.offsetWidth,
+        height: element.offsetHeight
+    };
+
+    result.right = result.left + result.width;
+    result.bottom = result.top + result.height;
+
+    return result
+
+}

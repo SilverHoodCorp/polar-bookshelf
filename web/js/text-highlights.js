@@ -2,9 +2,9 @@
 
 // given some text, compute a list of rects that can overlap the text to form
 // one coherent highlight.
-function computeRectsForContiguousHighlightRegion(boundingClientRects) {
+function computeRectsForContiguousHighlightRegion(rects) {
 
-    let tuples = createSiblingTuples(boundingClientRects);
+    let tuples = createSiblingTuples(rects);
 
     let result = [];
 
@@ -58,9 +58,9 @@ class TextHighlight {
 
 
     /**
-     * Render a physical highlight on an element for the given boundingClientRect
+     * Render a physical highlight on an element for the given rect
      *
-     * @param boundingClientRect
+     * @param highlightRect
      */
     static render(element, highlightRect) {
 
@@ -94,7 +94,7 @@ class TextHighlightStruct {
 
     constructor(markers) {
 
-        // the physical client bounding rects to draw the highlight on the page.
+        // the physical client rects to draw the highlight on the page.
         this.markers = markers;
 
     }
@@ -110,16 +110,21 @@ class TextHighlightStruct {
             throw new Error("No elements");
         }
 
-        var boundingClientRects = elements.map(current => current.getBoundingClientRect());
+        var rects = elements.map(current => elementOffset(current));
 
-        let contiguousRects = computeRectsForContiguousHighlightRegion(boundingClientRects);
+        console.log("FIXME: rects", rects);
 
-        // create a mapping between the element and the boundingClientRects
+        let contiguousRects = computeRectsForContiguousHighlightRegion(rects);
+
+        // create a mapping between the element and the rect
         let markers = [];
 
         for (let idx = 0; idx < elements.length; ++idx) {
             var element = elements[idx];
-            markers.push({ element, highlightRect: contiguousRects[idx]});
+            markers.push( {
+                element,
+                highlightRect: contiguousRects[idx]
+            });
         }
 
         return new TextHighlightStruct(markers);
