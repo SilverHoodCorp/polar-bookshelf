@@ -2,41 +2,7 @@
 
 // given some text, compute a list of rects that can overlap the text to form
 // one coherent highlight.
-function computeRectsForContiguousHighlightRegion(rects) {
 
-    let tuples = createSiblingTuples(rects);
-
-    let result = [];
-
-    tuples.forEach(function (tuple) {
-
-        var adjusted = {
-            left: tuple.curr.left,
-            top: tuple.curr.top,
-            right: tuple.curr.right,
-            bottom: tuple.curr.bottom
-        };
-
-        if(tuple.next) {
-            adjusted.bottom = tuple.next.top;
-        }
-
-        adjusted.width = adjusted.right - adjusted.left;
-        adjusted.height = adjusted.bottom - adjusted.top;
-
-        result.push(adjusted);
-
-    })
-
-    return result;
-
-}
-
-function createTextHighlightFromClassname(clazz) {
-
-
-
-}
 
 class TextHighlight {
 
@@ -106,7 +72,7 @@ class TextHighlightMarkers {
 
         var rects = elements.map(current => elementOffset(current));
 
-        let contiguousRects = computeRectsForContiguousHighlightRegion(rects);
+        let contiguousRects = computeContiguousRects(rects);
 
         // create a mapping between the element and the rect
         let markers = [];
@@ -120,6 +86,36 @@ class TextHighlightMarkers {
         }
 
         return markers;
+
+    }
+
+    static computeContiguousRects(rects) {
+
+        let tuples = createSiblingTuples(rects);
+
+        let result = [];
+
+        tuples.forEach(function (tuple) {
+
+            var adjusted = {
+                left: tuple.curr.left,
+                top: tuple.curr.top,
+                right: tuple.curr.right,
+                bottom: tuple.curr.bottom
+            };
+
+            if(tuple.next) {
+                adjusted.bottom = tuple.next.top;
+            }
+
+            adjusted.width = adjusted.right - adjusted.left;
+            adjusted.height = adjusted.bottom - adjusted.top;
+
+            result.push(adjusted);
+
+        })
+
+        return result;
 
     }
 

@@ -13,7 +13,7 @@ var date = new Date(Date.parse("2018-05-30T02:47:44.411Z"));
 describe('Testing computeRectsForContiguousHighlightRegion.', function() {
 
     it('Test with no entries', function () {
-        assert.deepEqual(computeRectsForContiguousHighlightRegion([]), []);
+        assert.deepEqual(TextHighlightMarkers.computeContiguousRects([]), []);
     });
 
     it('Test with one entry', function () {
@@ -24,7 +24,7 @@ describe('Testing computeRectsForContiguousHighlightRegion.', function() {
 
         var expected = [ { top: 10, left: 10, bottom: 50, right: 50, width: 40, height: 40 } ];
 
-        assert.deepEqual(computeRectsForContiguousHighlightRegion(boundingClientRects), expected);
+        assert.deepEqual(TextHighlightMarkers.computeContiguousRects(boundingClientRects), expected);
     });
 
     it('Test with two entries', function () {
@@ -39,7 +39,7 @@ describe('Testing computeRectsForContiguousHighlightRegion.', function() {
             { left: 10, top: 50, right: 50, bottom: 70, width: 40, height: 20 }
         ];
 
-        assert.deepEqual(computeRectsForContiguousHighlightRegion(boundingClientRects), expected);
+        assert.deepEqual(TextHighlightMarkers.computeContiguousRects(boundingClientRects), expected);
     });
 
 });
