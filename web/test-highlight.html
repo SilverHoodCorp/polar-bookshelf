@@ -4,7 +4,7 @@
 
         .content {
             justify: justify;
-            width: 500px;
+            width: 1020px;
             z-index: 1;
         }
 
@@ -23,9 +23,63 @@
 
     - ability to select text WITHIN the highlight still?
     - ability to clear the highlight
-    - 
+    -
 
     -->
+
+    <!--
+
+    how to highlight specific text programaticallly?
+
+    https://stackoverflow.com/questions/11128130/select-text-in-javascript
+    -->
+
+    <!--
+
+    Design if the text is setup like this:
+
+    tttttttttttttttttttttthhhhhhhhhhh
+    hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+    hhhhhhhhhhttttttttttttttttttttttt
+
+    where 't' is a regular char and 'h'
+    is a highlighted char and each
+    line is its own div then we need to:
+
+    1.  Break it up into spans, one per div.
+
+    This would turn it into:
+
+    tttttttttttttttttttttt<span class="area-highlight" id="area-highlight-101">hhhhhhhhhhh</span>
+    <span class="area-highlight" id="area-highlight-101">hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</span>
+    <span class="area-highlight" id="area-highlight-101">hhhhhhhhhh</span>ttttttttttttttttttttttt
+
+    2. this would give us 3 spans over 3 divs.
+
+    This is necessary because pdf.js breaks the text up across rows.
+
+    Then I need to compute three BCRs, one for each highlight, that is vertically
+    adjacent to the next one, factoring in line height.
+
+    it would look like this:
+
+    +----------------------------+
+    |                            |
+    | ttttttttttttthhhhhhhhhhhhh |
+    |                            |
+    +============================+
+    |                            |
+    | hhhhhhhhhhhhhhhhhhhhhhhhhh |
+    |                            |
+    +----------------------------+
+
+    This is necessary to factor in vertical line height.
+
+    3.  Then we just draw a div within on the page at each one of the highlights.
+
+
+    -->
+
 
 
 </head>
@@ -36,101 +90,47 @@
 
     <p>
 
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text <span id="myHighlight" class="highlight">that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. </span>this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
-        this is some text that is highlighted. this is some text that is highlighted.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit
+        suscipit purus eget accumsan. Praesent nisl eros, maximus at placerat
+        sit amet, commodo quis neque. Nulla eu nibh libero. Morbi ultricies
+        lorem sit amet mi luctus ultrices eu vel purus. Etiam dapibus enim in
+        magna efficitur vehicula in a elit. Quisque elementum, ex eget pretium
+        tincidunt, ligula nulla accumsan sem, non rutrum arcu risus in lacus.
+        Sed vel iaculis neque. Duis vulputate dolor at velit volutpat posuere et
+        vitae arcu. Suspendisse accumsan metus posuere, consequat lorem ac,
+        commodo sapien. Phasellus commodo euismod consequat. Mauris id volutpat
+        urna, id tristique urna. Curabitur commodo tortor ac odio finibus, et
+        imperdiet ipsum dignissim. Mauris non augue suscipit, aliquam orci quis,
+        elementum nunc. Suspendisse vel eleifend sem, quis consequat tellus.
+        Integer ullamcorper libero ligula, ac tempor nisi pellentesque
+        venenatis.
+
+        Sed enim erat, consequat a justo pretium, semper posuere mi.
+        Pellentesque nisi orci, vulputate vitae dolor et, tristique fermentum
+        justo. Nunc sollicitudin diam leo, sit amet condimentum risus mattis eu.
+        Nunc ullamcorper vehicula mauris, sit amet ornare mauris facilisis a.
+        <span id="myHighlight1" class="highlight">Praesent iaculis faucibus elit, ac venenatis augue scelerisque sit amet.
+        Proin posuere mi eget urna luctus vestibulum. Proin dui turpis, egestas
+        et ultrices in, mattis vel orci. Sed pulvinar nulla vitae tempus
+            suscipit. Nullam ut eros id erat egestas lobortis.</span> Pellentesque et velit
+        sed risus vestibulum pharetra pretium ac odio.
+
+        Suspendisse iaculis orci in libero volutpat accumsan. Ut ornare auctor
+        justo vitae sollicitudin. Maecenas eleifend ipsum nulla, vitae posuere
+        elit tempus sed. Curabitur consectetur nec lorem vehicula interdum.
+        Aliquam molestie suscipit sodales. Integer tempus auctor lectus vitae
+        euismod. Quisque fringilla sem sit amet cursus pharetra. <span id="myHighlight2" class="highlight">Sed sed justo
+        sed nulla efficitur sagittis. Interdum et malesuada fames ac ante ipsum
+        primis in faucibus. Curabitur laoreet convallis posuere. </span>Ut et neque
+        vitae eros congue feugiat.
+
+        Pellentesque habitant morbi tristique senectus et netus et malesuada
+        fames ac turpis egestas. Phasellus et posuere ligula, sed dignissim
+        libero. Nullam lacinia nibh eu magna viverra imperdiet. In hac habitasse
+        platea dictumst. Nunc id mattis nisl. Sed nec hendrerit justo. Donec ut
+        augue sit amet turpis molestie faucibus et sit amet risus. Maecenas et
+        odio ut orci ultricies sagittis. Aliquam odio orci, tristique vel
+        accumsan at, fermentum eleifend diam.
 
     </p>
 
