@@ -13,6 +13,11 @@ class WebView extends View {
     constructor(model) {
         super(model);
 
+        /**
+         * The currently defined renderer for pagemarks.
+         */
+        this.pagemarkRenderer = null;
+
     }
 
     init() {
@@ -111,7 +116,10 @@ class WebView extends View {
     onErasePagemark(pageEvent) {
         console.log("Erasing pagemark");
 
-        this.erasePagemarks(this.getPageElementByNum(pageEvent.num));
+        //let pageElement = this.getPageElementByNum(pageEvent.num);
+        //this.erasePagemarks(pageElement);
+
+        this.pagemarkRenderer.erase(pageEvent.num);
         this.updateProgress();
 
     }
@@ -233,12 +241,16 @@ class WebView extends View {
 
     erasePagemarks(pageElement) {
 
+        if(!pageElement) {
+            throw new Error("No pageElement");
+        }
+
         console.log("Erasing pagemarks...");
 
         let pagemarks = pageElement.querySelectorAll(".pagemark");
 
         pagemarks.forEach(function (pagemark) {
-            pageElement.removeChild(pagemark);
+            pagemark.parentElement.removeChild(pagemark);
             console.log("Erased pagemark.");
         });
 
@@ -309,7 +321,17 @@ class PagemarkRenderer {
      * Erase the page elements on the give page number.
      */
     erase(pageNum) {
+
+        if(typeof pageNum !== "number") {
+            throw new Error("pageNum is not a number");
+        }
+
         var pageElement = this.pageElements[pageNum-1];
+
+        if(!pageElement) {
+            throw new Error(`No pageElement for pageNum ${pageNum} out of ${this.pageElements.length} pageElements`);
+        }
+
         this.view.erasePagemarks(pageElement);
     }
 
