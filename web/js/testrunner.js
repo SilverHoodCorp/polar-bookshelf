@@ -22,7 +22,7 @@ describe('Testing computeRectsForContiguousHighlightRegion.', function() {
             {top: 10, left: 10, bottom: 50, right: 50}
         ];
 
-        var expected = [ { top: 10, left: 10, bottom: 50, right: 50 } ];
+        var expected = [ { top: 10, left: 10, bottom: 50, right: 50, width: 40, height: 40 } ];
 
         assert.deepEqual(computeRectsForContiguousHighlightRegion(boundingClientRects), expected);
     });
@@ -35,8 +35,8 @@ describe('Testing computeRectsForContiguousHighlightRegion.', function() {
         ];
 
         var expected = [
-            { top: 10, left: 10, bottom: 50, right: 50 },
-            { top: 50, left: 10, bottom: 70, right: 50 }
+            { left: 10, top: 10, right: 50, bottom: 50, width: 40, height: 40 },
+            { left: 10, top: 50, right: 50, bottom: 70, width: 40, height: 20 }
         ];
 
         assert.deepEqual(computeRectsForContiguousHighlightRegion(boundingClientRects), expected);
