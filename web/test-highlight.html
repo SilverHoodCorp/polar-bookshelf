@@ -9,13 +9,27 @@
         }
 
         .highlight {
-            background-color: yellow;
+            /*background-color: yellow;*/
+        }
+
+        .raw-highlighted-text {
+            font-weight: bold;
         }
 
         p {
             line-height: 50px;
             z-index: 1;
         }
+
+        .text-highlight {
+
+            z-index: 0;
+            background-color: yellow;
+            opacity: 0.3;
+            cursor: pointer;
+
+        }
+
 
     </style>
 
@@ -50,9 +64,9 @@
 
     This would turn it into:
 
-    tttttttttttttttttttttt<span class="area-highlight" id="area-highlight-101">hhhhhhhhhhh</span>
-    <span class="area-highlight" id="area-highlight-101">hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</span>
-    <span class="area-highlight" id="area-highlight-101">hhhhhhhhhh</span>ttttttttttttttttttttttt
+    tttttttttttttttttttttt<span class="text-highlight" id="text-highlight-101">hhhhhhhhhhh</span>
+    <span class="text-highlight" id="text-highlight-101">hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</span>
+    <span class="text-highlight" id="text-highlight-101">hhhhhhhhhh</span>ttttttttttttttttttttttt
 
     2. this would give us 3 spans over 3 divs.
 
@@ -109,7 +123,7 @@
         Pellentesque nisi orci, vulputate vitae dolor et, tristique fermentum
         justo. Nunc sollicitudin diam leo, sit amet condimentum risus mattis eu.
         Nunc ullamcorper vehicula mauris, sit amet ornare mauris facilisis a.
-        <span id="myHighlight1" class="highlight">Praesent iaculis faucibus elit, ac venenatis augue scelerisque sit amet.
+        <span id="myHighlight1" class="highlight raw-highlighted-text">Praesent iaculis faucibus elit, ac venenatis augue scelerisque sit amet.
         Proin posuere mi eget urna luctus vestibulum. Proin dui turpis, egestas
         et ultrices in, mattis vel orci. Sed pulvinar nulla vitae tempus
             suscipit. Nullam ut eros id erat egestas lobortis.</span> Pellentesque et velit
@@ -119,7 +133,7 @@
         justo vitae sollicitudin. Maecenas eleifend ipsum nulla, vitae posuere
         elit tempus sed. Curabitur consectetur nec lorem vehicula interdum.
         Aliquam molestie suscipit sodales. Integer tempus auctor lectus vitae
-        euismod. Quisque fringilla sem sit amet cursus pharetra. <span id="myHighlight2" class="highlight">Sed sed justo
+        euismod. Quisque fringilla sem sit amet cursus pharetra. <span id="myHighlight2" class="highlight raw-highlighted-text">Sed sed justo
         sed nulla efficitur sagittis. Interdum et malesuada fames ac ante ipsum
         primis in faucibus. Curabitur laoreet convallis posuere. </span>Ut et neque
         vitae eros congue feugiat.
@@ -133,6 +147,14 @@
         accumsan at, fermentum eleifend diam.
 
     </p>
+
+    <div class="gap-elements">
+        <div style="position: absolute; top: 100px; left: 0;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit</div>
+        <div style="position: absolute; top: 200px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit</div>
+        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit</div>
+    </div>
 
 </div>
 
@@ -159,18 +181,13 @@
     function createHighlightForRect(boundingClientRect) {
 
         var highlightElement = document.createElement("div");
-        highlightElement.style.zIndex = "0";
 
-        console.log("FIXME: ", boundingClientRect);
-
+        highlightElement.className = "text-highlight";
         highlightElement.style.position = "absolute";
         highlightElement.style.left = `${boundingClientRect.left}px`;
         highlightElement.style.top = `${boundingClientRect.top}px`;
         highlightElement.style.width = `${boundingClientRect.width}px`;
         highlightElement.style.height = `${boundingClientRect.height}px`;
-
-        highlightElement.style.backgroundColor = 'yellow';
-        highlightElement.style.opacity="0.3";
 
         // FIXME: insert this into the page element.. to the parent div... there is a
         // get common parent method that I should probably use.
@@ -185,7 +202,7 @@
 
     }
 
-    createHighlightForElement(document.querySelector("#myHighlight"));
+    createHighlightForElement(document.querySelector("#myHighlight1"));
 
 </script>
 

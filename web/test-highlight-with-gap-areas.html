@@ -1,0 +1,115 @@
+<html>
+<head>
+    <style>
+
+        .content {
+            justify: justify;
+            width: 1020px;
+            z-index: 1;
+        }
+
+        .highlight {
+            /*background-color: yellow;*/
+        }
+
+        .raw-highlighted-text {
+            font-weight: bold;
+        }
+
+        p {
+            line-height: 50px;
+            z-index: 1;
+        }
+
+        .text-highlight {
+
+            z-index: 0;
+            background-color: yellow;
+            opacity: 0.3;
+            cursor: pointer;
+
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+<!--<h2>Raw gaps</h2>-->
+
+<!--<div class="content">-->
+
+    <!--&lt;!&ndash; https://github.com/mozilla/pdf.js/issues/4843 &ndash;&gt;-->
+
+    <!--<div class="gap-elements">-->
+        <!--<div style="position: absolute; top: 150px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit</div>-->
+        <!--<div style="position: absolute; top: 200px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit</div>-->
+        <!--<div style="position: absolute; top: 250px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit</div>-->
+        <!--<div style="position: absolute; top: 300px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit</div>-->
+    <!--</div>-->
+
+<!--</div>-->
+
+<!-- FIXME: this doesn't work because it backtracks within the selection -->
+
+<h2>Two gaps with a background div wrapper behind them</h2>
+
+<div class="gap-elements">
+    <div style="position: absolute; top: 150px; height: 120px; width: 100%;">
+        <div style="position: absolute; top: 0px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit</div>
+        <div style="position: absolute; top: 50px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam blandit</div>
+    </div>
+</div>
+
+<script>
+
+    // FIXME: I should probably create some code to just statically render a page
+    // with various highlights and then make sure they work properly by (probably)
+    // comparing the DOM before and AFTER.
+
+    function createHighlight() {
+
+        // FIXME use all the lighlights
+
+        var boundingClientRect = window.getSelection().getRangeAt(0).getBoundingClientRect();
+
+        createHighlightForRect(boundingClientRect);
+
+    }
+
+    function createHighlightForElement(element) {
+        createHighlightForRect(element.getBoundingClientRect());
+    }
+
+    function createHighlightForRect(boundingClientRect) {
+
+        var highlightElement = document.createElement("div");
+
+        highlightElement.className = "text-highlight";
+        highlightElement.style.position = "absolute";
+        highlightElement.style.left = `${boundingClientRect.left}px`;
+        highlightElement.style.top = `${boundingClientRect.top}px`;
+        highlightElement.style.width = `${boundingClientRect.width}px`;
+        highlightElement.style.height = `${boundingClientRect.height}px`;
+
+        // FIXME: insert this into the page element.. to the parent div... there is a
+        // get common parent method that I should probably use.
+
+        document.body.appendChild(highlightElement);
+
+        // FIXME: now clear the selection once this is done.
+
+        // FIXME: the highlight should/could be BELOW the text and probably should
+        // be until it's deleted I think.
+
+
+    }
+
+    createHighlightForElement(document.querySelector("#myHighlight1"));
+
+</script>
+
+</body>
+</html>
