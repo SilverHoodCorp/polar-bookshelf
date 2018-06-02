@@ -102,7 +102,7 @@ describe('Testing bounding client rect utils.', function() {
             {top: 10, left: 10, bottom: 50, right: 50}
         ];
 
-        var cbr = getClientBoundingRectFromBCRs(boundingClientRects);
+        var cbr = getBoundingClientRectFromBCRs(boundingClientRects);
 
         assert.deepEqual(cbr, { left: 10, top: 10, bottom: 50, right: 50 });
 
@@ -117,7 +117,7 @@ describe('Testing bounding client rect utils.', function() {
             {top: 40, left: 10, bottom: 50, right: 55}
         ];
 
-        var cbr = getClientBoundingRectFromBCRs(boundingClientRects);
+        var cbr = getBoundingClientRectFromBCRs(boundingClientRects);
 
         assert.deepEqual(cbr, { left: 5, top: 10, bottom: 55, right: 55 });
 

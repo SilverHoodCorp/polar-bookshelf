@@ -10,12 +10,19 @@ function computeRectsForContiguousHighlightRegion(boundingClientRects) {
 
     tuples.forEach(function (tuple) {
 
-        var adjusted = {};
-        Object.assign(adjusted, tuple.curr);
+        var adjusted = {
+            left: tuple.curr.left,
+            top: tuple.curr.top,
+            right: tuple.curr.right,
+            bottom: tuple.curr.bottom
+        };
 
         if(tuple.next) {
             adjusted.bottom = tuple.next.top;
         }
+
+        adjusted.width = adjusted.right - adjusted.left;
+        adjusted.height = adjusted.bottom - adjusted.top;
 
         result.push(adjusted);
 
@@ -24,3 +31,101 @@ function computeRectsForContiguousHighlightRegion(boundingClientRects) {
     return result;
 
 }
+
+function createTextHighlightFromClassname(clazz) {
+
+
+
+}
+
+class TextHighlight {
+
+    constructor(textHighlightStruct) {
+        this.textHighlightStruct = textHighlightStruct;
+    }
+
+    static create(selector) {
+
+        let textHighlightStruct = TextHighlightStruct.createFromSelector(selector);
+
+        // go through each marker and render them.
+        textHighlightStruct.markers.forEach(function (marker) {
+            console.log("FIXME 0 rendering..")
+            this.render(marker.element, marker.highlightRect);
+        }.bind(this));
+
+    }
+
+
+    /**
+     * Render a physical highlight on an element for the given boundingClientRect
+     *
+     * @param boundingClientRect
+     */
+    static render(element, highlightRect) {
+
+        var highlightElement = document.createElement("div");
+
+        highlightElement.className = "text-highlight";
+        highlightElement.style.position = "absolute";
+        highlightElement.style.left = `${highlightRect.left}px`;
+        highlightElement.style.top = `${highlightRect.top}px`;
+        highlightElement.style.width = `${highlightRect.width}px`;
+        highlightElement.style.height = `${highlightRect.height}px`;
+
+        // FIXME: insert this into the page element.. to the parent div... there is a
+        // get common parent method that I should probably use.
+
+        element.parentElement.appendChild(highlightElement);
+
+        // FIXME: now clear the selection once this is done.
+
+        // FIXME: the highlight should/could be BELOW the text and probably should
+        // be until it's deleted I think.
+
+    }
+
+}
+
+/**
+ * Raw structure to represent a text highlight on the page.
+ */
+class TextHighlightStruct {
+
+    constructor(markers) {
+
+        // the physical client bounding rects to draw the highlight on the page.
+        this.markers = markers;
+
+    }
+
+    /**
+     * Create a highlight from a CSS selector.
+     */
+    static createFromSelector(selector) {
+
+        let elements = Array.from(document.querySelectorAll(selector));
+
+        if(! elements) {
+            throw new Error("No elements");
+        }
+
+        var boundingClientRects = elements.map(current => current.getBoundingClientRect());
+
+        let contiguousRects = computeRectsForContiguousHighlightRegion(boundingClientRects);
+
+        // create a mapping between the element and the boundingClientRects
+        let markers = [];
+
+        for (let idx = 0; idx < elements.length; ++idx) {
+            var element = elements[idx];
+            markers.push({ element, highlightRect: contiguousRects[idx]});
+        }
+
+        return new TextHighlightStruct(markers);
+
+    }
+
+}
+
+

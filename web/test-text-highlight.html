@@ -10,6 +10,7 @@
 
         .raw-highlighted-text {
             font-weight: bold;
+            line-height: 50px;
         }
 
         p {
@@ -90,7 +91,10 @@
 
     -->
 
+    <script src="js/optional.js"></script>
+    <script src="js/utils.js"></script>
 
+    <script src="js/text-highlights.js"></script>
 
 </head>
 
@@ -104,22 +108,46 @@
         Pellentesque nisi orci, vulputate vitae dolor et, tristique fermentum
         justo. Nunc sollicitudin diam leo, sit amet condimentum risus mattis eu.
         Nunc ullamcorper vehicula mauris, sit amet ornare mauris facilisis a.
-        <span id="" class="raw-highlighted-text text-highlight-0001">Praesent iaculis faucibus elit, ac venenatis augue scelerisque sit amet.</span>
+
+        <div>
+        <span class="raw-highlighted-text text-highlight-0001">Praesent iaculis faucibus elit, ac venenatis augue scelerisque sit amet.</span>
+        </div>
+        <div>
         <span class="raw-highlighted-text text-highlight-0001">Proin posuere mi eget urna luctus vestibulum. Proin dui turpis, egestas</span>
+        </div>
+        <div>
         <span class="raw-highlighted-text text-highlight-0001">et ultrices in, mattis vel orci. Sed pulvinar nulla vitae tempus</span>
-            <span class="raw-highlighted-text text-highlight-0001">suscipit. Nullam ut eros id erat egestas lobortis.</span> Pellentesque et velit
+        </div>
+        <div>
+        <span class="raw-highlighted-text text-highlight-0001">suscipit. Nullam ut eros id erat egestas lobortis.</span>
+        </div>
+
+
+            Pellentesque et velit
         sed risus vestibulum pharetra pretium ac odio.
 
         Suspendisse iaculis orci in libero volutpat accumsan. Ut ornare auctor
         justo vitae sollicitudin. Maecenas eleifend ipsum nulla, vitae posuere
         elit tempus sed. Curabitur consectetur nec lorem vehicula interdum.
         Aliquam molestie suscipit sodales. Integer tempus auctor lectus vitae
-        euismod. Quisque fringilla sem sit amet cursus pharetra. <span id="myHighlight2" class="highlight raw-highlighted-text">Sed sed justo
-        sed nulla efficitur sagittis. Interdum et malesuada fames ac ante ipsum
-        primis in faucibus. Curabitur laoreet convallis posuere. </span>Ut et neque
-        vitae eros congue feugiat.
 
-        Pellentesque habitant morbi tristique senectus et netus et malesuada
+
+
+    <div>
+        <span id="" class="raw-highlighted-text text-highlight-0002">Praesent iaculis faucibus elit, ac venenatis augue scelerisque sit amet.</span>
+    </div>
+    <div>
+        <span class="raw-highlighted-text text-highlight-0002">Proin posuere mi eget urna luctus vestibulum. Proin dui turpis, egestas</span>
+    </div>
+    <div>
+        <span class="raw-highlighted-text text-highlight-0002">et ultrices in, mattis vel orci. Sed pulvinar nulla vitae tempus</span>
+    </div>
+    <div>
+        <span class="raw-highlighted-text text-highlight-0002">suscipit. Nullam ut eros id erat egestas lobortis.</span>
+    </div>
+
+
+    Pellentesque habitant morbi tristique senectus et netus et malesuada
         fames ac turpis egestas. Phasellus et posuere ligula, sed dignissim
         libero. Nullam lacinia nibh eu magna viverra imperdiet. In hac habitasse
         platea dictumst. Nunc id mattis nisl. Sed nec hendrerit justo. Donec ut
@@ -223,7 +251,9 @@
 
     }
 
-    createHighlightForElement(document.querySelector("#myHighlight1"));
+    //createHighlightForElement(document.querySelector("#myHighlight1"));
+
+    TextHighlight.create(".text-highlight-0001");
 
 </script>
 

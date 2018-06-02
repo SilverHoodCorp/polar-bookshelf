@@ -28,17 +28,17 @@ class Delegator {
  * Get the bounding box for a list of elements, not just one.  This would be
  * the minimum bounding box for all the elements.
  */
-function getClientBoundingRectFromElements(elements) {
+function getBoundingClientRectFromElements(elements) {
 
     var boundingClientRects = elements.map(Element.getBoundingClientRect);
-    return getClientBoundingRectFromBCRs(boundingClientRects);
+    return getBoundingClientRectFromBCRs(boundingClientRects);
 
 }
 
 /**
  * Get the bounding box from a list of BCRs.
  */
-function getClientBoundingRectFromBCRs(boundingClientRects) {
+function getBoundingClientRectFromBCRs(boundingClientRects) {
 
     var left = boundingClientRects.map((brc) => brc.left).reduce((a,b) => Math.min(a,b));
     var top = boundingClientRects.map((brc) => brc.top).reduce((a,b) => Math.min(a,b));
