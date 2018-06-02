@@ -400,73 +400,7 @@
 
     //createHighlightForElement(document.querySelector("#myHighlight1"));
 
-    var sequence = 0;
-
-    var textHighlighterOptions = {
-
-        highlightedClass: "text-highlight-span",
-        color: '', // this works and the color isn't changed.
-        manual: true,
-
-        onBeforeHighlight: function (range) {
-            console.log("onBeforeHighlight range: ", range);
-            return true;
-        },
-        onAfterHighlight: function (range, highlightElements) {
-            console.log("onAfterHighlight range: ", range);
-            console.log("onAfterHighlight hlts: ", highlightElements);
-
-            let id = sequence++;
-            let highlightClazz = "text-highlight-" + id;
-
-            highlightElements.forEach(function (highlightElement) {
-                //highlightElement.style.color = 'blue';
-                highlightElement.className = highlightElement.className + " " + highlightClazz;
-            });
-
-            // FIXME: use the highlightElements to get the text of the nodes
-            // then compute a hashcode to determine the ID of the highlight.
-
-            TextHighlight.create("." + highlightClazz);
-
-        },
-
-        onRemoveHighlight: function (hlt) {
-            console.log("onRemoveHighlight hlt: ", hlt);
-        }
-
-    };
-
-    // in the future we
-    // 're going to be able to do this ourselves...
-    var textHighlighter = new TextHighlighter(document.body, textHighlighterOptions);
-
-    function keyBindingListener(event) {
-
-        if (event.ctrlKey && event.altKey) {
-
-            const aCode = 65;
-
-            switch (event.which) {
-
-                case aCode:
-                    textHighlighter.doHighlight();
-                    break;
-
-                default:
-                    break;
-
-            }
-
-        }
-
-    }
-
-    function listenForKeyBindings() {
-        document.addEventListener("keyup", keyBindingListener);
-    }
-
-    listenForKeyBindings();
+    TextHighlightController.create().listenForKeyBindings();
 
 </script>
 

@@ -40,6 +40,7 @@ describe('Testing computeRectsForContiguousHighlightRegion.', function() {
         ];
 
         assert.deepEqual(TextHighlightMarkers.computeContiguousRects(boundingClientRects), expected);
+        
     });
 
 });

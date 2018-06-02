@@ -3,6 +3,91 @@
 // given some text, compute a list of rects that can overlap the text to form
 // one coherent highlight.
 
+class TextHighlightController {
+
+    constructor(textHighlighter) {
+        this.textHighlighter = textHighlighter;
+    }
+
+    keyBindingListener(event) {
+
+        if (event.ctrlKey && event.altKey) {
+
+            const tCode = 84;
+
+            switch (event.which) {
+
+                case tCode:
+                    this.textHighlighter.doHighlight();
+                    break;
+
+                default:
+                    break;
+
+            }
+
+        }
+
+    }
+
+    listenForKeyBindings() {
+        document.addEventListener("keyup", this.keyBindingListener.bind(this));
+    }
+
+    static create() {
+
+        return new TextHighlightController(TextHighlightController.createTextHighlighter());
+
+    }
+
+    /**
+     * Set text highlighting in the current document with the highlighter.
+     */
+    static createTextHighlighter() {
+
+        var sequence = 0;
+
+        var textHighlighterOptions = {
+
+            highlightedClass: "text-highlight-span",
+            color: '', // this works and the color isn't changed.
+            manual: true,
+
+            onBeforeHighlight: function (range) {
+                console.log("onBeforeHighlight range: ", range);
+                return true;
+            },
+            onAfterHighlight: function (range, highlightElements) {
+                console.log("onAfterHighlight range: ", range);
+                console.log("onAfterHighlight hlts: ", highlightElements);
+
+                let id = sequence++;
+                let highlightClazz = "text-highlight-" + id;
+
+                highlightElements.forEach(function (highlightElement) {
+                    //highlightElement.style.color = 'blue';
+                    highlightElement.className = highlightElement.className + " " + highlightClazz;
+                });
+
+                // FIXME: use the highlightElements to get the text of the nodes
+                // then compute a hashcode to determine the ID of the highlight.
+
+                TextHighlight.create("." + highlightClazz);
+
+            },
+
+            onRemoveHighlight: function (hlt) {
+                console.log("onRemoveHighlight hlt: ", hlt);
+            }
+
+        };
+
+        return new TextHighlighter(document.body, textHighlighterOptions);
+
+    }
+
+
+}
 
 class TextHighlight {
 
@@ -72,7 +157,7 @@ class TextHighlightMarkers {
 
         var rects = elements.map(current => elementOffset(current));
 
-        let contiguousRects = computeContiguousRects(rects);
+        let contiguousRects = TextHighlightMarkers.computeContiguousRects(rects);
 
         // create a mapping between the element and the rect
         let markers = [];

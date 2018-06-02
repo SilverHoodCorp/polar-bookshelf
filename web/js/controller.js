@@ -264,6 +264,8 @@ class WebController extends Controller {
 
         console.log("Key bindings registered");
 
+        TextHighlightController.create().listenForKeyBindings();
+
     }
 
 }

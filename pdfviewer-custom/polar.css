@@ -22,3 +22,9 @@ progress {
 #viewer {
     margin-bottom: 5px;
 }
+
+.text-highlight {
+    background-color: yellow;
+    /* the problem right now is that this works but the opacity and coloring is all fucked */
+    opacity: 0.4;
+}

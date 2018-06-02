@@ -8,6 +8,12 @@
 
 # Release
 
+- FONTS look like complete shit compared to the official version!!!
+    - is this cmaaps?
+    - my local pdf.js build looks horrible too.
+
+- 
+
 - Screenshots with pagemarks.
 
 - Blog / post about it.

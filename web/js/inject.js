@@ -56,6 +56,8 @@ async function injectAllScripts() {
     await injectScript('../../web/js/clock.js');
     await injectScript('../../web/js/optional.js');
     await injectScript('../../web/js/datastore/datastore.js');
+    await injectScript('../../web/js/text-highlights.js');
+    await injectScript('../../lib/TextHighlighter.js');
 
 }
 
