@@ -1,16 +1,8 @@
 
 # Features
 
-
 - different 'types' of pagemarks including "ignore" and "read" types so that
   you can mark an entire page as ignore and still have that count towards 100%
-
-- thumbnails highlighted in the side bar
-
-    - #thumbnailView has N A elements, one per page.
-    - with a <div> of .thumbnail with data-page-number on it
-    - with a child div of .thumbnailSelectionRing under it
-    - I can probably just re-use the existing framework
 
 - checkpoint journaling so I have confidence that I am not losing data.
 
