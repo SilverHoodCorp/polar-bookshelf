@@ -40,19 +40,21 @@ function createTextHighlightFromClassname(clazz) {
 
 class TextHighlight {
 
-    constructor(textHighlightStruct) {
-        this.textHighlightStruct = textHighlightStruct;
+    constructor(markers, selector) {
+        this.markers = markers;
+        this.selector = selector;
     }
 
     static create(selector) {
 
-        let textHighlightStruct = TextHighlightStruct.createFromSelector(selector);
+        let markers = TextHighlightMarkers.createFromSelector(selector);
 
         // go through each marker and render them.
-        textHighlightStruct.markers.forEach(function (marker) {
-            console.log("FIXME 0 rendering..")
+        markers.forEach(function (marker) {
             this.render(marker.element, marker.highlightRect);
         }.bind(this));
+
+        return new TextHighlight(markers, selector);
 
     }
 
@@ -88,16 +90,8 @@ class TextHighlight {
 }
 
 /**
- * Raw structure to represent a text highlight on the page.
  */
-class TextHighlightStruct {
-
-    constructor(markers) {
-
-        // the physical client rects to draw the highlight on the page.
-        this.markers = markers;
-
-    }
+class TextHighlightMarkers {
 
     /**
      * Create a highlight from a CSS selector.
@@ -112,8 +106,6 @@ class TextHighlightStruct {
 
         var rects = elements.map(current => elementOffset(current));
 
-        console.log("FIXME: rects", rects);
-
         let contiguousRects = computeRectsForContiguousHighlightRegion(rects);
 
         // create a mapping between the element and the rect
@@ -127,7 +119,7 @@ class TextHighlightStruct {
             });
         }
 
-        return new TextHighlightStruct(markers);
+        return markers;
 
     }
 
