@@ -108,7 +108,9 @@ class WebView extends View {
 
         console.log("Creating pagemark on page: " + pageEvent.num);
 
-        this.createPagemark(this.getPageElementByNum(pageEvent.num));
+        //this.createPagemark(this.getPageElementByNum(pageEvent.num));
+
+        this.pagemarkRenderer.create(pageEvent.num);
         this.updateProgress();
 
     }
@@ -268,26 +270,33 @@ class PagemarkRenderer {
     constructor(view) {
         this.view = view;
         this.pageElements = [];
+
+        // the CSS selector for pulling out the right pageElements.
+        this.pageElementSelector = null;
     }
 
     setup() {
 
     }
 
-    __setup(selector) {
+    __setup() {
 
         // FIXME: now we need a way to clear a given page by keeping a reference
         // to the page renderer for that page and then call erase on it once it
         // has been removed.
 
-        this.pageElements = document.querySelectorAll(selector);
+        this.__updatePageElements();
 
-        console.log(`Working with ${this.pageElements.length} elements for selector ${selector}` );
+        console.log(`Working with ${this.pageElements.length} elements for selector ${this.pageElementSelector}` );
 
         this.pageElements.forEach( function (pageElement) {
             this.init(pageElement);
         }.bind(this));
 
+    }
+
+    __updatePageElements() {
+        this.pageElements = document.querySelectorAll(this.pageElementSelector);
     }
 
     init(pageElement) {
@@ -320,11 +329,33 @@ class PagemarkRenderer {
     /**
      * Erase the page elements on the give page number.
      */
+    create(pageNum) {
+
+        if(typeof pageNum !== "number") {
+            throw new Error("pageNum is not a number");
+        }
+
+        this.__updatePageElements();
+
+        var pageElement = this.pageElements[pageNum-1];
+
+        if(!pageElement) {
+            throw new Error(`No pageElement for pageNum ${pageNum} out of ${this.pageElements.length} pageElements`);
+        }
+
+        this.__render(pageElement);
+    }
+
+    /**
+     * Erase the page elements on the give page number.
+     */
     erase(pageNum) {
 
         if(typeof pageNum !== "number") {
             throw new Error("pageNum is not a number");
         }
+
+        this.__updatePageElements();
 
         var pageElement = this.pageElements[pageNum-1];
 
@@ -344,10 +375,12 @@ class MainPagemarkRenderer extends PagemarkRenderer {
 
     constructor(view) {
         super(view);
+        this.pageElementSelector = ".page";
+
     }
 
     setup() {
-        this.__setup(".page");
+        this.__setup();
     }
 
     __requiresPagemark(pageElement) {
@@ -379,10 +412,11 @@ class ThumbnailPagemarkRenderer extends PagemarkRenderer {
 
     constructor(view) {
         super(view);
+        this.pageElementSelector = ".thumbnail";
     }
 
     setup() {
-        this.__setup(".thumbnail");
+        this.__setup();
     }
 
     __requiresPagemark(pageElement) {
@@ -432,6 +466,10 @@ class CompositePagemarkRenderer extends PagemarkRenderer {
 
     setup() {
         this.delegator.apply("setup");
+    }
+
+    create(pageNum) {
+        this.delegator.apply("create", pageNum);
     }
 
     erase(pageNum) {
