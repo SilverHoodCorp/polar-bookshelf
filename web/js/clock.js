@@ -25,4 +25,3 @@ class SyntheticClock extends Clock {
 
 }
 
-console.log("FIXME: OK.. clocks defined")

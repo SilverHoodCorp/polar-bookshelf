@@ -54,6 +54,7 @@ async function injectAllScripts() {
     await injectScript('../../web/js/view.js');
     await injectScript('../../web/js/controller.js');
     await injectScript('../../web/js/clock.js');
+    await injectScript('../../web/js/optional.js');
     await injectScript('../../web/js/datastore/datastore.js');
 
 }
