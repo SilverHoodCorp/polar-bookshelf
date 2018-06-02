@@ -67,8 +67,13 @@ class WebView extends View {
 
         console.log("WebView.onDocumentLoaded");
 
-        new MainPagemarkRenderer(this).setup();
-        new ThumbnailPagemarkRenderer(this).setup();
+        var pagemarkRendererDelegates = [
+            new MainPagemarkRenderer(this),
+            new ThumbnailPagemarkRenderer(this)
+        ];
+
+        this.pagemarkRenderer = new CompositePagemarkRenderer(this, pagemarkRendererDelegates);
+        this.pagemarkRenderer.setup();
 
         this.updateProgress();
 
@@ -395,25 +400,20 @@ class CompositePagemarkRenderer extends PagemarkRenderer {
 
     constructor(view, delegates) {
         super(view);
-        this.delegates = delegates;
+
+        if(!delegates) {
+            throw new Error("No delegates");
+        }
+
+        this.delegator = new Delegator(delegates);
     }
 
     setup() {
-        this.__apply("setup");
+        this.delegator.apply("setup");
     }
 
     erase(pageNum) {
-        this.__apply("erase", pageNum);
-    }
-
-    /**
-     * Apply the given function to all the delegates.
-     */
-    __apply(functionName) {
-        this.delegates.forEach(function (delegate) {
-            var func = delegate[functionName];
-            func.bind(delegate)(arguments);
-        });
+        this.delegator.apply("erase", pageNum);
     }
 
 }
