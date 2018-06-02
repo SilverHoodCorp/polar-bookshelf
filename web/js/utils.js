@@ -55,7 +55,7 @@ function getClientBoundingRectFromBCRs(boundingClientRects) {
  * are not present these values are null.
  *
  */
-function createSiblingTupples(arr) {
+function createSiblingTuples(arr) {
 
     let result = [];
 

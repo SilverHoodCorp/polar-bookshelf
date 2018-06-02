@@ -9,23 +9,58 @@ chai.use(chaiDiff);
 // stable reference date for all tests.
 var date = new Date(Date.parse("2018-05-30T02:47:44.411Z"));
 
+
+describe('Testing computeRectsForContiguousHighlightRegion.', function() {
+
+    it('Test with no entries', function () {
+        assert.deepEqual(computeRectsForContiguousHighlightRegion([]), []);
+    });
+
+    it('Test with one entry', function () {
+
+        var boundingClientRects = [
+            {top: 10, left: 10, bottom: 50, right: 50}
+        ];
+
+        var expected = [ { top: 10, left: 10, bottom: 50, right: 50 } ];
+
+        assert.deepEqual(computeRectsForContiguousHighlightRegion(boundingClientRects), expected);
+    });
+
+    it('Test with two entries', function () {
+
+        var boundingClientRects = [
+            {top: 10, left: 10, bottom: 20, right: 50},
+            {top: 50, left: 10, bottom: 70, right: 50}
+        ];
+
+        var expected = [
+            { top: 10, left: 10, bottom: 50, right: 50 },
+            { top: 50, left: 10, bottom: 70, right: 50 }
+        ];
+
+        assert.deepEqual(computeRectsForContiguousHighlightRegion(boundingClientRects), expected);
+    });
+
+});
+
 describe('Testing createSiblingTupples.', function() {
 
     it('Test with no entries', function() {
 
-        assert.deepEqual( createSiblingTupples([]), []);
+        assert.deepEqual( createSiblingTuples([]), []);
 
     });
 
     it('Test with 1 entry', function() {
 
-        assert.deepEqual( createSiblingTupples([1]), [ { curr: 1, prev: null, next: null } ]);
+        assert.deepEqual( createSiblingTuples([1]), [ { curr: 1, prev: null, next: null } ]);
 
     });
 
     it('Test with 2 entries', function() {
 
-        assert.deepEqual( createSiblingTupples([1,2]),
+        assert.deepEqual( createSiblingTuples([1,2]),
                           [
                               { curr: 1, prev: null, next: 2 },
                               { curr: 2, prev: 1, next: null }
@@ -35,7 +70,7 @@ describe('Testing createSiblingTupples.', function() {
 
     it('Test with 3 entries', function() {
 
-        assert.deepEqual( createSiblingTupples([1,2,3]),
+        assert.deepEqual( createSiblingTuples([1,2,3]),
             [
                 { curr: 1, prev: null, next: 2 },
                 { curr: 2, prev: 1, next: 3 },
@@ -46,7 +81,7 @@ describe('Testing createSiblingTupples.', function() {
 
     it('Test with 4 entries', function() {
 
-        assert.deepEqual( createSiblingTupples([1,2,3,4]),
+        assert.deepEqual( createSiblingTuples([1,2,3,4]),
             [
                 { curr: 1, prev: null, next: 2 },
                 { curr: 2, prev: 1, next: 3 },
