@@ -15,6 +15,41 @@ var date = new Date(Date.parse("2018-05-30T02:47:44.411Z"));
 // - colored diffs across multiple lines
 // - diff objects, not just strings.
 
+describe('Testing Delegates', function() {
+
+    it('TestBasicFunctionality', function() {
+
+        class MyDelegate {
+
+            constructor() {
+                this.testArg0 = null;
+                this.testArg1 = null;
+            }
+
+            testFunction(testArg0, testArg1) {
+                this.testArg0 = testArg0;
+                this.testArg1 = testArg1;
+            }
+
+        }
+
+        var delegate0 = new MyDelegate();
+        var delegate1 = new MyDelegate();
+
+        var delegator = new Delegator([delegate0, delegate1]);
+
+        delegator.apply("testFunction", "hello", "world");
+
+        assert.equal(delegate0.testArg0, "hello");
+        assert.equal(delegate0.testArg1, "world");
+
+        assert.equal(delegate1.testArg0, "hello");
+        assert.equal(delegate1.testArg1, "world");
+
+    });
+
+});
+
 describe('Testing progress computation', function() {
 
     it('Compute basic progress', function() {

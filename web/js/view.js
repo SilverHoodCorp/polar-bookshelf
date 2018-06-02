@@ -67,8 +67,8 @@ class WebView extends View {
 
         console.log("WebView.onDocumentLoaded");
 
-        new MainPagemarkRenderer(this).setup(".page");
-        new ThumbnailPagemarkRenderer(this).setup(".thumbnail");
+        new MainPagemarkRenderer(this).setup();
+        new ThumbnailPagemarkRenderer(this).setup();
 
         this.updateProgress();
 
@@ -108,6 +108,7 @@ class WebView extends View {
 
         this.erasePagemarks(this.getPageElementByNum(pageEvent.num));
         this.updateProgress();
+
     }
 
     async recreatePagemarksFromPagemarks(pageElement, options) {
@@ -249,50 +250,63 @@ class PagemarkRenderer {
 
     constructor(view) {
         this.view = view;
+        this.pageElements = [];
     }
 
-    setup(selector) {
+    setup() {
 
-        var elements = document.querySelectorAll(selector);
+    }
 
-        console.log(`FIXME: Working with ${elements.length} elements for selector ${selector}` );
+    __setup(selector) {
 
-        elements.forEach( function (element) {
-            this.init(element);
+        // FIXME: now we need a way to clear a given page by keeping a reference
+        // to the page renderer for that page and then call erase on it once it
+        // has been removed.
+
+        this.pageElements = document.querySelectorAll(selector);
+
+        console.log(`Working with ${this.pageElements.length} elements for selector ${selector}` );
+
+        this.pageElements.forEach( function (pageElement) {
+            this.init(pageElement);
         }.bind(this));
 
     }
 
     init(pageElement) {
 
-        console.log("FIXME0");
-
-        if(this.requiresPagemark(pageElement)) {
-            console.log("FIXME1");
-            this.render(pageElement);
+        if(this.__requiresPagemark(pageElement)) {
+            this.__render(pageElement);
         }
 
-        this.registerListener(pageElement);
+        this.__registerListener(pageElement);
 
     }
 
     /**
      * Return true if the target needs a pagemark.
      */
-    requiresPagemark(pageElement) {
+    __requiresPagemark(pageElement) {
 
     }
 
     /**
      * Register future listeners to monitor status.
      */
-    registerListener(pageElement) {
+    __registerListener(pageElement) {
 
     }
 
-    render(pageElement) {
+    __render(pageElement) {
     }
 
+    /**
+     * Erase the page elements on the give page number.
+     */
+    erase(pageNum) {
+        var pageElement = this.pageElements[pageNum-1];
+        this.view.erasePagemarks(pageElement);
+    }
 
 }
 
@@ -305,23 +319,27 @@ class MainPagemarkRenderer extends PagemarkRenderer {
         super(view);
     }
 
-    requiresPagemark(pageElement) {
+    setup() {
+        this.__setup(".page");
+    }
+
+    __requiresPagemark(pageElement) {
         return pageElement.querySelector("canvas") != null;
     }
 
-    registerListener(pageElement) {
+    __registerListener(pageElement) {
 
         pageElement.addEventListener('DOMNodeInserted', function(event) {
 
             if (event.target && event.target.className === "endOfContent") {
-                this.render(pageElement);
+                this.__render(pageElement);
             }
 
         }.bind(this), false );
 
     }
 
-    render(pageElement) {
+    __render(pageElement) {
         this.view.recreatePagemarksFromPagemarks(pageElement);
     }
 
@@ -336,24 +354,28 @@ class ThumbnailPagemarkRenderer extends PagemarkRenderer {
         super(view);
     }
 
-    requiresPagemark(pageElement) {
+    setup() {
+        this.__setup(".thumbnail");
+    }
+
+    __requiresPagemark(pageElement) {
         let thumbnailImage = pageElement.querySelector(".thumbnailImage");
         return thumbnailImage != null && thumbnailImage.getAttribute("src") != null;
     }
 
-    registerListener(pageElement) {
+    __registerListener(pageElement) {
 
         pageElement.querySelector(".thumbnailSelectionRing").addEventListener('DOMNodeInserted', function(event) {
 
             if (event.target && event.target.className === "thumbnailImage") {
-                this.render(pageElement);
+                this.__render(pageElement);
             }
 
         }.bind(this), false );
 
     }
 
-    render(pageElement) {
+    __render(pageElement) {
 
         var templateElement = pageElement.querySelector(".thumbnailImage");
 
@@ -376,12 +398,22 @@ class CompositePagemarkRenderer extends PagemarkRenderer {
         this.delegates = delegates;
     }
 
-    init(pageElement) {
+    setup() {
+        this.__apply("setup");
+    }
 
+    erase(pageNum) {
+        this.__apply("erase", pageNum);
+    }
+
+    /**
+     * Apply the given function to all the delegates.
+     */
+    __apply(functionName) {
         this.delegates.forEach(function (delegate) {
-            delegate.init.bind(delegate)(pageElement);
+            var func = delegate[functionName];
+            func.bind(delegate)(arguments);
         });
-
     }
 
 }
