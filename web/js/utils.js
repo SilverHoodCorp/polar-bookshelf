@@ -23,3 +23,30 @@ class Delegator {
     }
 
 }
+
+/**
+ * Get the bounding box for a list of elements, not just one.  This would be
+ * the minimum bounding box for all the elements.
+ */
+function getClientBoundingRectFromElements() {
+
+}
+
+/**
+ * Get the bounding box from a list of BCRs.
+ */
+function getClientBoundingRectFromBCRs(boundingClientRects) {
+
+    console.log("FIXME0: ", boundingClientRects.map((brc) => brc.left));
+    console.log("FIXME1: ", boundingClientRects.map((brc) => brc.left).reduce((a,b) => Math.min(a,b)));
+
+    var left = boundingClientRects.map((brc) => brc.left).reduce((a,b) => Math.min(a,b));
+    var top = boundingClientRects.map((brc) => brc.top).reduce((a,b) => Math.min(a,b));
+    var bottom = boundingClientRects.map((brc) => brc.bottom).reduce((a,b) => Math.max(a,b));
+    var right = boundingClientRects.map((brc) => brc.right).reduce((a,b) => Math.max(a,b));
+
+    console.log("FIXME: top ", top);
+
+    return {left, top, bottom, right};
+
+}

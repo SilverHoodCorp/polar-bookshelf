@@ -9,15 +9,41 @@ chai.use(chaiDiff);
 // stable reference date for all tests.
 var date = new Date(Date.parse("2018-05-30T02:47:44.411Z"));
 
-// FIXME: what I want in the diff formatter
-//
-// - print the expected and actual values on different lines.
-// - colored diffs across multiple lines
-// - diff objects, not just strings.
+describe('Testing bounding client rect utils.', function() {
+
+    it('Test with one element', function() {
+
+        var boundingClientRects = [
+            {top: 10, left: 10, bottom: 50, right: 50}
+        ];
+
+        var cbr = getClientBoundingRectFromBCRs(boundingClientRects);
+
+        assert.deepEqual(cbr, { left: 10, top: 10, bottom: 50, right: 50 });
+
+    });
+
+    it('Test with four elements', function() {
+
+        var boundingClientRects = [
+            {top: 10, left: 10, bottom: 50, right: 50},
+            {top: 20, left: 5,  bottom: 50, right: 50},
+            {top: 30, left: 10, bottom: 55, right: 50},
+            {top: 40, left: 10, bottom: 50, right: 55}
+        ];
+
+        var cbr = getClientBoundingRectFromBCRs(boundingClientRects);
+
+        assert.deepEqual(cbr, { left: 5, top: 10, bottom: 55, right: 55 });
+
+    });
+
+});
+
 
 describe('Testing Delegates', function() {
 
-    it('TestBasicFunctionality', function() {
+    it('Test basic functionality', function() {
 
         class MyDelegate {
 
