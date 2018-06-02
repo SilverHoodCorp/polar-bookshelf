@@ -1,4 +1,9 @@
+// FIXME: I should probably create some code to just statically render a page
+// with various highlights and then make sure they work properly by (probably)
+// comparing the DOM before and AFTER.
+
 function createHighlight() {
+
     // FIXME use all the lighlights
 
     var highlightElement = document.createElement("div");
@@ -17,7 +22,15 @@ function createHighlight() {
     highlightElement.style.backgroundColor = 'yellow';
     highlightElement.style.opacity="0.3";
 
+    // FIXME: insert this into the page element.. to the parent div... there is a
+    // get common parent method that I should probably use.
+
     document.body.appendChild(highlightElement);
+
+    // FIXME: now clear the selection once this is done.
+
+    // FIXME: the highlight should/could be BELOW the text and probably should
+    // be until it's deleted I think.
 
 }
 

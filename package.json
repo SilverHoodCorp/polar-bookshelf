@@ -35,7 +35,10 @@
     "mocha": "^5.2.0"
   },
   "dependencies": {
+    "fontawesome": "^4.7.2",
     "jquery": "^3.3.1",
+    "micromodal": "^0.3.2",
+    "simplemde": "^1.11.2",
     "webpack": "^4.10.0",
     "webpack-cli": "^2.1.4"
   }
