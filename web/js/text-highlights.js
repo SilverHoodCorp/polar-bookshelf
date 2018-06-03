@@ -105,9 +105,17 @@ class TextHighlight {
 
             // FIXME: I think this only needs to be done ONCE for the entire
             // row and we just need the main element for a reference point.
-            textHighlightRow.rectElements.forEach(function (rectElement) {
+
+            if(textHighlightRow.rectElements.length > 0) {
+
+                var rectElement = textHighlightRow.rectElements[0];
+
+                // We only need to call render on the first one because the row
+                // has the rect we're using to highlight and we're only using
+                // the element for positioning.
                 this.render(rectElement.element, textHighlightRow.rect);
-            }.bind(this));
+
+            }
 
         }.bind(this));
 
