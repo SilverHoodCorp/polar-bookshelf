@@ -72,7 +72,7 @@ class TextHighlightController {
                 // FIXME: use the highlightElements to get the text of the nodes
                 // then compute a hashcode to determine the ID of the highlight.
 
-                TextHighlight.create("." + highlightClazz);
+                TextHighlightRenderer.create("." + highlightClazz);
 
             },
 
@@ -89,7 +89,7 @@ class TextHighlightController {
 
 }
 
-class TextHighlight {
+class TextHighlightRenderer {
 
     constructor(textHighlightRows, selector) {
         this.textHighlightRows = textHighlightRows;
@@ -119,7 +119,7 @@ class TextHighlight {
 
         }.bind(this));
 
-        return new TextHighlight(textHighlightRows, selector);
+        return new TextHighlightRenderer(textHighlightRows, selector);
 
     }
 
@@ -206,7 +206,7 @@ class TextHighlight {
  * The actual annotation that is rendered on the screen plus its reference
  * element so we can redraw when we need to.
  */
-class TextHighlightAnnotation {
+class TextHighlightAnnotationReference {
 
 
     constructor(element, highlightRect) {
