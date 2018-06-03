@@ -10,6 +10,57 @@ chai.use(chaiDiff);
 var date = new Date(Date.parse("2018-05-30T02:47:44.411Z"));
 
 
+describe('Test computeRectForRow for highlighting text...', function() {
+
+    it('Test with 1 entries', function () {
+
+        var rects = [
+            {
+                "left": 0,
+                "top": 4,
+                "width": 721,
+                "height": 18,
+                "right": 721,
+                "bottom": 22
+            }
+        ];
+
+        var expected = { left: 0, top: 4, width: 721, height: 18, right: 721, bottom: 22 };
+
+        assert.deepEqual(TextHighlightMarkers.computeRectForRow(rects), expected);
+
+    });
+
+    it('Test with 2 entries', function () {
+
+        var rects = [
+            {
+                "left": 0,
+                "top": 4,
+                "width": 721,
+                "height": 18,
+                "right": 721,
+                "bottom": 22
+            },
+            {
+                "left": 0,
+                "top": 4,
+                "width": 721,
+                "height": 18,
+                "right": 800,
+                "bottom": 50
+            }
+
+        ];
+
+        var expected = { left: 0, top: 4, width: 800, height: 46, right: 800, bottom: 50 };
+
+        assert.deepEqual(TextHighlightMarkers.computeRectForRow(rects), expected);
+
+    });
+
+});
+
 describe('Test computeRows for highlighting text...', function() {
 
     it('Test with no entries', function () {

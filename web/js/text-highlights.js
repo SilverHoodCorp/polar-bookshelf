@@ -303,7 +303,7 @@ class TextHighlightMarkers {
         let row = [];
 
         tuples.forEach(function (tuple) {
-            
+
             row.push(tuple.curr);
 
             if(tuple.next == null || (tuple.next && tuple.curr.top !== tuple.next.top)) {
@@ -319,6 +319,43 @@ class TextHighlightMarkers {
         return result;
 
 
+
+    }
+
+    // given a row of rects, compute a rect that covers the entire row maximizing
+    // the height and width.
+    static computeRectForRow(row) {
+
+        if (row.length == null || row.length == 0)
+            throw new Error("Invalid row data");
+
+        // duplicate the first entry... we will keep maximixing the bounds.
+        let result = JSON.parse(JSON.stringify(row[0]));
+
+        row.forEach(function (entry) {
+
+            if(entry.left < result.left) {
+                result.left = entry.left;
+            }
+
+            if(entry.top < result.top) {
+                result.top = entry.top;
+            }
+
+            if(entry.bottom > result.bottom) {
+                result.bottom = entry.bottom;
+            }
+
+            if(entry.right > result.right) {
+                result.right = entry.right;
+            }
+
+            result.width = result.right - result.left;
+            result.height = result.bottom - result.top;
+
+        })
+
+        return result;
 
     }
 
