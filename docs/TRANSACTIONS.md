@@ -45,11 +45,11 @@ is the author's email.
 To create a structure of:
 
 ```json
-{ 
+{
   "author": {
     "email": "me@example.com"
   }
-  
+
 }
 ```
 
@@ -85,3 +85,5 @@ independent transaction logs via a cloud service.
 Additionally, we can perform multi-user collaboration with this pattern.  We can
 subscribe to transaction logs from multiple users, each merging the mutations on
 our end to form the user's viewpoint.
+
+
