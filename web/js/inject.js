@@ -61,8 +61,6 @@ async function injectAllScripts() {
 
 }
 
-
-
 function launchDev() {
 
     console.log("Launching in dev mode.");

@@ -1,0 +1,94 @@
+<html>
+<head>
+    <style>
+
+        .content {
+            width: 1020px;
+        }
+
+        .raw-highlighted-text {
+
+        }
+
+        body {
+            line-height: 1.8em !important;
+        }
+
+        p {
+        }
+
+        .text-highlight {
+
+            background-color: yellow;
+            opacity: 0.4;
+            /*cursor: pointer;*/
+
+        }
+
+        .text-highlight-span {
+            opacity: 1.4;
+        }
+
+        .container {
+            /*background-color: green;*/
+
+            position: absolute;
+            top: 50px;
+            left: 0;
+
+            height: 300px;
+            width: 100%;
+        }
+
+        .leaf1 {
+            position: absolute;
+            top: 10px;
+            left: 0;
+
+            height: 150px;
+            width: 100%;
+
+            background-color: blue;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .leaf2 {
+            position: absolute;
+            top: 10px;
+            left: 0;
+
+            height: 150px;
+            width: 100%;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+    <div class="holder1"></div>
+
+    <div class="holder2">
+
+        <!-- FIXME : looks like the EARLY one can get the z-index.... but the second one CAN NOt.. and if we set it
+         uip like this then I can't select within that element.-->
+
+        <div class="leaf1">
+        </div>
+
+        <div class="leaf2">
+            leaf2
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+
+</html>

@@ -113,28 +113,87 @@ class TextHighlight {
     /**
      * Render a physical highlight on an element for the given rect
      *
+     * @param element the <span> that was created to hold the text we are going to highlight.
      * @param highlightRect
      */
     static render(element, highlightRect) {
 
+        // this is the overlay element we're goign to paint yellow to show
+        // that we've highlighted the text.
         var highlightElement = document.createElement("div");
 
+        // this is the 'div' within the textLayer holding the style information
+        // we need to compute offset and location.
+        var textLayerDivElement = element.parentElement;
+
+        // this is the <div class='textLayer'> that holds all the <div> text
+        var textLayerElement = textLayerDivElement.parentElement;
+
+        // thisis the holder element which contains .canvasWrapper, .textLayer, etc.
+        var pageElement = textLayerElement.parentElement;
+
         highlightElement.className = "text-highlight";
+
         highlightElement.style.position = "absolute";
-        highlightElement.style.left = `${highlightRect.left}px`;
-        highlightElement.style.top = `${highlightRect.top}px`;
+        highlightElement.style.backgroundColor = `yellow`;
+        highlightElement.style.opacity = `0.5`;
+
+        // highlightElement.style.left = `${highlightRect.left}px`;
+        // highlightElement.style.top = `${highlightRect.top}px`;
+
+        highlightElement.style.left = textLayerDivElement.style.left;
+        highlightElement.style.top = textLayerDivElement.style.top;
+        highlightElement.style.transform = textLayerDivElement.style.transform;
+
+        // FIXME: I think this needs to always be implemented by reading the
+        // CURRENT values from the element so that resize works.
         highlightElement.style.width = `${highlightRect.width}px`;
         highlightElement.style.height = `${highlightRect.height}px`;
 
         // FIXME: insert this into the page element.. to the parent div... there is a
         // get common parent method that I should probably use.
 
-        element.parentElement.appendChild(highlightElement);
+        pageElement.insertBefore(highlightElement, pageElement.firstChild);
 
         // FIXME: now clear the selection once this is done.
 
         // FIXME: the highlight should/could be BELOW the text and probably should
         // be until it's deleted I think.
+
+        // I can implement it this way:.. I just need to insert it into the DOM
+        // and copy the following from the reference element
+        //  style.left
+        //  style.top
+        //  style.transform
+        //
+        //  then set:
+        //
+        //  style.opacity=0.5
+        //  style.backgroundColor=yellow
+        //  style.position=absolute
+        //
+        //  then calculate the current width and height
+        //
+        //  style.width
+        //  style.height
+
+    }
+
+}
+
+/**
+ * The actual annotation that is rendered on the screen plus its reference
+ * element so we can redraw when we need to.
+ */
+class TextHighlightAnnotation {
+
+
+    constructor(element, highlightRect) {
+        this.element = element;
+        this.highlightRect = highlightRect;
+    }
+
+    render() {
 
     }
 

@@ -12,7 +12,7 @@
     - is this cmaaps?
     - my local pdf.js build looks horrible too.
 
-- 
+- NOW the thumbnaails look like shit too!!!
 
 - Screenshots with pagemarks.
 
