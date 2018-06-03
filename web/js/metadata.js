@@ -485,6 +485,24 @@ class Text extends SerializedObject {
 
 }
 
+class Author extends SerializedObject {
+
+    constructor(val) {
+        super(val);
+
+        /**
+         * The name of this author.
+         * @type string
+         */
+        this.name = null;
+
+    }
+
+}
+
+/**
+ * Private note describing this object.  Meant to last a long time.
+ */
 class Note extends SerializedObject {
 
     constructor(val) {
@@ -503,6 +521,12 @@ class Note extends SerializedObject {
          */
         this.created = null;
 
+        /**
+         *
+         * @type Author
+         */
+        this.author = null;
+
         this.init(val);
 
     };
@@ -520,6 +544,42 @@ class Note extends SerializedObject {
         if(!this.created) {
             throw new Error("The field `created` is required.");
         }
+
+    }
+
+}
+
+/**
+ * Basically just like a note but it's a comment in a discussion stream.
+ */
+class Comment extends Note {
+
+    constructor() {
+        super(val);
+    }
+
+}
+
+class BaseHighlight extends SerializedObject {
+
+    constructor(val) {
+        super(val);
+
+        /**
+         * The rectangles where we need to place content for this highlights.
+         * @type {{}}
+         */
+        this.rects = {};
+
+        // this.linesOfText = {};
+        //
+        // this.text
+
+        /**
+         * Optional thumbnail for this highlight.
+         * @type {null}
+         */
+        this.thumbnail = null;
 
     }
 
@@ -588,12 +648,10 @@ class AnnotationWithNote extends Annotation {
          *
          * @type Note
          */
-        // FIXME: should be notes (plural)
+        this.notes = {};
 
         // FIXME: the keys of these objects should be the hash of the time
         // sequenece, the user, and machine that this was generated on.
-
-        this.note = null;
 
         // FIXME: should have comments (plural)
 

@@ -539,16 +539,28 @@ describe('testing metadata', function() {
 
     it('Note serialization', function() {
 
-        expect(JSON.stringify(new Note(
+        var note = new Note(
             {
                 text: new Text("hello"),
                 created: new ISODateTime(date)
-            })))
-            .to.equal(`{"text":{"body":"","type":"MARKDOWN"},"created":"2018-05-30T02:47:44.411Z"}`);
+            });
 
-        let note = MetadataSerializer.deserialize(new Note(), `{"text":"hello","created":"2018-05-30T02:47:44.411Z"}`);
+        assert.deepJSON(note, {
+            "text": {
+                "body": "",
+                "type": "MARKDOWN"
+            },
+            "created": "2018-05-30T02:47:44.411Z",
+            "author": null
+        });
 
-        expect(note).to.deep.equal({ text: 'hello', created: '2018-05-30T02:47:44.411Z' });
+        note = MetadataSerializer.deserialize(new Note(), `{"text":"hello","created":"2018-05-30T02:47:44.411Z"}`);
+
+        assert.deepJSON(note, {
+            "text": "hello",
+            "created": "2018-05-30T02:47:44.411Z",
+            "author": null
+        });
 
     });
 
@@ -566,11 +578,25 @@ describe('testing pagemarks', function() {
         //expect(pagemark).to.deep.equal({});
 
 
-        let serialized = MetadataSerializer.serialize(pagemark, "");
-        console.log(serialized);
+        let serialized = MetadataSerializer.serialize(pagemark, "  ");
         // FIXME: figure out how to make this multiple lines so that it's readable
         // as a test.
-        expect(serialized).to.equal("{\"created\":\"2018-05-30T02:47:44.411Z\",\"lastUpdated\":\"2018-05-30T02:47:44.411Z\",\"note\":{\"text\":\"\",\"created\":\"2018-05-30T02:47:44.411Z\"},\"type\":\"SINGLE_COLUMN\",\"percentage\":100,\"column\":0}");
+
+        assert.deepJSON(serialized, {
+            "created": "2018-05-30T02:47:44.411Z",
+            "lastUpdated": "2018-05-30T02:47:44.411Z",
+            "note": {
+                "text": "",
+                "created": "2018-05-30T02:47:44.411Z",
+                "author": null
+            },
+            "type": "SINGLE_COLUMN",
+            "percentage": 100,
+            "column": 0,
+            "notes": {}
+        });
+
+        //expect(serialized).to.equal("{\"created\":\"2018-05-30T02:47:44.411Z\",\"lastUpdated\":\"2018-05-30T02:47:44.411Z\",\"note\":{\"text\":\"\",\"created\":\"2018-05-30T02:47:44.411Z\"},\"type\":\"SINGLE_COLUMN\",\"percentage\":100,\"column\":0}");
 
     });
 
@@ -679,35 +705,38 @@ describe('testing model interaction', function() {
         // verify that we have a pagemark now...
         docMeta = await datastore.getDocMeta(fingerprint);
 
-        assertJSON(docMeta, "{\n" +
-                            "  \"docInfo\": {\n" +
-                            "    \"title\": null,\n" +
-                            "    \"url\": null,\n" +
-                            "    \"nrPages\": 1,\n" +
-                            "    \"fingerprint\": \"fake-fingerprint\"\n" +
-                            "  },\n" +
-                            "  \"pageMetas\": {\n" +
-                            "    \"1\": {\n" +
-                            "      \"pageInfo\": {\n" +
-                            "        \"num\": 1\n" +
-                            "      },\n" +
-                            "      \"pagemarks\": {\n" +
-                            "        \"0\": {\n" +
-                            "          \"created\": \"2018-05-30T02:47:44.411Z\",\n" +
-                            "          \"lastUpdated\": \"2018-05-30T02:47:44.411Z\",\n" +
-                            "          \"type\": \"SINGLE_COLUMN\",\n" +
-                            "          \"percentage\": 100,\n" +
-                            "          \"column\": 0,\n" +
-                            "          \"note\": {\n" +
-                            "            \"text\": \"\",\n" +
-                            "            \"created\": \"2018-05-30T02:47:44.411Z\"\n" +
-                            "          }\n" +
-                            "        }\n" +
-                            "      }\n" +
-                            "    }\n" +
-                            "  },\n" +
-                            "  \"version\": 1\n" +
-                            "}");
+        assert.deepJSON(docMeta,
+            {
+            "docInfo": {
+                "title": null,
+                "url": null,
+                "nrPages": 1,
+                "fingerprint": "fake-fingerprint"
+            },
+            "pageMetas": {
+                "1": {
+                    "pageInfo": {
+                        "num": 1
+                    },
+                    "pagemarks": {
+                        "0": {
+                            "created": "2018-05-30T02:47:44.411Z",
+                            "lastUpdated": "2018-05-30T02:47:44.411Z",
+                            "type": "SINGLE_COLUMN",
+                            "percentage": 100,
+                            "column": 0,
+                            "note": {
+                                "text": "",
+                                "created": "2018-05-30T02:47:44.411Z",
+                                "author": null
+                            },
+                            "notes": {}
+                        }
+                    }
+                }
+            },
+            "version": 1
+        });
 
         model.erasePagemark(1);
 
@@ -830,7 +859,8 @@ assert.deepJSON = function(actual,expected) {
     expected = toJSON(expected);
 
     if ( actual !== expected) {
-        console.log(actual);
+        console.error("The following content was not expected: ");
+        console.error(actual);
     }
 
     //assert.equal(actual,expected);

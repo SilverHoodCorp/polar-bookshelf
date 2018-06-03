@@ -264,19 +264,6 @@ class TextHighlightMarkers {
 
         return textHighlightRows;
 
-        // // create a mapping between the element and the rect
-        // let markers = [];
-        //
-        // for (let idx = 0; idx < elements.length; ++idx) {
-        //     var element = elements[idx];
-        //     markers.push( {
-        //         element,
-        //         highlightRect: contiguousRects[idx]
-        //     });
-        // }
-        //
-        // return markers;
-
     }
 
     /**
@@ -288,15 +275,14 @@ class TextHighlightMarkers {
      */
     static computeOffset(element) {
 
+        // FIXME... record if this row height is too small!!! this is where the bug is I think...
+
         // make sure we're working on the right element or our math won't be right.
         Elements.requireClass(element, "text-highlight-span");
 
         let textHighlightSpanOffset = elementOffset(element);
 
         var textLayerDivElement = element.parentElement;
-
-        // FIXME: this might also have to factor in scaleX and scaleY in the
-        // future....
 
         var textLayerDivOffset = elementOffset(textLayerDivElement);
         var rect = textLayerDivOffset;
@@ -317,6 +303,9 @@ class TextHighlightMarkers {
 
         rect.bottom = rect.top + rect.height;
         rect.right = rect.left + rect.width;
+
+        // FIXME:
+        console.log({before: textHighlightSpanOffset, after: rect})
 
         return new RectElement(rect, element);
 
