@@ -38,6 +38,12 @@ class WebView extends View {
 
         document.querySelector("#pagemark-process").value = perc;
 
+        // now update the description of the doc at the bottom.
+
+        var description = DocMetaDescriber.describe(this.model.docMeta);
+
+        document.querySelector("#polar-doc-overview").textContent = description;
+
     }
 
     computeProgress(docMeta) {

@@ -191,6 +191,25 @@ class SerializedObject {
 
 }
 
+class DocMetaDescriber {
+
+    static describe(docMeta) {
+
+        var nrPagemarks = 0;
+
+        forDict(docMeta.pageMetas, function (key, pageMeta) {
+            forDict(pageMeta.pagemarks, function (column, pagemark) {
+                ++nrPagemarks;
+            }.bind(this));
+
+        }.bind(this));
+
+
+        return `PDF with ${docMeta.docInfo.nrPages} pages and ${nrPagemarks} pagemarks.`
+    }
+
+}
+
 /**
  * Root metadata for a document including page metadata, and metadata for
  * the specific document.
