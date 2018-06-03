@@ -137,44 +137,60 @@ describe('Testing for gaps in contiguous rects', function() {
 
         var rects = [
             {
-                "left": 0,
-                "top": 4,
-                "width": 721,
-                "height": 18,
-                "right": 721,
-                "bottom": 22
+                rect: {
+                    "left": 0,
+                    "top": 4,
+                    "width": 721,
+                    "height": 18,
+                    "right": 721,
+                    "bottom": 22
+                },
+                element: null
             },
             {
-                "left": 0,
-                "top": 4,
-                "width": 721,
-                "height": 18,
-                "right": 721,
-                "bottom": 22
+                rect: {
+                    "left": 0,
+                    "top": 4,
+                    "width": 721,
+                    "height": 18,
+                    "right": 721,
+                    "bottom": 22
+                },
+                element: null
             },
             {
-                "left": 0,
-                "top": 4,
-                "width": 721,
-                "height": 18,
-                "right": 721,
-                "bottom": 22
+                rect: {
+                    "left": 0,
+                    "top": 4,
+                    "width": 721,
+                    "height": 18,
+                    "right": 721,
+                    "bottom": 22
+                },
+                element: null
             },
             {
-                "left": 0,
-                "top": 4,
-                "width": 721,
-                "height": 18,
-                "right": 721,
-                "bottom": 22
+                rect: {
+                    "left": 0,
+                    "top": 4,
+                    "width": 721,
+                    "height": 18,
+                    "right": 721,
+                    "bottom": 22
+                },
+                element: null
+
             },
             {
-                "left": 0,
-                "top": 4,
-                "width": 297,
-                "height": 18,
-                "right": 297,
-                "bottom": 22
+                rect: {
+                    "left": 0,
+                    "top": 4,
+                    "width": 297,
+                    "height": 18,
+                    "right": 297,
+                    "bottom": 22
+                },
+                element: null
             }
         ];
 
@@ -192,20 +208,21 @@ describe('Testing computeContiguousRects.', function() {
 
     it('Test with one entry', function () {
 
-        var boundingClientRects = [
-            {top: 10, left: 10, bottom: 50, right: 50}
+        var rects = [
+            { rect: {top: 10, left: 10, bottom: 50, right: 50} }
         ];
 
         var expected = [ { top: 10, left: 10, bottom: 50, right: 50, width: 40, height: 40 } ];
 
-        assert.deepEqual(TextHighlightMarkers.computeContiguousRects(boundingClientRects), expected);
+        assert.deepEqual(TextHighlightMarkers.computeContiguousRects(rects), expected);
+
     });
 
     it('Test with two entries', function () {
 
         var boundingClientRects = [
-            {top: 10, left: 10, bottom: 20, right: 50},
-            {top: 50, left: 10, bottom: 70, right: 50}
+            {rect: {top: 10, left: 10, bottom: 20, right: 50}},
+            {rect: {top: 50, left: 10, bottom: 70, right: 50}}
         ];
 
         var expected = [

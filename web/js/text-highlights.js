@@ -225,11 +225,11 @@ class TextHighlightMarkers {
         // 'div' so the offset is wrong...
 
         // var rects = elements.map(current => elementOffset(current));
-        var rects = elements.map(current => this.computeOffset(current));
+        var rectElements = elements.map(current => this.computeOffset(current));
 
-        let contiguousRects = TextHighlightMarkers.computeContiguousRects(rects);
+        let contiguousRects = TextHighlightMarkers.computeContiguousRects(rectElements);
 
-        console.log({rects, contiguousRects});
+        console.log({rectElements, contiguousRects});
 
         // create a mapping between the element and the rect
         let markers = [];
@@ -250,7 +250,8 @@ class TextHighlightMarkers {
      * Given the span of our highlight, compute the offset looking at the CSS
      * styles of the element we're trying to map.
      *
-     * @param element
+     * @param element The element which we're computing over.
+     * @return A RectElement for the rect (result) and the element
      */
     static computeOffset(element) {
 
@@ -265,25 +266,24 @@ class TextHighlightMarkers {
         // future....
 
         var textLayerDivOffset = elementOffset(textLayerDivElement);
-        var result = textLayerDivOffset;
+        var rect = textLayerDivOffset;
 
         let scaleX = Styles.parseTransformScaleX(textLayerDivElement.style.transform);
 
         if(! scaleX)
             throw new Error("No scaleX");
 
-        result.left = result.left + textHighlightSpanOffset.left;
-        result.top = result.top + textHighlightSpanOffset.top;
-        result.height = textHighlightSpanOffset.height;
-        result.width = textHighlightSpanOffset.width * scaleX;
+        rect.left = rect.left + textHighlightSpanOffset.left;
+        rect.top = rect.top + textHighlightSpanOffset.top;
+        rect.height = textHighlightSpanOffset.height;
+        rect.width = textHighlightSpanOffset.width * scaleX;
 
-        result.width = Math.min(result.width, textLayerDivOffset.width);
+        rect.width = Math.min(rect.width, textLayerDivOffset.width);
 
-        result.bottom = result.top + result.height;
-        result.right = result.left + result.width;
+        rect.bottom = rect.top + rect.height;
+        rect.right = rect.left + rect.width;
 
-
-        return result;
+        return new RectElement(rect, element);
 
     }
 
@@ -359,27 +359,33 @@ class TextHighlightMarkers {
 
     }
 
-    static computeContiguousRects(rects) {
+    static computeContiguousRects(rectElements) {
 
-        let tuples = createSiblingTuples(rects);
+        let tuples = createSiblingTuples(rectElements);
 
         let result = [];
 
+        // FIXME: make this return 'row' objects with the elements witin that row.
+
         tuples.forEach(function (tuple) {
 
+            if(!tuple.curr.rect) {
+                throw new Error("Not a RectElement");
+            }
+
             var adjusted = {
-                left: tuple.curr.left,
-                top: tuple.curr.top,
-                right: tuple.curr.right,
-                bottom: tuple.curr.bottom
+                left: tuple.curr.rect.left,
+                top: tuple.curr.rect.top,
+                right: tuple.curr.rect.right,
+                bottom: tuple.curr.rect.bottom
             };
 
             // adjust the bottom of this div but ONLY if the next div is not on
             // the same rows.  I might need to have some code to first build
             // this into ROWS.
 
-            if(tuple.next && tuple.next.top != tuple.curr.top) {
-                adjusted.bottom = tuple.next.top;
+            if(tuple.next && tuple.next.rect.top != tuple.curr.rect.top) {
+                adjusted.bottom = tuple.next.rect.top;
             }
 
             adjusted.width = adjusted.right - adjusted.left;
@@ -395,4 +401,27 @@ class TextHighlightMarkers {
 
 }
 
+/**
+ * A rect and element pair.
+ */
+class RectElement {
+
+    constructor(rect, element) {
+        this.rect = rect;
+        this.element = element;
+    }
+
+}
+
+/**
+ * Represents a row of highlighted text...
+ */
+class TextHighlightRow {
+
+    constructor(rect, elements) {
+        this.rect = rect;
+        this.elements = elements;
+    }
+
+}
 
