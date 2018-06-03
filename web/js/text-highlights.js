@@ -105,8 +105,8 @@ class TextHighlight {
 
             // FIXME: I think this only needs to be done ONCE for the entire
             // row and we just need the main element for a reference point.
-            textHighlightRow.elements.forEach(function (element) {
-                this.render(element, textHighlightRow.rect);
+            textHighlightRow.rectElements.forEach(function (rectElement) {
+                this.render(rectElement.element, textHighlightRow.rect);
             }.bind(this));
 
         }.bind(this));
@@ -219,9 +219,9 @@ class TextHighlightAnnotation {
  */
 class TextHighlightRow {
 
-    constructor(rect, elements) {
+    constructor(rect, rectElements) {
         this.rect = rect;
-        this.elements = elements;
+        this.rectElements = rectElements;
     }
 
 }
@@ -388,43 +388,52 @@ class TextHighlightMarkers {
 
     static computeIntermediateRows(rectElements) {
 
+        let rows = TextHighlightMarkers.computeRows(rectElements)
+        let result = [];
 
+        rows.forEach(function (rectElementsWithinRow) {
+            var rect = TextHighlightMarkers.computeRectForRow(rectElementsWithinRow);
+            let intermediateRow = new IntermediateRow(rect, rectElementsWithinRow);
+            result.push(intermediateRow);
+        });
+
+        return result;
 
     }
 
     static computeContiguousRects(rectElements) {
 
-        let tuples = createSiblingTuples(rectElements);
+        let intermediateRows = TextHighlightMarkers.computeIntermediateRows(rectElements);
+
+        let intermediateRowPager = createSiblingTuples(intermediateRows);
 
         let result = [];
 
-        // FIXME: make this return 'row' objects with the elements witin that row.
+        intermediateRowPager.forEach(function (page) {
 
-        tuples.forEach(function (tuple) {
-
-            if(!tuple.curr.rect) {
-                throw new Error("Not a RectElement");
+            if(!page.curr.rect || !page.curr.rectElements) {
+                throw new Error("Not a IntermediateRow");
             }
 
-            var adjusted = {
-                left: tuple.curr.rect.left,
-                top: tuple.curr.rect.top,
-                right: tuple.curr.rect.right,
-                bottom: tuple.curr.rect.bottom
+            var adjustedRect = {
+                left: page.curr.rect.left,
+                top: page.curr.rect.top,
+                right: page.curr.rect.right,
+                bottom: page.curr.rect.bottom
             };
 
             // adjust the bottom of this div but ONLY if the next div is not on
             // the same rows.  I might need to have some code to first build
             // this into ROWS.
 
-            if(tuple.next && tuple.next.rect.top != tuple.curr.rect.top) {
-                adjusted.bottom = tuple.next.rect.top;
+            if(page.next && page.next.rect.top != page.curr.rect.top) {
+                adjustedRect.bottom = page.next.rect.top;
             }
 
-            adjusted.width = adjusted.right - adjusted.left;
-            adjusted.height = adjusted.bottom - adjusted.top;
+            adjustedRect.width = adjustedRect.right - adjustedRect.left;
+            adjustedRect.height = adjustedRect.bottom - adjustedRect.top;
 
-            let textHighlightRow = new TextHighlightRow(adjusted, [tuple.curr.element]);
+            let textHighlightRow = new TextHighlightRow(adjustedRect, page.curr.rectElements);
 
             result.push(textHighlightRow);
 
@@ -455,10 +464,9 @@ class RectElement {
  */
 class IntermediateRow {
 
-    constructor(rect, rectElement) {
+    constructor(rect, rectElements) {
         this.rect = rect;
-        this.rectElement = rectElement;
+        this.rectElements = rectElements;
     }
 
 }
-

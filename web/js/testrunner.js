@@ -232,12 +232,31 @@ describe('Testing computeContiguousRects.', function() {
 
         var expected = [
             {
-                rect: { left: 10, top: 10, right: 50, bottom: 50, width: 40, height: 40 },
-                elements: [ null ]
+                "rect": {
+                    "left": 10,
+                    "top": 10,
+                    "right": 50,
+                    "bottom": 50,
+                    "width": 40,
+                    "height": 40
+                },
+                "rectElements": [
+                    {
+                        "rect": {
+                            "top": 10,
+                            "left": 10,
+                            "bottom": 50,
+                            "right": 50
+                        },
+                        "element": null
+                    }
+                ]
             }
         ];
 
-        assert.deepEqual(TextHighlightMarkers.computeContiguousRects(rects), expected);
+        let actual = TextHighlightMarkers.computeContiguousRects(rects);
+
+        assert.deepJSON(actual, expected);
 
     });
 
@@ -249,11 +268,51 @@ describe('Testing computeContiguousRects.', function() {
         ];
 
         var expected = [
-            { rect: { left: 10, top: 10, right: 50, bottom: 50, width: 40, height: 40}, elements: [null] },
-            { rect: { left: 10, top: 50, right: 50, bottom: 70, width: 40, height: 20}, elements: [null] }
+            {
+                "rect": {
+                    "left": 10,
+                    "top": 10,
+                    "right": 50,
+                    "bottom": 50,
+                    "width": 40,
+                    "height": 40
+                },
+                "rectElements": [
+                    {
+                        "rect": {
+                            "top": 10,
+                            "left": 10,
+                            "bottom": 20,
+                            "right": 50
+                        },
+                        "element": null
+                    }
+                ]
+            },
+            {
+                "rect": {
+                    "left": 10,
+                    "top": 50,
+                    "right": 50,
+                    "bottom": 70,
+                    "width": 40,
+                    "height": 20
+                },
+                "rectElements": [
+                    {
+                        "rect": {
+                            "top": 50,
+                            "left": 10,
+                            "bottom": 70,
+                            "right": 50
+                        },
+                        "element": null
+                    }
+                ]
+            }
         ];
 
-        assert.deepEqual(TextHighlightMarkers.computeContiguousRects(boundingClientRects), expected);
+        assert.deepJSON(TextHighlightMarkers.computeContiguousRects(boundingClientRects), expected);
 
     });
 
@@ -763,6 +822,23 @@ function assertJSON(actual,expected) {
     expect(expected).not.differentFrom(actual);
 
 }
+
+assert.deepJSON = function(actual,expected) {
+
+    // first convert both to JSON if necessary.
+    actual = toJSON(actual);
+    expected = toJSON(expected);
+
+    if ( actual !== expected) {
+        console.log(actual);
+    }
+
+    //assert.equal(actual,expected);
+
+    expect(expected).not.differentFrom(actual);
+
+}
+
 
 function toJSON(obj) {
 
