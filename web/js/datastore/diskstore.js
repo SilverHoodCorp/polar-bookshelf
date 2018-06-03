@@ -102,7 +102,13 @@ class DiskDatastore extends datastore.Datastore {
 
         var statePath = docDir + "/state.json";
 
-        var data = metadata.MetadataSerializer.serialize(docMeta)
+        // NOTE that we always write the state with JSON pretty printing.
+        // Otherwise tools like git diff , etc will be impossibe to deal with
+        // in practice.
+        //
+        // The ledger system would also have a similar problem but we can work
+        // on that by making it inherently something that can't conflict
+        var data = metadata.MetadataSerializer.serialize(docMeta, "  ");
 
         return this.writeFileAsync(statePath, data);
 

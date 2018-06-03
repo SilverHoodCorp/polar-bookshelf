@@ -225,6 +225,7 @@ class TextHighlightRow {
     }
 
 }
+
 /**
  */
 class TextHighlightMarkers {
@@ -342,8 +343,6 @@ class TextHighlightMarkers {
 
         return result;
 
-
-
     }
 
     // given a row of rects, compute a rect that covers the entire row maximizing
@@ -380,6 +379,12 @@ class TextHighlightMarkers {
         })
 
         return result;
+
+    }
+
+    static computeIntermediateRows(rectElements) {
+
+
 
     }
 
@@ -427,6 +432,7 @@ class TextHighlightMarkers {
 
 }
 
+
 /**
  * A rect and element pair.
  */
@@ -439,4 +445,16 @@ class RectElement {
 
 }
 
+/**
+ * An intermediate row with a rect covering the whole row and the rectElements
+ * it contains.
+ */
+class IntermediateRow {
+
+    constructor(rect, rectElement) {
+        this.rect = rect;
+        this.rectElement = rectElement;
+    }
+
+}
 
