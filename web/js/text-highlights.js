@@ -313,14 +313,14 @@ class TextHighlightMarkers {
     }
 
     /**
-     * Go through ALL the rects and build out rows of text elements that are
+     * Go through ALL the rects and build out rows of elements that are
      * horizontally all on the same plane.
      *
-     * @param rects
+     * @param rectElements
      */
-    static computeRows(rects) {
+    static computeRows(rectElements) {
 
-        let tuples = createSiblingTuples(rects);
+        let tuples = createSiblingTuples(rectElements);
 
         let result = [];
 
@@ -329,9 +329,13 @@ class TextHighlightMarkers {
 
         tuples.forEach(function (tuple) {
 
+            if(!tuple.curr.rect) {
+                throw new Error("Not a RectElement");
+            }
+
             row.push(tuple.curr);
 
-            if(tuple.next == null || (tuple.next && tuple.curr.top !== tuple.next.top)) {
+            if(tuple.next == null || (tuple.next && tuple.curr.rect.top !== tuple.next.rect.top)) {
                 result.push(row);
                 row = [];
             }
@@ -353,24 +357,24 @@ class TextHighlightMarkers {
             throw new Error("Invalid row data");
 
         // duplicate the first entry... we will keep maximixing the bounds.
-        let result = JSON.parse(JSON.stringify(row[0]));
+        let result = JSON.parse(JSON.stringify(row[0].rect));
 
-        row.forEach(function (entry) {
+        row.forEach(function (rectElement) {
 
-            if(entry.left < result.left) {
-                result.left = entry.left;
+            if(rectElement.rect.left < result.left) {
+                result.left = rectElement.rect.left;
             }
 
-            if(entry.top < result.top) {
-                result.top = entry.top;
+            if(rectElement.rect.top < result.top) {
+                result.top = rectElement.rect.top;
             }
 
-            if(entry.bottom > result.bottom) {
-                result.bottom = entry.bottom;
+            if(rectElement.rect.bottom > result.bottom) {
+                result.bottom = rectElement.rect.bottom;
             }
 
-            if(entry.right > result.right) {
-                result.right = entry.right;
+            if(rectElement.rect.right > result.right) {
+                result.right = rectElement.rect.right;
             }
 
             result.width = result.right - result.left;

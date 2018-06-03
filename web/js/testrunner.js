@@ -14,20 +14,23 @@ describe('Test computeRectForRow for highlighting text...', function() {
 
     it('Test with 1 entries', function () {
 
-        var rects = [
+        var rectElements = [
             {
-                "left": 0,
-                "top": 4,
-                "width": 721,
-                "height": 18,
-                "right": 721,
-                "bottom": 22
+                rect: {
+                    "left": 0,
+                    "top": 4,
+                    "width": 721,
+                    "height": 18,
+                    "right": 721,
+                    "bottom": 22
+                },
+                element: null
             }
         ];
 
         var expected = { left: 0, top: 4, width: 721, height: 18, right: 721, bottom: 22 };
 
-        assert.deepEqual(TextHighlightMarkers.computeRectForRow(rects), expected);
+        assert.deepEqual(TextHighlightMarkers.computeRectForRow(rectElements), expected);
 
     });
 
@@ -35,20 +38,26 @@ describe('Test computeRectForRow for highlighting text...', function() {
 
         var rects = [
             {
-                "left": 0,
-                "top": 4,
-                "width": 721,
-                "height": 18,
-                "right": 721,
-                "bottom": 22
+                rect: {
+                    "left": 0,
+                    "top": 4,
+                    "width": 721,
+                    "height": 18,
+                    "right": 721,
+                    "bottom": 22
+                },
+                element: null
             },
             {
-                "left": 0,
-                "top": 4,
-                "width": 721,
-                "height": 18,
-                "right": 800,
-                "bottom": 50
+                rect: {
+                    "left": 0,
+                    "top": 4,
+                    "width": 721,
+                    "height": 18,
+                    "right": 800,
+                    "bottom": 50
+                },
+                element: null
             }
 
         ];
@@ -74,17 +83,20 @@ describe('Test computeRows for highlighting text...', function() {
 
         var rects = [
             {
-                "left": 0,
-                "top": 4,
-                "width": 721,
-                "height": 18,
-                "right": 721,
-                "bottom": 22
+                rect: {
+                    "left": 0,
+                    "top": 4,
+                    "width": 721,
+                    "height": 18,
+                    "right": 721,
+                    "bottom": 22
+                },
+                element: null
             }
         ];
 
         var expected = [
-            [ { left: 0, top: 4, width: 721, height: 18, right: 721, bottom: 22 } ]
+            [ { rect: {left: 0, top: 4, width: 721, height: 18, right: 721, bottom: 22 }, element: null} ]
         ];
 
         assert.deepEqual(TextHighlightMarkers.computeRows(rects), expected);
@@ -94,33 +106,39 @@ describe('Test computeRows for highlighting text...', function() {
 
     it('Test with 2 entries and two rows', function () {
 
-        var rects = [
+        var rectElements = [
             {
-                "left": 0,
-                "top": 4,
-                "width": 200,
-                "height": 20,
-                "right": 200,
-                "bottom": 24
+                rect: {
+                    "left": 0,
+                    "top": 4,
+                    "width": 200,
+                    "height": 20,
+                    "right": 200,
+                    "bottom": 24
+                },
+                element: null
             },
             {
-                "left": 200,
-                "top": 4,
-                "width": 200,
-                "height": 20,
-                "right": 400,
-                "bottom": 24
+                rect: {
+                    "left": 200,
+                    "top": 4,
+                    "width": 200,
+                    "height": 20,
+                    "right": 400,
+                    "bottom": 24
+                },
+                element: null
             }
         ];
 
         var expected = [
             [
-                { left: 0, top: 4, width: 200, height: 20, right: 200, bottom: 24 },
-                { left: 200, top: 4, width: 200, height: 20, right: 400, bottom: 24 }
+                { rect: { left: 0, top: 4, width: 200, height: 20, right: 200, bottom: 24}, element: null },
+                { rect: { left: 200, top: 4, width: 200, height: 20, right: 400, bottom: 24}, element: null }
             ]
         ];
 
-        assert.deepEqual(TextHighlightMarkers.computeRows(rects), expected);
+        assert.deepEqual(TextHighlightMarkers.computeRows(rectElements), expected);
 
     });
 
