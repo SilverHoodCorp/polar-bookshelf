@@ -33,7 +33,6 @@ class DiskDatastore extends datastore.Datastore {
     }
 
     async init() {
-        // FIXME: what about the second call where the dir will already exist..?
 
         var dirStat = await this.statAsync(this.dataDir);
 
