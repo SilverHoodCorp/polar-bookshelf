@@ -10,6 +10,60 @@ chai.use(chaiDiff);
 var date = new Date(Date.parse("2018-05-30T02:47:44.411Z"));
 
 
+describe('Testing for gaps in contiguous rects', function() {
+
+    it('Test with no entries', function () {
+
+        var rects = [
+            {
+                "left": 0,
+                "top": 4,
+                "width": 721,
+                "height": 18,
+                "right": 721,
+                "bottom": 22
+            },
+            {
+                "left": 0,
+                "top": 4,
+                "width": 721,
+                "height": 18,
+                "right": 721,
+                "bottom": 22
+            },
+            {
+                "left": 0,
+                "top": 4,
+                "width": 721,
+                "height": 18,
+                "right": 721,
+                "bottom": 22
+            },
+            {
+                "left": 0,
+                "top": 4,
+                "width": 721,
+                "height": 18,
+                "right": 721,
+                "bottom": 22
+            },
+            {
+                "left": 0,
+                "top": 4,
+                "width": 297,
+                "height": 18,
+                "right": 297,
+                "bottom": 22
+            }
+        ];
+
+        assert.deepEqual(TextHighlightMarkers.computeContiguousRects([]), []);
+
+
+    });
+
+})
+
 describe('Testing computeRectsForContiguousHighlightRegion.', function() {
 
     it('Test with no entries', function () {
@@ -40,7 +94,7 @@ describe('Testing computeRectsForContiguousHighlightRegion.', function() {
         ];
 
         assert.deepEqual(TextHighlightMarkers.computeContiguousRects(boundingClientRects), expected);
-        
+
     });
 
 });

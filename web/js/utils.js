@@ -85,6 +85,46 @@ function elementOffset(element) {
     result.right = result.left + result.width;
     result.bottom = result.top + result.height;
 
+    console.log("Found element offset: " , {result})
+
     return result
+
+}
+
+class Elements {
+
+    /**
+     * Require that the element have the given classname.
+     */
+    static requireClass(element, clazz) {
+
+        var classValue = element.getAttribute("class");
+
+        if( ! classValue || classValue.indexOf(clazz) === -1) {
+
+            // element isn't the proper class we're expecting.
+            throw new Error("Element does not have the proper class: " + clazz)
+
+        }
+
+    }
+
+}
+
+class Styles {
+
+    static parseTransformScaleX(transform) {
+
+        var result = transform;
+
+        if( ! result)
+            return null;
+
+        result = result.replace("scaleX(", "");
+        result = result.replace(")", "");
+
+        return parseFloat(result);
+
+    }
 
 }

@@ -139,8 +139,11 @@
             div.style.position="absolute";
             div.style.left="10px";
             div.style.top=`${top}px`;
-            div.style.transform = 'scaleX(0.940918);';
 
+            // FIXME: add a little bit of random buffer to the scaleX each time
+            // to simulate pdf.js
+
+            div.style.transform = 'scaleX(0.940918)';
 
             textLayer.appendChild(div);
 

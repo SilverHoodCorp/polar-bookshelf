@@ -118,6 +118,8 @@ class TextHighlight {
      */
     static render(element, highlightRect) {
 
+        Elements.requireClass(element, "text-highlight-span");
+
         // this is the overlay element we're goign to paint yellow to show
         // that we've highlighted the text.
         var highlightElement = document.createElement("div");
@@ -128,6 +130,7 @@ class TextHighlight {
 
         // this is the <div class='textLayer'> that holds all the <div> text
         var textLayerElement = textLayerDivElement.parentElement;
+        Elements.requireClass(textLayerElement, "textLayer");
 
         // thisis the holder element which contains .canvasWrapper, .textLayer, etc.
         var pageElement = textLayerElement.parentElement;
@@ -138,12 +141,14 @@ class TextHighlight {
         highlightElement.style.backgroundColor = `yellow`;
         highlightElement.style.opacity = `0.5`;
 
-        // highlightElement.style.left = `${highlightRect.left}px`;
-        // highlightElement.style.top = `${highlightRect.top}px`;
+        highlightElement.style.left = `${highlightRect.left}px`;
+        highlightElement.style.top = `${highlightRect.top}px`;
 
-        highlightElement.style.left = textLayerDivElement.style.left;
-        highlightElement.style.top = textLayerDivElement.style.top;
-        highlightElement.style.transform = textLayerDivElement.style.transform;
+        // highlightElement.style.left = textLayerDivElement.style.left;
+        // highlightElement.style.top = textLayerDivElement.style.top;
+        //highlightElement.style.transform = textLayerDivElement.style.transform;
+
+        console.log("FIXME ", textLayerDivElement);
 
         // FIXME: I think this needs to always be implemented by reading the
         // CURRENT values from the element so that resize works.
@@ -214,9 +219,15 @@ class TextHighlightMarkers {
             throw new Error("No elements");
         }
 
-        var rects = elements.map(current => elementOffset(current));
+        // FIXME: these are made over the .text-highlight-span SPAN not the
+        // 'div' so the offset is wrong...
+
+        // var rects = elements.map(current => elementOffset(current));
+        var rects = elements.map(current => this.computeOffset(current));
 
         let contiguousRects = TextHighlightMarkers.computeContiguousRects(rects);
+
+        console.log({rects, contiguousRects});
 
         // create a mapping between the element and the rect
         let markers = [];
@@ -230,6 +241,49 @@ class TextHighlightMarkers {
         }
 
         return markers;
+
+    }
+
+    /**
+     * Given the span of our highlight, compute the offset looking at the CSS
+     * styles of the element we're trying to map.
+     *
+     * @param element
+     */
+    static computeOffset(element) {
+
+        // make sure we're working on the right element or our math won't be right.
+        Elements.requireClass(element, "text-highlight-span");
+
+        let textHighlightSpanOffset = elementOffset(element);
+
+        var textLayerDivElement = element.parentElement;
+
+        // FIXME: this might also have to factor in scaleX and scaleY in the
+        // future....
+
+        var textLayerDivOffset = elementOffset(textLayerDivElement);
+        var result = textLayerDivOffset;
+
+        let scaleX = Styles.parseTransformScaleX(textLayerDivElement.style.transform);
+
+        console.log("FIXME: ", {scaleX});
+
+        if(! scaleX)
+            throw new Error("No scaleX");
+
+        result.left = result.left + textHighlightSpanOffset.left;
+        result.top = result.top + textHighlightSpanOffset.top;
+        result.height = textHighlightSpanOffset.height;
+        result.width = textHighlightSpanOffset.width * scaleX;
+
+        result.width = Math.min(result.width, textLayerDivOffset.width);
+
+        result.bottom = result.top + result.height;
+        result.right = result.left + result.width;
+
+
+        return result;
 
     }
 
