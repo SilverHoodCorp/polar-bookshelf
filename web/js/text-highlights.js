@@ -257,7 +257,7 @@ class TextHighlightMarkers {
 
         let textHighlightRows = TextHighlightMarkers.computeContiguousRects(rectElements);
 
-        console.log({rectElements, textHighlightRows});
+        console.log("Data in createFromSelector", {rectElements, textHighlightRows});
 
         // FIXME: now this is returning TextHighlightRows not TextHighlightMarkers...
         // so refactor this to TextHighlightRows.
@@ -426,7 +426,7 @@ class TextHighlightMarkers {
             // this into ROWS.
 
             if(page.next && page.next.rect.top != page.curr.rect.top) {
-                adjustedRect.bottom = page.next.rect.top;
+                adjustedRect.bottom = Math.max(page.next.rect.top, adjustedRect.bottom);
             }
 
             adjustedRect.width = adjustedRect.right - adjustedRect.left;
