@@ -10,9 +10,79 @@ chai.use(chaiDiff);
 var date = new Date(Date.parse("2018-05-30T02:47:44.411Z"));
 
 
+describe('Test computeRows for highlighting text...', function() {
+
+    it('Test with no entries', function () {
+
+        assert.deepEqual([], []);
+
+
+    });
+
+    it('Test with 1 entries', function () {
+
+        var rects = [
+            {
+                "left": 0,
+                "top": 4,
+                "width": 721,
+                "height": 18,
+                "right": 721,
+                "bottom": 22
+            }
+        ];
+
+        var expected = [
+            [ { left: 0, top: 4, width: 721, height: 18, right: 721, bottom: 22 } ]
+        ];
+
+        assert.deepEqual(TextHighlightMarkers.computeRows(rects), expected);
+
+
+    });
+
+    it('Test with 2 entries and two rows', function () {
+
+        var rects = [
+            {
+                "left": 0,
+                "top": 4,
+                "width": 200,
+                "height": 20,
+                "right": 200,
+                "bottom": 24
+            },
+            {
+                "left": 200,
+                "top": 4,
+                "width": 200,
+                "height": 20,
+                "right": 400,
+                "bottom": 24
+            }
+        ];
+
+        var expected = [
+            [
+                { left: 0, top: 4, width: 200, height: 20, right: 200, bottom: 24 },
+                { left: 200, top: 4, width: 200, height: 20, right: 400, bottom: 24 }
+            ]
+        ];
+
+        assert.deepEqual(TextHighlightMarkers.computeRows(rects), expected);
+
+    });
+
+
+
+})
+
+
 describe('Testing for gaps in contiguous rects', function() {
 
     it('Test with no entries', function () {
+
+        // FIXME: break this out into a real test...
 
         var rects = [
             {
@@ -59,12 +129,11 @@ describe('Testing for gaps in contiguous rects', function() {
 
         assert.deepEqual(TextHighlightMarkers.computeContiguousRects([]), []);
 
-
     });
 
 })
 
-describe('Testing computeRectsForContiguousHighlightRegion.', function() {
+describe('Testing computeContiguousRects.', function() {
 
     it('Test with no entries', function () {
         assert.deepEqual(TextHighlightMarkers.computeContiguousRects([]), []);

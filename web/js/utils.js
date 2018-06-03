@@ -85,7 +85,7 @@ function elementOffset(element) {
     result.right = result.left + result.width;
     result.bottom = result.top + result.height;
 
-    console.log("Found element offset: " , {result})
+    console.log("FIXME: Found element offset: " , {result})
 
     return result
 

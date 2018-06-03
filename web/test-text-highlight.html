@@ -2,31 +2,28 @@
 <head>
     <style>
 
-        .content {
-            width: 1020px;
+        /*body, p, .textLayer div {*/
+            /*font-family: "monospace" !important;*/
+            /*white-space: pre;*/
+        /*}*/
+
+        .test-data {
+            position: absolute;
+            width: 100%;
         }
 
-        .raw-highlighted-text {
-
-        }
-
-        body {
-            line-height: 1.8em !important;
-        }
-
-        p {
-        }
-
-        .text-highlight {
-
-            background-color: yellow;
-            opacity: 0.4;
-            /*cursor: pointer;*/
+        .test-data h1 {
+            top: 100px;
+            position: absolute;
+            width: 100%;
 
         }
 
-        .text-highlight-span {
-            opacity: 1.4;
+        .textLayer div {
+            font-family: monospace;
+            white-space: pre;
+            font-size: 20px;
+
         }
 
     </style>
@@ -100,70 +97,183 @@
     <script src="js/text-highlights.js"></script>
     <script src="../lib/TextHighlighter.js"></script>
 
+    <script>
+
+        /** A simple class that writes content line by line and region by region
+         * while absolutely positioning the text.
+         */
+        class PositionedContentWriter {
+
+            constructor(textLayer) {
+
+                this.origins = {
+                    left: 20,
+                    top: 25
+                };
+
+                this.lineHeight = 35;
+
+                this.top = this.origins.top;
+                this.left = this.origins.left;
+                this.textLayer = textLayer;
+
+            }
+
+            appendText(text) {
+
+                var div = document.createElement("div");
+
+                div.textContent = text;
+
+                div.style.position="absolute";
+                div.style.left=`${this.left}px`;
+                div.style.top=`${this.top}px`;
+
+                // FIXME: add a little bit of random buffer to the scaleX each time
+                // to simulate pdf.js
+
+                div.style.transform = 'scaleX(0.940918)';
+
+                this.append(div);
+
+            }
+
+            append(element) {
+                this.textLayer.append(element);
+                this.left = this.left + element.offsetWidth;
+            }
+
+            /**
+             * Start writing on a new line.
+             */
+            newLine() {
+                this.top += this.lineHeight;
+                this.left = this.origins.left;
+            }
+
+        }
+
+        /**
+         * create fake text layers of text with positioning information.
+         */
+        function createFakeTextLayer(container) {
+
+            if(!container){
+                throw new Error("No container");
+            }
+
+            var textLayer = container.querySelector(".textLayer");
+
+            var top = 25;
+            var topGap = 35;
+
+            for(var idx = 0; idx < 20; ++idx) {
+
+                var div = document.createElement("div");
+
+                div.textContent = `${idx}. this is some fake text that I want to highlight.  There are many like it but this is mine.`;
+
+                // now create the style that we need which is similar to pdf.js
+                //
+                // <div style="left: 643.0969333333334px; top: 182.9117666666666px; font-size: 10.6268px; font-family: monospace;">∗</div>
+
+                div.style.position="absolute";
+                div.style.left="10px";
+                div.style.top=`${top}px`;
+
+                // FIXME: add a little bit of random buffer to the scaleX each time
+                // to simulate pdf.js
+
+                div.style.transform = 'scaleX(0.940918)';
+
+                textLayer.appendChild(div);
+
+                top += topGap;
+
+            }
+
+        }
+
+        function createBasicFakeTextLayer2(container) {
+
+            if(!container){
+                throw new Error("No container");
+            }
+
+            var textLayer = container.querySelector(".textLayer");
+
+            let positionedContentWriter = new PositionedContentWriter(textLayer);
+
+            positionedContentWriter.appendText("this is a test.  ");
+            positionedContentWriter.appendText("this is more text.");
+            positionedContentWriter.appendText("this is even more text.");
+            positionedContentWriter.newLine();
+            positionedContentWriter.appendText("this is a really really really long line. xxxxxxxxxxxxxxxxx");
+            positionedContentWriter.newLine();
+            positionedContentWriter.appendText("this is another really long line which should be justified.");
+            positionedContentWriter.newLine();
+            positionedContentWriter.appendText("this is a test2");
+            positionedContentWriter.newLine();
+
+        }
+
+        // FIXME: I should probably create some code to just statically render a page
+        // with various highlights and then make sure they work properly by (probably)
+        // comparing the DOM before and AFTER.
+
+
+        //createHighlightForElement(document.querySelector("#myHighlight1"));
+
+    </script>
+
 </head>
 
 <body>
 
 
-    <div class="page">
+    <div class="test-data">
 
-        <div class="textLayer">
+        <!--<h1>Fake text layer</h1>-->
 
+        <div id="fake-text-layer1">
+            <div class="page">
+                <div class="textLayer"></div>
+            </div>
         </div>
+
+        <script>createFakeTextLayer(document.querySelector("#fake-text-layer1"));</script>
 
     </div>
 
-<script>
 
 
-    /**
-     * create fake text layers of text with positioning information.
-     */
-    function createFakeTextLayer() {
+    <div class="test-data"  style="top: 850px;">
 
-        var textLayer = document.querySelector(".textLayer");
+        <!--<h1>Fake text layer</h1>-->
 
-        var top = 25;
-        var topGap = 25;
+        <div id="fake-text-layer2">
+            <div class="page">
+                <div class="textLayer"></div>
+            </div>
+        </div>
 
-        for(var idx = 0; idx < 200; ++idx) {
+        <script>createBasicFakeTextLayer2(document.querySelector("#fake-text-layer2"));</script>
 
-            var div = document.createElement("div");
+    </div>
 
-            div.textContent = `${idx}. this is some fake text that I want to highlight.  There are many like it but this is mine.`;
+    <script>
+        TextHighlightController.create().listenForKeyBindings();
+    </script>
 
-            // now create the style that we need which is similar to pdf.js
-            //
-            // <div style="left: 643.0969333333334px; top: 182.9117666666666px; font-size: 10.6268px; font-family: monospace;">∗</div>
+    <!--<div>-->
+        <!--<h1>Fake text layer2</h1>-->
+        <!--<div>-->
+            <!--<script>createFakeTextLayer()</script>-->
+        <!--</div>-->
+    <!--</div>-->
 
-            div.style.position="absolute";
-            div.style.left="10px";
-            div.style.top=`${top}px`;
-
-            // FIXME: add a little bit of random buffer to the scaleX each time
-            // to simulate pdf.js
-
-            div.style.transform = 'scaleX(0.940918)';
-
-            textLayer.appendChild(div);
-
-            top += topGap;
-
-        }
-
-    }
-
-    // FIXME: I should probably create some code to just statically render a page
-    // with various highlights and then make sure they work properly by (probably)
-    // comparing the DOM before and AFTER.
-
-
-    //createHighlightForElement(document.querySelector("#myHighlight1"));
-
-    createFakeTextLayer();
-    TextHighlightController.create().listenForKeyBindings();
-
-</script>
 
 </body>
 </html>
+
+

@@ -148,8 +148,6 @@ class TextHighlight {
         // highlightElement.style.top = textLayerDivElement.style.top;
         //highlightElement.style.transform = textLayerDivElement.style.transform;
 
-        console.log("FIXME ", textLayerDivElement);
-
         // FIXME: I think this needs to always be implemented by reading the
         // CURRENT values from the element so that resize works.
         highlightElement.style.width = `${highlightRect.width}px`;
@@ -158,6 +156,10 @@ class TextHighlight {
         // FIXME: insert this into the page element.. to the parent div... there is a
         // get common parent method that I should probably use.
 
+        // TODO: the problem with this strategy is that it inserts elements in the
+        // REVERSE order they are presented visually.  This isn't a problem but
+        // it might become confusing to debug this issue.  A quick fix is to
+        // just reverse the array before we render the elements.
         pageElement.insertBefore(highlightElement, pageElement.firstChild);
 
         // FIXME: now clear the selection once this is done.
@@ -267,8 +269,6 @@ class TextHighlightMarkers {
 
         let scaleX = Styles.parseTransformScaleX(textLayerDivElement.style.transform);
 
-        console.log("FIXME: ", {scaleX});
-
         if(! scaleX)
             throw new Error("No scaleX");
 
@@ -287,6 +287,41 @@ class TextHighlightMarkers {
 
     }
 
+    /**
+     * Go through ALL the rects and build out rows of text elements that are
+     * horizontally all on the same plane.
+     *
+     * @param rects
+     */
+    static computeRows(rects) {
+
+        let tuples = createSiblingTuples(rects);
+
+        let result = [];
+
+        // the current row
+        let row = [];
+
+        tuples.forEach(function (tuple) {
+            
+            row.push(tuple.curr);
+
+            if(tuple.next == null || (tuple.next && tuple.curr.top !== tuple.next.top)) {
+                result.push(row);
+                row = [];
+            }
+
+        })
+
+        if (row.length !== 0)
+            result.push(row);
+
+        return result;
+
+
+
+    }
+
     static computeContiguousRects(rects) {
 
         let tuples = createSiblingTuples(rects);
@@ -302,7 +337,11 @@ class TextHighlightMarkers {
                 bottom: tuple.curr.bottom
             };
 
-            if(tuple.next) {
+            // adjust the bottom of this div but ONLY if the next div is not on
+            // the same rows.  I might need to have some code to first build
+            // this into ROWS.
+
+            if(tuple.next && tuple.next.top != tuple.curr.top) {
                 adjusted.bottom = tuple.next.top;
             }
 
