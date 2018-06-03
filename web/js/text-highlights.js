@@ -91,21 +91,27 @@ class TextHighlightController {
 
 class TextHighlight {
 
-    constructor(markers, selector) {
-        this.markers = markers;
+    constructor(textHighlightRows, selector) {
+        this.textHighlightRows = textHighlightRows;
         this.selector = selector;
     }
 
     static create(selector) {
 
-        let markers = TextHighlightMarkers.createFromSelector(selector);
+        let textHighlightRows = TextHighlightMarkers.createFromSelector(selector);
 
         // go through each marker and render them.
-        markers.forEach(function (marker) {
-            this.render(marker.element, marker.highlightRect);
+        textHighlightRows.forEach(function (textHighlightRow) {
+
+            // FIXME: I think this only needs to be done ONCE for the entire
+            // row and we just need the main element for a reference point.
+            textHighlightRow.elements.forEach(function (element) {
+                this.render(element, textHighlightRow.rect);
+            }.bind(this));
+
         }.bind(this));
 
-        return new TextHighlight(markers, selector);
+        return new TextHighlight(textHighlightRows, selector);
 
     }
 
@@ -206,6 +212,19 @@ class TextHighlightAnnotation {
 
 }
 
+
+/**
+ * Represents a row of highlighted text including the rect around it, and the
+ * elements it contains.
+ */
+class TextHighlightRow {
+
+    constructor(rect, elements) {
+        this.rect = rect;
+        this.elements = elements;
+    }
+
+}
 /**
  */
 class TextHighlightMarkers {
@@ -227,22 +246,27 @@ class TextHighlightMarkers {
         // var rects = elements.map(current => elementOffset(current));
         var rectElements = elements.map(current => this.computeOffset(current));
 
-        let contiguousRects = TextHighlightMarkers.computeContiguousRects(rectElements);
+        let textHighlightRows = TextHighlightMarkers.computeContiguousRects(rectElements);
 
-        console.log({rectElements, contiguousRects});
+        console.log({rectElements, textHighlightRows});
 
-        // create a mapping between the element and the rect
-        let markers = [];
+        // FIXME: now this is returning TextHighlightRows not TextHighlightMarkers...
+        // so refactor this to TextHighlightRows.
 
-        for (let idx = 0; idx < elements.length; ++idx) {
-            var element = elements[idx];
-            markers.push( {
-                element,
-                highlightRect: contiguousRects[idx]
-            });
-        }
+        return textHighlightRows;
 
-        return markers;
+        // // create a mapping between the element and the rect
+        // let markers = [];
+        //
+        // for (let idx = 0; idx < elements.length; ++idx) {
+        //     var element = elements[idx];
+        //     markers.push( {
+        //         element,
+        //         highlightRect: contiguousRects[idx]
+        //     });
+        // }
+        //
+        // return markers;
 
     }
 
@@ -391,7 +415,9 @@ class TextHighlightMarkers {
             adjusted.width = adjusted.right - adjusted.left;
             adjusted.height = adjusted.bottom - adjusted.top;
 
-            result.push(adjusted);
+            let textHighlightRow = new TextHighlightRow(adjusted, [tuple.curr.element]);
+
+            result.push(textHighlightRow);
 
         })
 
@@ -413,15 +439,4 @@ class RectElement {
 
 }
 
-/**
- * Represents a row of highlighted text...
- */
-class TextHighlightRow {
-
-    constructor(rect, elements) {
-        this.rect = rect;
-        this.elements = elements;
-    }
-
-}
 

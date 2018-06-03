@@ -209,10 +209,15 @@ describe('Testing computeContiguousRects.', function() {
     it('Test with one entry', function () {
 
         var rects = [
-            { rect: {top: 10, left: 10, bottom: 50, right: 50} }
+            { rect: {top: 10, left: 10, bottom: 50, right: 50}, element: null }
         ];
 
-        var expected = [ { top: 10, left: 10, bottom: 50, right: 50, width: 40, height: 40 } ];
+        var expected = [
+            {
+                rect: { left: 10, top: 10, right: 50, bottom: 50, width: 40, height: 40 },
+                elements: [ null ]
+            }
+        ];
 
         assert.deepEqual(TextHighlightMarkers.computeContiguousRects(rects), expected);
 
@@ -221,13 +226,13 @@ describe('Testing computeContiguousRects.', function() {
     it('Test with two entries', function () {
 
         var boundingClientRects = [
-            {rect: {top: 10, left: 10, bottom: 20, right: 50}},
-            {rect: {top: 50, left: 10, bottom: 70, right: 50}}
+            {rect: {top: 10, left: 10, bottom: 20, right: 50}, element: null },
+            {rect: {top: 50, left: 10, bottom: 70, right: 50}, element: null }
         ];
 
         var expected = [
-            { left: 10, top: 10, right: 50, bottom: 50, width: 40, height: 40 },
-            { left: 10, top: 50, right: 50, bottom: 70, width: 40, height: 20 }
+            { rect: { left: 10, top: 10, right: 50, bottom: 50, width: 40, height: 40}, elements: [null] },
+            { rect: { left: 10, top: 50, right: 50, bottom: 70, width: 40, height: 20}, elements: [null] }
         ];
 
         assert.deepEqual(TextHighlightMarkers.computeContiguousRects(boundingClientRects), expected);
