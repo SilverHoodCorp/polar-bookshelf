@@ -303,8 +303,10 @@ class TextHighlightMarkers {
 
         let scaleX = Styles.parseTransformScaleX(textLayerDivElement.style.transform);
 
-        if(! scaleX)
-            throw new Error("No scaleX");
+        if(! scaleX) {
+            //throw new Error("No scaleX");
+            scaleX = 1.0;
+        }
 
         rect.left = rect.left + textHighlightSpanOffset.left;
         rect.top = rect.top + textHighlightSpanOffset.top;
