@@ -54,12 +54,12 @@ class TextHighlightController {
             manual: true,
 
             onBeforeHighlight: function (range) {
-                console.log("onBeforeHighlight range: ", range);
+                //console.log("onBeforeHighlight range: ", range);
                 return true;
             },
             onAfterHighlight: function (range, highlightElements) {
-                console.log("onAfterHighlight range: ", range);
-                console.log("onAfterHighlight hlts: ", highlightElements);
+                // console.log("onAfterHighlight range: ", range);
+                // console.log("onAfterHighlight hlts: ", highlightElements);
 
                 let id = sequence++;
                 let highlightClazz = "text-highlight-" + id;
@@ -77,7 +77,7 @@ class TextHighlightController {
             },
 
             onRemoveHighlight: function (hlt) {
-                console.log("onRemoveHighlight hlt: ", hlt);
+                // console.log("onRemoveHighlight hlt: ", hlt);
             }
 
         };
@@ -103,8 +103,8 @@ class TextHighlightRenderer {
         // go through each marker and render them.
         textHighlightRows.forEach(function (textHighlightRow) {
 
-            // FIXME: I think this only needs to be done ONCE for the entire
-            // row and we just need the main element for a reference point.
+            // This only needs to be done ONCE for the entire row and we just
+            // need the main element for a reference point.
 
             if(textHighlightRow.rectElements.length > 0) {
 
@@ -158,45 +158,15 @@ class TextHighlightRenderer {
         highlightElement.style.left = `${highlightRect.left}px`;
         highlightElement.style.top = `${highlightRect.top}px`;
 
-        // highlightElement.style.left = textLayerDivElement.style.left;
-        // highlightElement.style.top = textLayerDivElement.style.top;
-        //highlightElement.style.transform = textLayerDivElement.style.transform;
-
-        // FIXME: I think this needs to always be implemented by reading the
-        // CURRENT values from the element so that resize works.
         highlightElement.style.width = `${highlightRect.width}px`;
         highlightElement.style.height = `${highlightRect.height}px`;
 
-        // FIXME: insert this into the page element.. to the parent div... there is a
-        // get common parent method that I should probably use.
 
         // TODO: the problem with this strategy is that it inserts elements in the
         // REVERSE order they are presented visually.  This isn't a problem but
         // it might become confusing to debug this issue.  A quick fix is to
         // just reverse the array before we render the elements.
         pageElement.insertBefore(highlightElement, pageElement.firstChild);
-
-        // FIXME: now clear the selection once this is done.
-
-        // FIXME: the highlight should/could be BELOW the text and probably should
-        // be until it's deleted I think.
-
-        // I can implement it this way:.. I just need to insert it into the DOM
-        // and copy the following from the reference element
-        //  style.left
-        //  style.top
-        //  style.transform
-        //
-        //  then set:
-        //
-        //  style.opacity=0.5
-        //  style.backgroundColor=yellow
-        //  style.position=absolute
-        //
-        //  then calculate the current width and height
-        //
-        //  style.width
-        //  style.height
 
     }
 
@@ -264,15 +234,9 @@ class TextHighlightMarkers {
             throw new Error("No elements");
         }
 
-        // FIXME: these are made over the .text-highlight-span SPAN not the
-        // 'div' so the offset is wrong...
-
-        // var rects = elements.map(current => elementOffset(current));
         var rectElements = elements.map(current => this.computeOffset(current));
 
         let textHighlightRows = TextHighlightMarkers.computeContiguousRects(rectElements);
-
-        console.log("Data in createFromSelector", {rectElements, textHighlightRows});
 
         // FIXME: now this is returning TextHighlightRows not TextHighlightMarkers...
         // so refactor this to TextHighlightRows.
@@ -317,9 +281,6 @@ class TextHighlightMarkers {
 
         rect.bottom = rect.top + rect.height;
         rect.right = rect.left + rect.width;
-
-        // FIXME:
-        console.log({before: textHighlightSpanOffset, after: rect})
 
         return new RectElement(rect, element);
 
