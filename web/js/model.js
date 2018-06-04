@@ -97,7 +97,7 @@ class Model {
         pageMeta.pagemarks[pagemark.column] = pagemark;
 
         // FIXME: this can be done with a mutation listener...
-        this.reactor.dispatchEvent('createPagemark', {num: pageNum, pagemark});
+        this.reactor.dispatchEvent('createPagemark', {pageNum, pagemark});
 
         // FIXME: we need a fingerprint in the docInfo too.
 
@@ -118,7 +118,7 @@ class Model {
         pageMeta.pagemarks = {};
 
         // FIXME: this can be done with a mutation listener...
-        this.reactor.dispatchEvent('erasePagemark', {num: pageNum});
+        this.reactor.dispatchEvent('erasePagemark', {pageNum});
 
         // TODO: consider only marking the page read once the datastore has
         //        been written.

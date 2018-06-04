@@ -155,3 +155,11 @@ class Styles {
     }
 
 }
+
+class Objects {
+      
+    static duplicate(obj) {
+          return JSON.parse(JSON.stringify(obj));
+    }
+    
+}

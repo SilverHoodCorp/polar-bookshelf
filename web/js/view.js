@@ -110,24 +110,24 @@ class WebView extends View {
 
     }
 
-    onCreatePagemark(pageEvent) {
+    onCreatePagemark(pagemarkEvent) {
 
-        console.log("Creating pagemark on page: " + pageEvent.num);
+        console.log("Creating pagemark on page: " + pagemarkEvent.pageNum);
 
         //this.createPagemark(this.getPageElementByNum(pageEvent.num));
 
-        this.pagemarkRenderer.create(pageEvent.num);
+        this.pagemarkRenderer.create(pagemarkEvent.pageNum, pagemarkEvent.pagemark);
         this.updateProgress();
 
     }
 
-    onErasePagemark(pageEvent) {
+    onErasePagemark(pagemarkEvent) {
         console.log("Erasing pagemark");
 
         //let pageElement = this.getPageElementByNum(pageEvent.num);
         //this.erasePagemarks(pageElement);
 
-        this.pagemarkRenderer.erase(pageEvent.num);
+        this.pagemarkRenderer.erase(pagemarkEvent.pageNum);
         this.updateProgress();
 
     }
@@ -144,7 +144,11 @@ class WebView extends View {
 
             console.log("Creating pagemarks for page: " + pageNum);
 
-            this.recreatePagemark(pageElement, options);
+            var recreatePagemarkOptions = Object.assign({}, options);
+
+            recreatePagemarkOptions.pagemark = pagemark;
+
+            this.recreatePagemark(pageElement, recreatePagemarkOptions);
 
         }.bind(this));
 
@@ -158,6 +162,10 @@ class WebView extends View {
     }
 
     recreatePagemark(pageElement, options) {
+
+        if(! options.pagemark) {
+            throw new Error("No pagemark.");
+        }
 
         if( pageElement.querySelector(".pagemark") != null &&
             pageElement.querySelector(".canvasWrapper") != null &&
@@ -189,7 +197,15 @@ class WebView extends View {
     createPagemark(pageElement, options) {
 
         if(! options) {
-            options = {};
+            throw new Error("Options are required");
+        }
+
+        if(! options.pagemark) {
+            throw new Error("Pagemark is required");
+        }
+
+        if(! options.pagemark.percentage) {
+            throw new Error("Pagemark has no percentage");
         }
 
         if(! options.zIndex)
@@ -238,10 +254,10 @@ class WebView extends View {
         // percentage.
 
         var height = Styles.parsePixels(options.templateElement.style.height);
-
+        
         // FIXME: read the percentate coverage from the pagemark and adjust the
         // height to reflect the portion we've actually read.
-        //height = height * 0.5;
+        height = height * (options.pagemark.percentage / 100);
 
         pagemark.style.height = `${height}px`;
 
@@ -346,10 +362,14 @@ class PagemarkRenderer {
     /**
      * Erase the page elements on the give page number.
      */
-    create(pageNum) {
+    create(pageNum, pagemark) {
 
         if(typeof pageNum !== "number") {
             throw new Error("pageNum is not a number");
+        }
+
+        if(!pagemark) {
+            throw new Error("No pagemark.");
         }
 
         this.__updatePageElements();
@@ -364,7 +384,7 @@ class PagemarkRenderer {
     }
 
     /**
-     * Erase the page elements on the give page number.
+     * Erase the pagemarks on the give page number.
      */
     erase(pageNum) {
 
@@ -485,8 +505,8 @@ class CompositePagemarkRenderer extends PagemarkRenderer {
         this.delegator.apply("setup");
     }
 
-    create(pageNum) {
-        this.delegator.apply("create", pageNum);
+    create(pageNum, pagemark) {
+        this.delegator.apply("create", pageNum, pagemark);
     }
 
     erase(pageNum) {
