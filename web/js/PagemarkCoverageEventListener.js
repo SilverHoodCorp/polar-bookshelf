@@ -1,3 +1,4 @@
+import {Delegator, Styles, Elements, OffsetCalculator} from "./utils.js";
 
 export class PagemarkCoverageEventListener {
 
@@ -57,35 +58,36 @@ export class PagemarkCoverageEventListener {
 
         console.log("ACTIVATED");
 
-        var element = document.getElementById("status");
+        // FIXME: migrate this to use the event.target and search from the DOM
+        // up to find the .page
+        //let pageElement = this.controller.getCurrentPageElement();
 
-        var pageElement = this.controller.getCurrentPageElement();
+        let pageElement = Elements.untilRoot(event.target, ".page");
 
-        console.log("FIXME: pageElement: ", pageElement);
-        console.log("FIXME: event.target: ", event.target);
-        console.log("FIXME: event.pageY", event.pageY);
+        if(! pageElement) {
+            console.log("Not within a pageElement");
+            return;
+        }
 
-        var pageOffset = OffsetCalculator.calculate(pageElement, document);
+        let viewport = document.getElementById("viewer");
 
-        console.log("FIXME: pageOffset", JSON.stringify(pageOffset, null, "  "));
+        let pageOffset = OffsetCalculator.calculate(pageElement, document);
 
+        let mouseTop = event.pageY + viewport.scrollTop;
 
-        // console.log("FIXME: ", document.body.scrollTop);
-        //
-        // var height = Styles.parsePixels(pageElement.style.height);
-        //
-        // // FIXME offsetY is in the element hosting the event.. not the main element
-        // // we're looking for.
-        //
-        // var x = (event.pageX ) + document.body.scrollLeft;
-        // var y = (event.pageY ) + document.body.scrollTop;
-        //
-        // console.log(`x: ${x} y" ${y}`)
-        //
-        // var percentage = (event.offsetY / height) * 100;
-        //
-        // console.log("FIXME percentage", percentage );
+        if(mouseTop >= pageOffset.top && mouseTop <= pageOffset.bottom) {
 
+            // make sure the current mouse position is within a page.
+
+            let mousePageY = mouseTop - pageOffset.top;
+
+            let percentage = (mousePageY / pageOffset.height) * 100;
+
+            console.log("percentage: ", percentage);
+
+        } else {
+            console.log("Mouse click was outside of page.")
+        }
 
     }
 

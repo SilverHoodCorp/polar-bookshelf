@@ -1,4 +1,5 @@
 import {WebController} from "./controller.js";
+import {WebView} from "./view.js";
 import {TextHighlightController} from "./text-highlights.js";
 
 function injectScript(src,type) {
@@ -51,12 +52,12 @@ async function injectAllScripts() {
     // It's not going to make a massive performance difference though since we
     // are loading locally.
 
-    await injectScript('../../web/js/utils.js');
+    await injectScript('../../web/js/utils.js', 'module');
     await injectScript('../../web/js/polar.js');
     //injectScript('../../web/js/annotations.js');
     await injectScript('../../web/js/metadata.js');
     await injectScript('../../web/js/model.js');
-    await injectScript('../../web/js/view.js');
+    await injectScript('../../web/js/view.js', 'module');
     await injectScript('../../web/js/controller.js', 'module');
     await injectScript('../../web/js/clock.js');
     await injectScript('../../web/js/optional.js');

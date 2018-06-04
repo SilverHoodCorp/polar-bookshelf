@@ -150,8 +150,11 @@ export class Elements {
      */
     static untilRoot(element, selector) {
 
-        if (element == null)
-            throw new Error("Element may not be null");
+        if (!element)
+            throw new Error("element required");
+
+        if (!selector)
+            throw new Error("selector required");
 
         if(element.matches(selector)) {
             return element;
@@ -162,7 +165,7 @@ export class Elements {
             return null;
         }
 
-        this.untilRoot(element.parentElement);
+        return Elements.untilRoot(element.parentElement, selector);
 
     }
 

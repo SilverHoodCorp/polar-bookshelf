@@ -1,4 +1,6 @@
-class View {
+import {Delegator, Styles, Elements} from "./utils.js";
+
+export class View {
 
     constructor(model) {
         this.model = model;
@@ -8,7 +10,7 @@ class View {
 
 
 
-class WebView extends View {
+export class WebView extends View {
 
     constructor(model) {
         super(model);
@@ -254,7 +256,7 @@ class WebView extends View {
         // percentage.
 
         var height = Styles.parsePixels(options.templateElement.style.height);
-        
+
         // FIXME: read the percentate coverage from the pagemark and adjust the
         // height to reflect the portion we've actually read.
         height = height * (options.pagemark.percentage / 100);
