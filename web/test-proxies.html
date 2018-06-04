@@ -5,39 +5,40 @@
 <body>
 
 <script type="module">
+
     import {Proxies} from "./js/Proxies.js";
 
     var myDict = {'foo': 'bar'};
 
     class MyListener {
 
-        onSet(name,value) {
-            console.log(`Got ${name}=${value}`);
-        }
-
-        onDelete(name) {
-
+        onMutation(mutationType, target, property, value) {
+            console.log("Got mutation: ", {mutationType, target, property, value});
+            return true;
         }
 
     }
 
-    let myListener = new MyListener();
+    var myListener = new MyListener();
 
-    myDict = Proxies.createDictListener( myDict,
-                                         myListener.onSet.bind(myListener),
-                                         myListener.onDelete.bind(myListener))
+    myDict = Proxies.create(myDict).forMutations(myListener);
 
-    console.log(myDict);
+    myDict.animal = 'frog';
 
-    // myDict['cat'] = 'dog';
+    delete myDict.animal;
+
+                                         // myListener.onSet.bind(myListener),
+                                         // myListener.onDelete.bind(myListener))
     //
-    // myDict.animal = 'frog';
+    // console.log(myDict);
     //
-    // delete myDict.animal;
+    // // myDict['cat'] = '
+    // dog';
+    // //
 
-    var obj = JSON.parse("{\"foo\": \"bar\"}");
-
-    Object.assign(myDict, obj);
+    // var obj = JSON.parse("{\"foo\": \"bar\"}");
+    //
+    // Object.assign(myDict, obj);
 
 </script>
 
