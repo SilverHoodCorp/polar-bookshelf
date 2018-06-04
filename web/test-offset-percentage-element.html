@@ -1,0 +1,123 @@
+<html>
+
+<head>
+    <style>
+
+        #mybox {
+            position: absolute;
+            top: 200px;
+
+            width: 500px;
+            height: 500px;
+            background-color: blue;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div id="mybox" class="page">
+
+
+
+
+</div>
+
+<div id="status">
+    status:
+</div>
+
+<script>
+
+    class PageCoverageEventListener {
+
+
+        constructor() {
+            this.keyActivated = false;
+        }
+
+        /**
+         * Track that we've selected 'e' on the keyboard,
+         */
+        keyListener(event) {
+
+            if (event.ctrlKey && event.altKey) {
+
+                const eCode = 69;
+
+                switch (event.which) {
+
+                    case eCode:
+
+                        this.keyActivated = true;
+                        break;
+
+                    default:
+
+                        this.keyActivated = false;
+                        break;
+
+                }
+
+            }
+
+        }
+
+        mouseListener(event) {
+
+            if(!this.keyActivated) {
+                return;
+            }
+
+            this.onActivated(event);
+
+        }
+
+        onActivated(event) {
+
+            console.log("ACTIVATED");
+
+            var element = document.getElementById("status");
+
+            var targetElement = document.getElementById("mybox");
+
+            console.log(event);
+
+            var height = 500; // FIXME: this needs to be parsed
+
+            var percentage = (event.offsetY / height) * 100;
+
+            var x = event.pageX - targetElement.offsetLeft;
+            var y = event.pageY - targetElement.offsetTop;
+
+            element.textContent = `status: got event x: ${x} , y: ${y}, percentage: ${percentage}`;
+
+
+        }
+
+        startListening() {
+            document.addEventListener("keyup", this.keyListener.bind(this));
+            document.addEventListener("keydown", this.keyListener.bind(this));
+            document.addEventListener("click", this.mouseListener.bind(this));
+        }
+
+    }
+
+    function testEvent(event) {
+
+
+    }
+
+    let pageCoverageEventListener = new PageCoverageEventListener();
+    pageCoverageEventListener.startListening();
+
+
+    console.log("Adding event");
+
+
+</script>
+
+
+</body>
+</html>
