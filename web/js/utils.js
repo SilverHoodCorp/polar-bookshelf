@@ -2,7 +2,7 @@
  * Apply a given function, with arguments, to a list of delegates which have
  * that function name defined.
  */
-class Delegator {
+export class Delegator {
 
     constructor(delegates) {
         this.delegates = delegates;
@@ -92,7 +92,7 @@ function elementOffset(element) {
 
 }
 
-class Elements {
+export class Elements {
 
     static offset(element) {
 
@@ -142,6 +142,30 @@ class Elements {
 
     }
 
+    /**
+     * Keep searching parent notes until we find an element matching the selector,
+     * or return null when one was not found.
+     *
+     * @param selector
+     */
+    static untilRoot(element, selector) {
+
+        if (element == null)
+            throw new Error("Element may not be null");
+
+        if(element.matches(selector)) {
+            return element;
+        }
+
+        if (element.parentElement == null) {
+            // we have hit the root.
+            return null;
+        }
+
+        this.untilRoot(element.parentElement);
+
+    }
+
 }
 
 /**
@@ -182,7 +206,7 @@ export class OffsetCalculator {
 
 }
 
-class Styles {
+export class Styles {
 
     static parseTransformScaleX(transform) {
 
@@ -210,7 +234,7 @@ class Styles {
 
 }
 
-class Objects {
+export class Objects {
 
     static duplicate(obj) {
           return JSON.parse(JSON.stringify(obj));

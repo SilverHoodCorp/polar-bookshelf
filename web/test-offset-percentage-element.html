@@ -45,7 +45,7 @@
 <script type="module">
 
     import {WebController} from "./js/controller.js";
-    import {OffsetCalculator} from "./js/utils.js";
+    import {OffsetCalculator, Elements} from "./js/utils.js";
 
     class PageCoverageEventListener {
 
@@ -102,7 +102,14 @@
 
             // FIXME: migrate this to use the event.target and search from the DOM
             // up to find the .page
-            let pageElement = this.controller.getCurrentPageElement();
+            //let pageElement = this.controller.getCurrentPageElement();
+
+            let pageElement = Elements.untilRoot(event.target, ".page");
+
+            if(! pageElement) {
+                console.log("Not within a pageElement");
+                return;
+            }
 
             let viewport = document.getElementById("viewport");
 
@@ -117,6 +124,8 @@
                 let mousePageY = mouseTop - pageOffset.top;
 
                 let percentage = (mousePageY / pageOffset.height) * 100;
+
+                console.log("percentage: ", percentage);
 
             } else {
                 console.log("Mouse click was outside of page.")
