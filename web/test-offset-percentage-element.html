@@ -93,39 +93,30 @@
 
         onActivated(event) {
 
+            // this documents how to search from the current click position
+            // factoring in element overflow scroll.
+
+            // https://stackoverflow.com/questions/4962710/get-mouse-position-in-scrollable-div
+
             console.log("ACTIVATED");
 
+            // FIXME: migrate this to use the event.target and search from the DOM
+            // up to find the .page
             let pageElement = this.controller.getCurrentPageElement();
-
-            console.log("FIXME: pageElement: ", pageElement);
-
-            console.log(event);
-            console.log("event.pageY: ", event.pageY);
 
             let viewport = document.getElementById("viewport");
 
             let pageOffset = OffsetCalculator.calculate(pageElement, document);
 
-            console.log("FIXME: pageOffset", JSON.stringify(pageOffset, null, "  "));
-
-
-            // https://stackoverflow.com/questions/4962710/get-mouse-position-in-scrollable-div
-
-            console.log("viewport.scrollTop: ", viewport.scrollTop);
-
             let mouseTop = event.pageY + viewport.scrollTop;
 
-            console.log("mouseTop: ", mouseTop);
-
-            // FIXME: now make sure the mouseTop is within pageOffset.top and pageOffset.bottom
-
             if(mouseTop >= pageOffset.top && mouseTop <= pageOffset.bottom) {
+
+                // make sure the current mouse position is within a page.
 
                 let mousePageY = mouseTop - pageOffset.top;
 
                 let percentage = (mousePageY / pageOffset.height) * 100;
-
-                console.log("FXME percentage ", percentage)
 
             } else {
                 console.log("Mouse click was outside of page.")
