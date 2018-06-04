@@ -6,6 +6,13 @@
  */
 export class Proxies {
 
+    // FIXME: it should be possible to listen to a specific property not just
+    // all the properties...
+    //
+    // maybe soemthing like
+    //
+    // createDictListener().forProperty("asdf")
+
     /**
      * Create a listener for the dictionary and call onSet and onDelete when
      * the dictionary has had keys set or deleted.
