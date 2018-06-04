@@ -233,7 +233,18 @@ class WebView extends View {
         pagemark.style.left = options.templateElement.offsetLeft;
         pagemark.style.top = options.templateElement.offsetTop;
         pagemark.style.width = options.templateElement.style.width;
-        pagemark.style.height = options.templateElement.style.height;
+
+        // FIXME: the height should actually be a percentage of the pagemark
+        // percentage.
+
+        var height = Styles.parsePixels(options.templateElement.style.height);
+
+        // FIXME: read the percentate coverage from the pagemark and adjust the
+        // height to reflect the portion we've actually read.
+        //height = height * 0.5;
+
+        pagemark.style.height = `${height}px`;
+
         pagemark.style.zIndex = options.zIndex;
 
         if(!pagemark.style.width)

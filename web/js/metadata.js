@@ -316,6 +316,51 @@ class DocMeta extends SerializedObject {
 
     }
 
+    /**
+     */
+    static addPagemarks(docMeta, options) {
+
+        if (!options) {
+            options = {};
+        }
+
+        if (!options.nrPages) {
+            options.nrPages = 3;
+        }
+
+        if (!options.offsetPage) {
+            // the starting page
+            options.offsetPage = 1;
+        }
+
+        if (!options.percentage) {
+            // the percentage value from 0-100
+            options.percentage = 100;
+        }
+
+        var maxPageNum = Math.min(options.offsetPage + options.nrPages -1, docMeta.docInfo.nrPages);
+
+        for(var pageNum = options.offsetPage; pageNum <= maxPageNum; ++pageNum ) {
+
+            let pagemark = new Pagemark({
+                // TODO: this shouldn't have a hard wired date here but we don't
+                // have a dependency injector yet.
+                created: new Date(),
+                type: PagemarkType.SINGLE_COLUMN,
+                percentage: options.percentage,
+                column: 0
+            });
+
+            let pageMeta = docMeta.getPageMeta(pageNum);
+
+            // set the pagemark that we just created.
+            pageMeta.pagemarks[pagemark.column] = pagemark;
+
+        }
+
+
+    }
+
 };
 
 /**

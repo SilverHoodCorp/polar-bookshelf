@@ -29,11 +29,15 @@
 
     console.log(myDict);
 
-    myDict['cat'] = 'dog';
+    // myDict['cat'] = 'dog';
+    //
+    // myDict.animal = 'frog';
+    //
+    // delete myDict.animal;
 
-    myDict.animal = 'frog';
+    var obj = JSON.parse("{\"foo\": \"bar\"}");
 
-    delete myDict.animal;
+    Object.assign(myDict, obj);
 
 </script>
 

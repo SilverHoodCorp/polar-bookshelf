@@ -19,7 +19,6 @@ function injectScript(src,type) {
         document.head.appendChild(script);
 
         script.addEventListener('load', function() {
-            console.log("It's loaded!");
             resolve();
         });
 
@@ -79,7 +78,10 @@ function launchDev() {
 
     // create some fake documents for our example PDFs
     var fingerprint = "110dd61fd57444010b1ab5ff38782f0f";
-    datastore.sync(fingerprint, DocMeta.createWithinInitialPagemarks(fingerprint, 14));
+
+    let docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, 14);
+    DocMeta.addPagemarks(docMeta, {nrPages: 1, offsetPage: 4, percentage: 50})
+    datastore.sync(fingerprint, docMeta);
 
     view.init();
 

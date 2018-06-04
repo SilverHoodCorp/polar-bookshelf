@@ -1,3 +1,9 @@
+/**
+ * Framework to create listeners to watch changes in dictionaries.  We can
+ * change these into observables if we want by making them streams of SET and
+ * DELETE operations but since we're not really using RxJS or anything of the
+ * sort yet our options are open.
+ */
 export class Proxies {
 
     /**

@@ -70,13 +70,13 @@ class Model {
 
     /**
      *
-     * @param num The page num to use for our created pagemark.
+     * @param pageNum The page num to use for our created pagemark.
      */
-    async createPagemark(num) {
+    async createPagemark(pageNum) {
 
         console.log("Model sees createPagemark");
 
-        this.assertPageNum(num);
+        this.assertPageNum(pageNum);
 
         // FIXME: determine the type and the column
 
@@ -91,13 +91,13 @@ class Model {
 
         let docMeta = await this.docMetaPromise;
 
-        let pageMeta = this.docMeta.getPageMeta(num);
+        let pageMeta = this.docMeta.getPageMeta(pageNum);
 
         // set the pagemark that we just created.
         pageMeta.pagemarks[pagemark.column] = pagemark;
 
         // FIXME: this can be done with a mutation listener...
-        this.reactor.dispatchEvent('createPagemark', {num});
+        this.reactor.dispatchEvent('createPagemark', {num: pageNum, pagemark});
 
         // FIXME: we need a fingerprint in the docInfo too.
 
@@ -107,20 +107,18 @@ class Model {
 
     }
 
-    erasePagemark(num) {
+    erasePagemark(pageNum) {
 
         console.log("Model sees erasePagemark");
 
-        this.assertPageNum(num);
+        this.assertPageNum(pageNum);
 
-        let pageMeta = this.docMeta.getPageMeta(num);
+        let pageMeta = this.docMeta.getPageMeta(pageNum);
 
         pageMeta.pagemarks = {};
 
         // FIXME: this can be done with a mutation listener...
-        this.reactor.dispatchEvent('erasePagemark', {num});
-
-        // FIXME: we need a fingerprint in the docInfo too.
+        this.reactor.dispatchEvent('erasePagemark', {num: pageNum});
 
         // TODO: consider only marking the page read once the datastore has
         //        been written.
@@ -129,7 +127,7 @@ class Model {
     }
 
     createTextHighlight() {
-        
+
     }
 
     /**

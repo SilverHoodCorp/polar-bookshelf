@@ -144,4 +144,14 @@ class Styles {
 
     }
 
+    /**
+     * Take a string of '50px' and return a number of just the pixel count.
+     */
+    static parsePixels(value) {
+
+        value = value.replace("px", "");
+        return parseInt(value);
+
+    }
+
 }
