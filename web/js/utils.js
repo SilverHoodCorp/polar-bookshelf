@@ -177,18 +177,33 @@ export class Elements {
 export class OffsetCalculator {
 
     // https://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
-    static calculate(element, parentElement) {
+    static calculate(element, rootElement) {
 
         var offset = {left: 0, top: 0, width: 0, height: 0};
 
-        do {
+        while(true) {
+
+            if(element == null)
+                break;
+
+            console.log("FIXME: element: ", element);
+            console.log("FIXME: has offset: ", Elements.offset(element));
+
+            // FIXME: log the full offsets of EACH element...
 
             offset.left += OffsetCalculator._toInt(element.offsetLeft)
             offset.top += OffsetCalculator._toInt(element.offsetTop)
-            offset.width += OffsetCalculator._toInt(element.offsetWidth)
-            offset.height += OffsetCalculator._toInt(element.offsetHeight)
+            // offset.width += OffsetCalculator._toInt(element.offsetWidth)
+            // offset.height += OffsetCalculator._toInt(element.offsetHeight)
+            offset.width = OffsetCalculator._toInt(element.offsetWidth)
+            offset.height = OffsetCalculator._toInt(element.offsetHeight)
 
-        } while(element = element.offsetParent && element != parentElement);
+            if(element === rootElement)
+                break;
+
+            element = element.offsetParent;
+
+        }
 
         offset.right = offset.left + offset.width;
         offset.bottom = offset.top + offset.height;

@@ -58,13 +58,7 @@ export class PagemarkCoverageEventListener {
 
         console.log("ACTIVATED");
 
-        // FIXME: we have TWO problems now...
-        //
-        // 1. Only the first page works.
-        //
-        // 2. The mouse doesn't compute the proper percentage unless scale is 100%
-        //
-        // FIXME: these two may be created... 
+        // FIXME: we're closer now.. but we have to factor in some sort of static offet.
 
         let pageElement = Elements.untilRoot(event.target, ".page");
 
@@ -73,11 +67,29 @@ export class PagemarkCoverageEventListener {
             return;
         }
 
-        let viewport = document.getElementById("viewer");
+        // FIXME: we need to do this from the textLayer not the pageElement. the
+        // page has a bit of padding in it...
+        var textLayerElement = pageElement.querySelector(".textLayer");
 
-        let pageOffset = OffsetCalculator.calculate(pageElement, document);
+        if(!textLayerElement) {
+            console.error("No text layer");
+            return;
+        }
+
+        let viewport = document.getElementById("viewerContainer");
+
+        // FIXME: this is part of the problem too.. the textLayerElement is
+        // returning 0 for the top for some reason... perhaps because it's
+        // absolutely positioned?
+
+        // FIXME: this must be the bug now...
+        let pageOffset = OffsetCalculator.calculate(textLayerElement, viewport.parentElement);
+
+        console.log("FIXME: pageOffset: ", JSON.stringify(pageOffset, null, "  "));
 
         let mouseTop = event.pageY + viewport.scrollTop;
+
+        console.log("FIXME: mouseTop: ", mouseTop);
 
         if(mouseTop >= pageOffset.top && mouseTop <= pageOffset.bottom) {
 
