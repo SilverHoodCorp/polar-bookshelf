@@ -235,6 +235,21 @@ class TextHighlightRow {
 }
 
 /**
+ * TODO:
+ *
+ * I designed this incorrectly and should refactor it into a problem of geometry.
+ *
+ * What I need to do is form this into a polygon with points decorating the polygon.
+ *
+ * Then I need to take the outlier points, which contain all the points inside
+ * the plane, then break it down into rows by looking down the polygon vertically
+ * and bisecting it until it forms a collection of rectangles.
+ *
+ * The code for this would be a LOT cleaner and I think less error prone.
+ *
+ * This wasn't immediately evident because I was thinking about the problem
+ * as a stream of text, not of geometric points.
+ *
  */
 class TextHighlightMarkers {
 
@@ -294,7 +309,13 @@ class TextHighlightMarkers {
             scaleX = 1.0;
         }
 
+        //rect.left = rect.left + textHighlightSpanOffset.left;
+
+        console.log("FIXME: " , { rect_left: rect.left, span_left: textHighlightSpanOffset.left });
+
         rect.left = rect.left + textHighlightSpanOffset.left;
+
+
         rect.top = rect.top + textHighlightSpanOffset.top;
         rect.height = textHighlightSpanOffset.height;
         rect.width = textHighlightSpanOffset.width * scaleX;
