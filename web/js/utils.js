@@ -73,6 +73,9 @@ function createSiblingTuples(arr) {
 
 }
 
+/**
+ * @Deprecated use Elements.offset instead.
+ */
 function elementOffset(element) {
 
     let result = {
@@ -90,6 +93,22 @@ function elementOffset(element) {
 }
 
 class Elements {
+
+    static offset(element) {
+
+        let result = {
+            left: element.offsetLeft,
+            top: element.offsetTop,
+            width: element.offsetWidth,
+            height: element.offsetHeight
+        };
+
+        result.right = result.left + result.width;
+        result.bottom = result.top + result.height;
+
+        return result
+
+    }
 
     /**
      * Require that the element have the given classname.

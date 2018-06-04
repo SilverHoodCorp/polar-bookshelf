@@ -295,7 +295,7 @@ class TextHighlightMarkers {
         // make sure we're working on the right element or our math won't be right.
         Elements.requireClass(element, "text-highlight-span");
 
-        let textHighlightSpanOffset = elementOffset(element);
+        let textHighlightSpanOffset = Elements.offset(element);
 
         var textLayerDivElement = element.parentElement;
 
@@ -303,20 +303,13 @@ class TextHighlightMarkers {
         var rect = textLayerDivOffset;
 
         let scaleX = Styles.parseTransformScaleX(textLayerDivElement.style.transform);
-
         if(! scaleX) {
-            //throw new Error("No scaleX");
             scaleX = 1.0;
         }
 
-        //rect.left = rect.left + textHighlightSpanOffset.left;
-
-        console.log("FIXME: " , { rect_left: rect.left, span_left: textHighlightSpanOffset.left });
-
-        rect.left = rect.left + textHighlightSpanOffset.left;
-
-
+        rect.left = rect.left + (textHighlightSpanOffset.left * scaleX);
         rect.top = rect.top + textHighlightSpanOffset.top;
+
         rect.height = textHighlightSpanOffset.height;
         rect.width = textHighlightSpanOffset.width * scaleX;
 
