@@ -12,6 +12,9 @@ export class Proxies {
     // maybe soemthing like
     //
     // createDictListener().forProperty("asdf")
+    //
+    // also .asMutations() 
+
 
     /**
      * Create a listener for the dictionary and call onSet and onDelete when
