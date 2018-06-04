@@ -1,5 +1,7 @@
 // all our unit tests...
 
+import {TextHighlightRows} from "./text-highlights.js";
+
 var assert = chai.assert;
 var expect = chai.expect;
 
@@ -30,7 +32,7 @@ describe('Test computeRectForRow for highlighting text...', function() {
 
         var expected = { left: 0, top: 4, width: 721, height: 18, right: 721, bottom: 22 };
 
-        assert.deepEqual(TextHighlightMarkers.computeRectForRow(rectElements), expected);
+        assert.deepEqual(TextHighlightRows.computeRectForRow(rectElements), expected);
 
     });
 
@@ -64,7 +66,7 @@ describe('Test computeRectForRow for highlighting text...', function() {
 
         var expected = { left: 0, top: 4, width: 800, height: 46, right: 800, bottom: 50 };
 
-        assert.deepEqual(TextHighlightMarkers.computeRectForRow(rects), expected);
+        assert.deepEqual(TextHighlightRows.computeRectForRow(rects), expected);
 
     });
 
@@ -99,7 +101,7 @@ describe('Test computeRows for highlighting text...', function() {
             [ { rect: {left: 0, top: 4, width: 721, height: 18, right: 721, bottom: 22 }, element: null} ]
         ];
 
-        assert.deepEqual(TextHighlightMarkers.computeRows(rects), expected);
+        assert.deepEqual(TextHighlightRows.computeRows(rects), expected);
 
 
     });
@@ -138,7 +140,7 @@ describe('Test computeRows for highlighting text...', function() {
             ]
         ];
 
-        assert.deepEqual(TextHighlightMarkers.computeRows(rectElements), expected);
+        assert.deepEqual(TextHighlightRows.computeRows(rectElements), expected);
 
     });
 
@@ -212,7 +214,7 @@ describe('Testing for gaps in contiguous rects', function() {
             }
         ];
 
-        assert.deepEqual(TextHighlightMarkers.computeContiguousRects([]), []);
+        assert.deepEqual(TextHighlightRows.computeContiguousRects([]), []);
 
     });
 
@@ -221,7 +223,7 @@ describe('Testing for gaps in contiguous rects', function() {
 describe('Testing computeContiguousRects.', function() {
 
     it('Test with no entries', function () {
-        assert.deepEqual(TextHighlightMarkers.computeContiguousRects([]), []);
+        assert.deepEqual(TextHighlightRows.computeContiguousRects([]), []);
     });
 
     it('Test with one entry', function () {
@@ -254,7 +256,7 @@ describe('Testing computeContiguousRects.', function() {
             }
         ];
 
-        let actual = TextHighlightMarkers.computeContiguousRects(rects);
+        let actual = TextHighlightRows.computeContiguousRects(rects);
 
         assert.deepJSON(actual, expected);
 
@@ -312,7 +314,7 @@ describe('Testing computeContiguousRects.', function() {
             }
         ];
 
-        assert.deepJSON(TextHighlightMarkers.computeContiguousRects(boundingClientRects), expected);
+        assert.deepJSON(TextHighlightRows.computeContiguousRects(boundingClientRects), expected);
 
     });
 

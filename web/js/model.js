@@ -128,6 +128,10 @@ class Model {
 
     }
 
+    createTextHighlight() {
+        
+    }
+
     /**
      *
      * @param num

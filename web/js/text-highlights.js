@@ -1,3 +1,5 @@
+import {TextHighlightView} from "./TextHighlightView.js";
+
 // code for dealing with text highlights
 
 // given some text, compute a list of rects that can overlap the text to form
@@ -98,7 +100,16 @@ class TextHighlightRenderer {
 
     static create(selector) {
 
-        let textHighlightRows = TextHighlightMarkers.createFromSelector(selector);
+        let textHighlightRows = TextHighlightRows.createFromSelector(selector);
+
+        let rects = textHighlightRows.map(current => current.rect);
+
+        var textSelections = {}; // FIXME: do this later
+        var text = ""; // FIXME: do this later
+
+        let textHighlight = new TextHighlight({rects, textSelections, text});
+
+        // FIXME: this needs to be done in the VIEW and not in the controller...
 
         // go through each marker and render them.
         textHighlightRows.forEach(function (textHighlightRow) {
@@ -132,6 +143,9 @@ class TextHighlightRenderer {
      */
     static render(element, highlightRect) {
 
+        // FIXME: rework this to take just a PAGE and not have any dependency on
+        // the element as we JUST need to .textLayer
+
         Elements.requireClass(element, "text-highlight-span");
 
         // this is the overlay element we're goign to paint yellow to show
@@ -144,6 +158,7 @@ class TextHighlightRenderer {
 
         // this is the <div class='textLayer'> that holds all the <div> text
         var textLayerElement = textLayerDivElement.parentElement;
+
         Elements.requireClass(textLayerElement, "textLayer");
 
         // thisis the holder element which contains .canvasWrapper, .textLayer, etc.
@@ -221,7 +236,7 @@ class TextHighlightRow {
  * as a stream of text, not of geometric points.
  *
  */
-class TextHighlightMarkers {
+export class TextHighlightRows {
 
     /**
      * Create a highlight from a CSS selector.
@@ -236,9 +251,9 @@ class TextHighlightMarkers {
 
         var rectElements = elements.map(current => this.computeOffset(current));
 
-        let textHighlightRows = TextHighlightMarkers.computeContiguousRects(rectElements);
+        let textHighlightRows = TextHighlightRows.computeContiguousRects(rectElements);
 
-        // FIXME: now this is returning TextHighlightRows not TextHighlightMarkers...
+        // FIXME: now this is returning TextHighlightRows not TextHighlightRows...
         // so refactor this to TextHighlightRows.
 
         return textHighlightRows;
@@ -362,11 +377,11 @@ class TextHighlightMarkers {
 
     static computeIntermediateRows(rectElements) {
 
-        let rows = TextHighlightMarkers.computeRows(rectElements)
+        let rows = TextHighlightRows.computeRows(rectElements)
         let result = [];
 
         rows.forEach(function (rectElementsWithinRow) {
-            var rect = TextHighlightMarkers.computeRectForRow(rectElementsWithinRow);
+            var rect = TextHighlightRows.computeRectForRow(rectElementsWithinRow);
             let intermediateRow = new IntermediateRow(rect, rectElementsWithinRow);
             result.push(intermediateRow);
         });
@@ -377,7 +392,7 @@ class TextHighlightMarkers {
 
     static computeContiguousRects(rectElements) {
 
-        let intermediateRows = TextHighlightMarkers.computeIntermediateRows(rectElements);
+        let intermediateRows = TextHighlightRows.computeIntermediateRows(rectElements);
 
         let intermediateRowPager = createSiblingTuples(intermediateRows);
 

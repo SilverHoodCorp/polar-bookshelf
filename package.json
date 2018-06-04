@@ -41,6 +41,8 @@
     "jquery": "^3.3.1",
     "micromodal": "^0.3.2",
     "requirejs": "^2.3.5",
+    "rx-collection": "^0.1.0",
+    "rxjs": "^6.2.0",
     "simplemde": "^1.11.2",
     "texthighlighter": "^1.2.4",
     "webpack": "^4.10.0",
