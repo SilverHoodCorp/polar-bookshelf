@@ -126,6 +126,60 @@ class Elements {
 
     }
 
+    static offsetRelative(element, parentElement) {
+
+        var offset = {left: 0, top: 0, bottom: 0, right: 0};
+
+        do {
+
+            if ( !isNaN( elem.offsetLeft ) ) {
+                offsetLeft += elem.offsetLeft;
+            }
+
+        } while(element = elem.offsetParent && element != parentElement);
+
+        return offsetLeft;
+
+    }
+
+}
+
+/**
+ * Support the ability to calculate an offset relative to another element.
+ */
+export class OffsetCalculator {
+
+    // https://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
+    static calculate(element, parentElement) {
+
+        var offset = {left: 0, top: 0, width: 0, height: 0};
+
+        do {
+
+            offset.left += OffsetCalculator._toInt(element.offsetLeft)
+            offset.top += OffsetCalculator._toInt(element.offsetTop)
+            offset.width += OffsetCalculator._toInt(element.offsetWidth)
+            offset.height += OffsetCalculator._toInt(element.offsetHeight)
+
+        } while(element = element.offsetParent && element != parentElement);
+
+        offset.right = offset.left + offset.width;
+        offset.bottom = offset.top + offset.height;
+
+        return offset;
+
+    }
+
+    static _toInt(value) {
+
+        if ( isNaN( value ) ) {
+            return 0;
+        }
+
+        return value;
+
+    }
+
 }
 
 class Styles {
@@ -157,9 +211,9 @@ class Styles {
 }
 
 class Objects {
-      
+
     static duplicate(obj) {
           return JSON.parse(JSON.stringify(obj));
     }
-    
+
 }

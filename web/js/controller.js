@@ -1,4 +1,5 @@
 import {TextHighlightController} from "./text-highlights.js";
+import {PagemarkCoverageEventListener} from "./PagemarkCoverageEventListener.js";
 
 export class Controller {
 
@@ -31,6 +32,10 @@ export class Controller {
     erasePagemark(num) {
         console.log("Controller sees pagemark erased: " + num);
         this.model.erasePagemark(num);
+    }
+
+    getCurrentPageElement() {
+
     }
 
 }
@@ -139,6 +144,8 @@ export class WebController extends Controller {
     }
 
     getCurrentPageElement() {
+
+        console.log("FIXME: here");
 
         // TODO: It is probably easier to use pdf.pageNum but I'm not sure if this
         // is actively updated or not.
@@ -266,6 +273,8 @@ export class WebController extends Controller {
         console.log("Key bindings registered");
 
         TextHighlightController.create().listenForKeyBindings();
+
+        new PagemarkCoverageEventListener(this).startListening();
 
     }
 

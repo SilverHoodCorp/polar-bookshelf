@@ -3,64 +3,81 @@
 <head>
     <style>
 
-        #mybox {
-            position: absolute;
-            top: 200px;
+        .page {
 
-            width: 500px;
-            height: 500px;
+            width: 800px;
+            height: 1000px;
             background-color: blue;
+
+            margin-bottom:  75px;
+
+        }
+
+        #viewport {
+            height: 100%;
+            overflow-y: scroll;;
         }
 
     </style>
+
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/controller.js"></script>
+
 </head>
 
 <body>
 
-<div id="mybox" class="page">
+<!--<div id="status">-->
+    <!--status:-->
+<!--</div>-->
 
 
 
+<div id="viewport">
+
+    <div class="mybox page">
+
+    </div>
 
 </div>
 
-<div id="status">
-    status:
-</div>
+<script type="module">
 
-<script>
+    import {WebController} from "./js/controller.js";
+    import {OffsetCalculator} from "./js/utils.js";
 
     class PageCoverageEventListener {
 
-
         constructor() {
-            this.keyActivated = false;
+            this.keyActivated = true;
+            this.controller = new WebController();
         }
 
         /**
          * Track that we've selected 'e' on the keyboard,
          */
         keyListener(event) {
-
-            if (event.ctrlKey && event.altKey) {
-
-                const eCode = 69;
-
-                switch (event.which) {
-
-                    case eCode:
-
-                        this.keyActivated = true;
-                        break;
-
-                    default:
-
-                        this.keyActivated = false;
-                        break;
-
-                }
-
-            }
+            //
+            // if (event.ctrlKey && event.altKey) {
+            //
+            //     const eCode = 69;
+            //
+            //     switch (event.which) {
+            //
+            //         case eCode:
+            //
+            //             this.keyActivated = true;
+            //             break;
+            //
+            //         default:
+            //
+            //             this.keyActivated = false;
+            //             break;
+            //
+            //     }
+            //
+            // }
 
         }
 
@@ -78,21 +95,41 @@
 
             console.log("ACTIVATED");
 
-            var element = document.getElementById("status");
+            let pageElement = this.controller.getCurrentPageElement();
 
-            var targetElement = document.getElementById("mybox");
+            console.log("FIXME: pageElement: ", pageElement);
 
             console.log(event);
+            console.log("event.pageY: ", event.pageY);
 
-            var height = 500; // FIXME: this needs to be parsed
+            let viewport = document.getElementById("viewport");
 
-            var percentage = (event.offsetY / height) * 100;
+            let pageOffset = OffsetCalculator.calculate(pageElement, document);
 
-            var x = event.pageX - targetElement.offsetLeft;
-            var y = event.pageY - targetElement.offsetTop;
+            console.log("FIXME: pageOffset", JSON.stringify(pageOffset, null, "  "));
 
-            element.textContent = `status: got event x: ${x} , y: ${y}, percentage: ${percentage}`;
 
+            // https://stackoverflow.com/questions/4962710/get-mouse-position-in-scrollable-div
+
+            console.log("viewport.scrollTop: ", viewport.scrollTop);
+
+            let mouseTop = event.pageY + viewport.scrollTop;
+
+            console.log("mouseTop: ", mouseTop);
+
+            // FIXME: now make sure the mouseTop is within pageOffset.top and pageOffset.bottom
+
+            if(mouseTop >= pageOffset.top && mouseTop <= pageOffset.bottom) {
+
+                let mousePageY = mouseTop - pageOffset.top;
+
+                let percentage = (mousePageY / pageOffset.height) * 100;
+
+                console.log("FXME percentage ", percentage)
+
+            } else {
+                console.log("Mouse click was outside of page.")
+            }
 
         }
 
@@ -114,6 +151,16 @@
 
 
     console.log("Adding event");
+
+    // create a bunch of the boxes
+
+    for(var idx = 0; idx < 10; ++idx) {
+        let newbox = document.querySelector(".mybox").cloneNode(true);
+
+        let viewport = document.getElementById("viewport");
+
+        viewport.appendChild(newbox);
+    }
 
 
 </script>
