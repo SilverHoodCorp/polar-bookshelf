@@ -82,6 +82,9 @@ export class PagemarkCoverageEventListener {
         // returning 0 for the top for some reason... perhaps because it's
         // absolutely positioned?
 
+        // FIXME: the problem now is that BORDER on the page isn't being
+        // considered!!!
+
         // FIXME: this must be the bug now...
         let pageOffset = OffsetCalculator.calculate(textLayerElement, viewport.parentElement);
 
