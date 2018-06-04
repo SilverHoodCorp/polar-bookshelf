@@ -58,9 +58,13 @@ export class PagemarkCoverageEventListener {
 
         console.log("ACTIVATED");
 
-        // FIXME: migrate this to use the event.target and search from the DOM
-        // up to find the .page
-        //let pageElement = this.controller.getCurrentPageElement();
+        // FIXME: we have TWO problems now...
+        //
+        // 1. Only the first page works.
+        //
+        // 2. The mouse doesn't compute the proper percentage unless scale is 100%
+        //
+        // FIXME: these two may be created... 
 
         let pageElement = Elements.untilRoot(event.target, ".page");
 
