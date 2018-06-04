@@ -1,5 +1,6 @@
+import {TextHighlightController} from "./text-highlights.js";
 
-class Controller {
+export class Controller {
 
     constructor(datastore, model) {
         this.datastore = datastore;
@@ -36,7 +37,7 @@ class Controller {
 
 // controller for the web UI to update the model
 
-class WebController extends Controller {
+export class WebController extends Controller {
 
     constructor(datastore, model) {
         super(datastore, model);

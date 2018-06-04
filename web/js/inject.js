@@ -1,4 +1,7 @@
-function injectScript(src) {
+import {WebController} from "./controller.js";
+import {TextHighlightController} from "./text-highlights.js";
+
+function injectScript(src,type) {
 
     let script = document.createElement('script');
     script.src = src;
@@ -7,6 +10,9 @@ function injectScript(src) {
     // up eventually.
     script.async = false;
     script.defer = false;
+
+    if(type)
+        script.type = type;
 
     var promise = new Promise(function (resolve, reject) {
 
@@ -52,11 +58,11 @@ async function injectAllScripts() {
     await injectScript('../../web/js/metadata.js');
     await injectScript('../../web/js/model.js');
     await injectScript('../../web/js/view.js');
-    await injectScript('../../web/js/controller.js');
+    await injectScript('../../web/js/controller.js', 'module');
     await injectScript('../../web/js/clock.js');
     await injectScript('../../web/js/optional.js');
     await injectScript('../../web/js/datastore/datastore.js');
-    await injectScript('../../web/js/text-highlights.js');
+    await injectScript('../../web/js/text-highlights.js', 'module');
     await injectScript('../../lib/TextHighlighter.js');
 
 }

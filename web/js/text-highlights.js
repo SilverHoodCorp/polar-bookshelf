@@ -5,7 +5,7 @@ import {TextHighlightView} from "./TextHighlightView.js";
 // given some text, compute a list of rects that can overlap the text to form
 // one coherent highlight.
 
-class TextHighlightController {
+export class TextHighlightController {
 
     constructor(textHighlighter) {
         this.textHighlighter = textHighlighter;
