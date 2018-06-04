@@ -1,0 +1,24 @@
+<html>
+<head>
+    <!--<script type="module" src="../node_modules/rxjs/Rx.js"></script>-->
+</head>
+<body>
+
+<!-- https://www.npmjs.com/package/rx-collection -->
+
+<script src="https://unpkg.com/rxjs/bundles/rxjs.umd.min.js"></script>
+
+<script>
+
+const { Observable, Subject, ReplaySubject, from, of, range } = rxjs;
+const { map, filter, switchMap } = rxjs.operators;
+
+range(1, 200)
+    .pipe(filter(x => x % 2 === 1), map(x => x + x))
+    .subscribe(x => console.log(x));
+
+from({foo: "bar"});
+
+</script>
+</body>
+</html>

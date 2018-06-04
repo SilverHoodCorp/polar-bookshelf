@@ -1,0 +1,42 @@
+<html>
+
+<head>
+</head>
+<body>
+
+<script type="module">
+    import {Proxies} from "./js/Proxies.js";
+
+    var myDict = {'foo': 'bar'};
+
+    class MyListener {
+
+        onSet(name,value) {
+            console.log(`Got ${name}=${value}`);
+        }
+
+        onDelete(name) {
+
+        }
+
+    }
+
+    let myListener = new MyListener();
+
+    myDict = Proxies.createDictListener( myDict,
+                                         myListener.onSet.bind(myListener),
+                                         myListener.onDelete.bind(myListener))
+
+    console.log(myDict);
+
+    myDict['cat'] = 'dog';
+
+    myDict.animal = 'frog';
+
+    delete myDict.animal;
+
+</script>
+
+
+</body>
+</html>
