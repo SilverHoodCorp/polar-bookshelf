@@ -7,6 +7,7 @@ import {TextHighlightController} from "./text-highlights.js";
 import {SystemClock} from "./clock.js";
 import {MemoryDatastore} from "./datastore/datastore.js";
 import {Model} from "./model.js";
+import {DocMeta} from "./metadata.js";
 
 console.log("FIXME", Model);
 
