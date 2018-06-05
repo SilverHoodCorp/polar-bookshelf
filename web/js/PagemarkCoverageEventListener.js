@@ -4,37 +4,23 @@ export class PagemarkCoverageEventListener {
 
     constructor(controller) {
         this.controller = controller;
-        this.keyActivated = true;
+        this.keyActivated = false;
     }
 
     /**
      * Track that we've selected 'e' on the keyboard,
      */
     keyListener(event) {
-        //
-        // if(!event) {
-        //     throw new Error("no event");
-        // }
-        //
-        // if (event.ctrlKey && event.altKey) {
-        //
-        //     const eCode = 69;
-        //
-        //     switch (event.which) {
-        //
-        //         case eCode:
-        //
-        //             this.keyActivated = true;
-        //             break;
-        //
-        //         default:
-        //
-        //             this.keyActivated = false;
-        //             break;
-        //
-        //     }
-        //
-        // }
+
+        if(!event) {
+            throw new Error("no event");
+        }
+
+        if (event.ctrlKey && event.altKey) {
+            this.keyActivated = true;
+        } else {
+            this.keyActivated = false;
+        }
 
     }
 
@@ -56,8 +42,6 @@ export class PagemarkCoverageEventListener {
     // https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
     onActivated(event) {
 
-        console.log("ACTIVATED");
-
         // FIXME: we're closer now.. but we have to factor in some sort of static offet.
 
         let pageElement = Elements.untilRoot(event.target, ".page");
@@ -67,8 +51,6 @@ export class PagemarkCoverageEventListener {
             return;
         }
 
-        // FIXME: we need to do this from the textLayer not the pageElement. the
-        // page has a bit of padding in it...
         var textLayerElement = pageElement.querySelector(".textLayer");
 
         if(!textLayerElement) {
@@ -78,29 +60,16 @@ export class PagemarkCoverageEventListener {
 
         let viewport = document.getElementById("viewerContainer");
 
-        // FIXME: this is part of the problem too.. the textLayerElement is
-        // returning 0 for the top for some reason... perhaps because it's
-        // absolutely positioned?
-
-        // FIXME: the problem now is that BORDER on the page isn't being
-        // considered!!!
-
-        // FIXME: this must be the bug now...
         let pageOffset = OffsetCalculator.calculate(textLayerElement, viewport.parentElement);
 
         // FIXME: this is lame.. this is for the border.
         pageOffset.top += 9;
 
-        console.log("FIXME: pageOffset: ", JSON.stringify(pageOffset, null, "  "));
-
-        console.log("FIXME: jq height ", $(textLayerElement).height());
-
+        // manually adjust the offsets with correct jquery data.
         pageOffset.height = $(textLayerElement).height();
         pageOffset.bottom = pageOffset.top + pageOffset.height;
 
         let mouseTop = event.pageY + viewport.scrollTop;
-
-        console.log("FIXME: mouseTop: ", mouseTop);
 
         if(mouseTop >= pageOffset.top && mouseTop <= pageOffset.bottom) {
 
@@ -111,6 +80,10 @@ export class PagemarkCoverageEventListener {
             let percentage = (mousePageY / pageOffset.height) * 100;
 
             console.log("percentage: ", percentage);
+
+            let pageNum = this.controller.getPageNum(pageElement);
+            this.controller.erasePagemark(pageNum);
+            this.controller.createPagemark(pageNum, {percentage});
 
         } else {
             console.log("Mouse click was outside of page.")

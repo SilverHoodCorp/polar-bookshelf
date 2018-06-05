@@ -72,7 +72,15 @@ class Model {
      *
      * @param pageNum The page num to use for our created pagemark.
      */
-    async createPagemark(pageNum) {
+    async createPagemark(pageNum, options) {
+
+        if(!options) {
+            options = {};
+        }
+
+        if(!options.percentage) {
+            options.percentage = 100;
+        }
 
         console.log("Model sees createPagemark");
 
@@ -85,7 +93,7 @@ class Model {
         let pagemark = new Pagemark({
             created: this.clock.getDate(),
             type: PagemarkType.SINGLE_COLUMN,
-            percentage: 100,
+            percentage: options.percentage,
             column: 0
         });
 

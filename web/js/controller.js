@@ -21,9 +21,9 @@ export class Controller {
     /**
      * Mark the given page number as read.
      */
-    createPagemark(num) {
-        console.log("Controller sees pagemark created: " + num);
-        this.model.createPagemark(num);
+    createPagemark(pageNum, options) {
+        console.log("Controller sees pagemark created: " + pageNum);
+        this.model.createPagemark(pageNum, options);
     }
 
     /**
@@ -145,8 +145,6 @@ export class WebController extends Controller {
 
     getCurrentPageElement() {
 
-        console.log("FIXME: here");
-
         // TODO: It is probably easier to use pdf.pageNum but I'm not sure if this
         // is actively updated or not.
         let pages = document.querySelectorAll(".page");
@@ -199,7 +197,6 @@ export class WebController extends Controller {
     }
 
     getPageNum(pageElement) {
-        // FIXME: this is wrong because we pass in pageElement AND get teh pageElement
         var pageElement = this.getCurrentPageElement();
         let dataPageNum = pageElement.getAttribute("data-page-number");
         return parseInt(dataPageNum);
