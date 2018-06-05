@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import {Controller} from "./controller.js";
 import {WebController} from "./controller.js";
 import {WebView} from "./view.js";
 import {TextHighlightController} from "./text-highlights.js";
