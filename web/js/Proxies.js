@@ -184,11 +184,11 @@ class TraceHandler {
     }
 
     set(target, property, value, receiver) {
-        return this.traceListener.onMutation(this.path, MutationType.SET, target, property, value);
+        return this.traceListener.onTrace(this.path, MutationType.SET, target, property, value);
     }
 
     deleteProperty(target, property) {
-        return this.traceListener.onMutation(this.path, MutationType.DELETE, target, property, undefined);
+        return this.traceListener.onTrace(this.path, MutationType.DELETE, target, property, undefined);
     }
 
 }
@@ -201,5 +201,19 @@ class TraceHandler {
  * @constructor
  */
 function TraceListener {
+
+    /**
+     * Listen to a mutation and we're given a list of names and types.
+     *
+     * @param path The path in the object tree of the object being mutated.
+     * @param mutationType
+     * @param target The object being mutated.
+     * @param name The name of the field in the object.
+     * @param value The new value of the field or undefined if it's a delete operation.
+     * @return True if the mutation should continue.
+     */
+    onTrace(path, mutationType, target, property, value) {
+
+    }
 
 }
