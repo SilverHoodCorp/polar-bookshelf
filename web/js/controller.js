@@ -253,9 +253,8 @@ export class WebController extends Controller {
                     this.keyBindingErasePagemark(event);
                     break;
 
-                // FIME this is no longer used here.
-
                 case mCode:
+                    // FIME this is no longer used here.
                     this.keyBindingPagemarkUpToMouse(event);
                     break;
 
