@@ -1,4 +1,6 @@
+import $ from 'jquery';
 import {Delegator, Styles, Elements, OffsetCalculator} from "./utils.js";
+import {KeyEvents} from "./KeyEvents.js";
 
 export class PagemarkCoverageEventListener {
 
@@ -12,13 +14,19 @@ export class PagemarkCoverageEventListener {
      */
     keyListener(event) {
 
+        console.log(event);
+
         if(!event) {
             throw new Error("no event");
         }
 
-        if (event.ctrlKey && event.altKey) {
+        // on MacOS t needs to be Alt + Meta. Control is already bound.
+        if (KeyEvents.isKeyMetaActive(event)) {
+            console.log("FIXME: active now");
             this.keyActivated = true;
         } else {
+
+            console.log("FIXME: INactive now");
             this.keyActivated = false;
         }
 
@@ -37,7 +45,6 @@ export class PagemarkCoverageEventListener {
         this.onActivated(event);
 
     }
-
 
     // https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
     onActivated(event) {
