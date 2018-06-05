@@ -13,7 +13,6 @@ chai.use(chaiDiff);
 // stable reference date for all tests.
 var date = new Date(Date.parse("2018-05-30T02:47:44.411Z"));
 
-
 describe('Test computeRectForRow for highlighting text...', function() {
 
     it('Test with 1 entries', function () {
