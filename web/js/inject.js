@@ -42,12 +42,12 @@ async function injectAllScripts() {
     // stock pdf.js viewer.html application.
 
     // TODO: make this into an if / then if we're running in a renderer process.
-    if(isElectron()) {
-        window.$ = window.jQuery = await require('/node_modules/jquery/dist/jquery.min.js');
-    } else {
+    // if(isElectron()) {
+    //     window.$ = window.jQuery = await require('/node_modules/jquery/dist/jquery.min.js');
+    // } else {
         await injectScript('/node_modules/jquery/dist/jquery.min.js', 'module');
         window.$ = window.jQuery;
-    }
+    // }
 
     // TODO: use a Promise.all() on all of these to await them as a batch.
     // It's not going to make a massive performance difference though since we
