@@ -2,6 +2,7 @@ import $ from 'jquery';
 
 import {TextHighlightController} from "./text-highlights.js";
 import {PagemarkCoverageEventListener} from "./PagemarkCoverageEventListener.js";
+import {KeyEvents} from "./KeyEvents.js";
 import {polar} from "./polar.js";
 
 export class Controller {
@@ -236,12 +237,15 @@ export class WebController extends Controller {
 
     keyBindingListener(event) {
 
-        if ((event.ctrlKey || event.code === "ControlLeft") && (event.altKey || event.code === "MetaLeft" || event.metaKey)) {
+        if (KeyEvents.isKeyMetaActive(event)) {
 
             const eCode = 69;
 
             const mCode = 77;
             const nCode = 78;
+
+            // used for MacOS where it generates an 'N' for some reason.
+            const NCode = 192;
 
             switch (event.which) {
 
@@ -249,11 +253,17 @@ export class WebController extends Controller {
                     this.keyBindingErasePagemark(event);
                     break;
 
+                // FIME this is no longer used here.
+
                 case mCode:
                     this.keyBindingPagemarkUpToMouse(event);
                     break;
 
                 case nCode:
+                    this.keyBindingPagemarkEntirePage(event);
+                    break;
+
+                case NCode:
                     this.keyBindingPagemarkEntirePage(event);
                     break;
 
