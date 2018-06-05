@@ -1,4 +1,6 @@
-class Model {
+
+
+export class Model {
 
     constructor(datastore, clock) {
 

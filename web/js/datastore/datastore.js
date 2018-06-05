@@ -1,5 +1,5 @@
 // A datastore that supports ledgers and checkpoints.
-class Datastore {
+export class Datastore {
 
     /**
      * Init the datastore, potentially reading files of disk, the network, etc.
@@ -28,7 +28,7 @@ class Datastore {
 /**
  * Datastore just in memory with no on disk persistence.
  */
-class MemoryDatastore extends Datastore {
+export class MemoryDatastore extends Datastore {
 
     constructor() {
 
