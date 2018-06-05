@@ -90,14 +90,14 @@ function launchDev() {
 //
 // }
 //
-// async function start(datastore, controller, mode) {
-//
-//     await datastore.init();
-//
-//     controller.startListeners();
-//     console.log("Controller started in mode: " + mode);
-//
-// }
+async function start(datastore, controller, mode) {
+
+    await datastore.init();
+
+    controller.startListeners();
+    console.log("Controller started in mode: " + mode);
+
+}
 
 function launch(launcherFunction) {
 

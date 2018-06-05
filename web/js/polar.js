@@ -3,7 +3,7 @@
 // const fs = require('fs');
 
 // basic object around polar state and runtime.
-let polar = {
+export let polar = {
 
     state: {
 

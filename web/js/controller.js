@@ -1,5 +1,8 @@
+import $ from 'jquery';
+
 import {TextHighlightController} from "./text-highlights.js";
 import {PagemarkCoverageEventListener} from "./PagemarkCoverageEventListener.js";
+import {polar} from "./polar.js";
 
 export class Controller {
 

@@ -1,3 +1,5 @@
+import {DocMeta, MetadataSerializer} from "../metadata.js";
+
 // A datastore that supports ledgers and checkpoints.
 export class Datastore {
 
