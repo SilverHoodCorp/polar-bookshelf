@@ -13,6 +13,7 @@ const nativeImage = require('electron').nativeImage;
 const options = { extraHeaders: 'pragma: no-cache\n' }
 const app_icon = nativeImage.createFromPath(fspath.join(__dirname, 'icon.ico'));
 const diskstore = require("./web/js/datastore/diskstore.js")
+const webserver = require("./node/webserver");
 
 let mainWindow, splashwindow;
 var contextMenu = null;
@@ -55,10 +56,17 @@ const BROWSER_WINDOW_OPTIONS = {
 
 const REMOTE_DEBUGGING_PORT = '8315';
 
+const WEBSERVER_PORT = 8500;
+
+// TODO: I think we need to wait until the webserver port is available before
+// continuing.
+const webserverDaemon = new webserver.WebserverDaemon(".", WEBSERVER_PORT);
+webserverDaemon.start();
+
 // TODO: if the __dirname has a space in it then I think the file URL will be
 // wrong.
 
-const DEFAULT_URL = 'file://' + __dirname + '/default.html';
+const DEFAULT_URL = `http://localhost:${WEBSERVER_PORT}/default.html`;
 //const DEFAULT_URL = 'file://' + __dirname + '/web/test-pagemark.html';
 
 if (process.argv.includes("--enable-remote-debugging")) {
@@ -97,11 +105,11 @@ const template = [{
                                     path = path[0];
 
                                 // FIXME: cmaps are disabled when loading from file URLs so I need to look into this problem...
-                                mainWindow.loadURL('file://' + __dirname + '/pdfviewer/web/viewer.html?file=' + encodeURIComponent(path), options);
+                                mainWindow.loadURL(`http://localhost:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=` + encodeURIComponent(path), options);
 
                                 mainWindow.webContents.on('did-finish-load', function() {
                                     console.log("Finished loading. Now injecting customizations.");
-                                    injectCustomizations(mainWindow.webContents);
+                                    //injectCustomizations(mainWindow.webContents);
                                     console.log("Toggling dev tools...");
                                     mainWindow.toggleDevTools();
                                 });
@@ -217,7 +225,7 @@ var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) 
 if (shouldQuit) { app.quit(); return; }
 app.on('ready', function() {
     splashwindow = new BrowserWindow({ width: 600, height: 400, center: true, resizable: false, movable: false, alwaysOnTop: true, skipTaskbar: true, frame: false });
-    splashwindow.loadURL('file://' + __dirname + '/splash.html');
+    splashwindow.loadURL(`http://localhost:${WEBSERVER_PORT}/splash.html`);
     contextMenu = Menu.buildFromTemplate([
         { label: 'Minimize', type: 'radio', role: 'minimize' },
         { type: 'separator' },
@@ -259,7 +267,7 @@ function injectCustomizations(webContents) {
 
     // for now, inject one script, which in the browser context, injects
     // the rest of the scripts.
-    injectScript(webContents, '../../web/js/inject.js');
+    injectScript(webContents, '/web/js/inject.js');
 
 }
 

@@ -43,27 +43,28 @@ async function injectAllScripts() {
 
     // TODO: make this into an if / then if we're running in a renderer process.
     if(isElectron()) {
-        window.$ = window.jQuery = await require('../../node_modules/jquery/dist/jquery.min.js');
+        window.$ = window.jQuery = await require('/node_modules/jquery/dist/jquery.min.js');
     } else {
-        await injectScript('../../node_modules/jquery/dist/jquery.min.js');
+        await injectScript('/node_modules/jquery/dist/jquery.min.js', 'module');
+        window.$ = window.jQuery;
     }
 
     // TODO: use a Promise.all() on all of these to await them as a batch.
     // It's not going to make a massive performance difference though since we
     // are loading locally.
 
-    await injectScript('../../web/js/utils.js', 'module');
-    await injectScript('../../web/js/polar.js');
-    //injectScript('../../web/js/annotations.js');
-    await injectScript('../../web/js/metadata.js');
-    await injectScript('../../web/js/model.js');
-    await injectScript('../../web/js/view.js', 'module');
-    await injectScript('../../web/js/controller.js', 'module');
-    await injectScript('../../web/js/clock.js');
-    await injectScript('../../web/js/optional.js');
-    await injectScript('../../web/js/datastore/datastore.js');
-    await injectScript('../../web/js/text-highlights.js', 'module');
-    await injectScript('../../lib/TextHighlighter.js');
+    await injectScript('/web/js/utils.js', 'module');
+    await injectScript('/web/js/polar.js');
+    //injectScript('/web/js/annotations.js');
+    await injectScript('/web/js/metadata.js');
+    await injectScript('/web/js/model.js');
+    await injectScript('/web/js/view.js', 'module');
+    await injectScript('/web/js/controller.js', 'module');
+    await injectScript('/web/js/clock.js');
+    await injectScript('/web/js/optional.js');
+    await injectScript('/web/js/datastore/datastore.js');
+    await injectScript('/web/js/text-highlights.js', 'module');
+    await injectScript('/lib/TextHighlighter.js');
 
 }
 

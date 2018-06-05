@@ -26,6 +26,11 @@ export class Controller {
         this.model.createPagemark(pageNum, options);
     }
 
+    erasePagemarks(pageNum, options) {
+        console.log("Controller sees pagemarks erased: " + pageNum);
+        this.model.erasePagemark(pageNum, options);
+    }
+
     /**
      * Mark the given page number as read.
      */
@@ -210,6 +215,7 @@ export class WebController extends Controller {
         var pageElement = this.getCurrentPageElement();
         var pageNum = this.getPageNum(pageElement);
 
+        this.erasePagemarks(pageNum);
         this.createPagemark(pageNum);
 
     }
