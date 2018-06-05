@@ -14,16 +14,23 @@ class MyTracingListener {
 
     onTrace(path, mutationType, target, property, value) {
         this.mutations.push({path, mutationType, target, property, value});
+        console.log("Got traced mutation: ", {path, mutationType, target, property, value});
         return true;
     }
 
-}
+};
 
 describe('Testing proxies', function() {
 
     it('Test deep', function () {
 
-        Proxies.create()
+        let myTracingListener = new MyTracingListener();
+
+        var myDict = {'foo': 'bar'};
+
+        myDict = Proxies.create(myDict).trace(myTracingListener);
+
+        myDict.animal = 'cat';
 
     });
 

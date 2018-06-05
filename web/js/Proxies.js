@@ -75,22 +75,95 @@ class ProxyBuilder {
         }
 
         if(!options.path) {
-            options.path = ".";
+            options.path = "/";
         }
 
         return new Proxy(this.target, new TraceHandler(options.path, traceListener));
 
     }
 
-    deepTrace(traceListener) {
+    deepTrace(traceListener, options) {
+
+        if(!options) {
+            options = {};
+        }
+
+        if(!options.path) {
+            options.path = "/";
+        }
 
         //FIXME:  go through each one of these and call deepTrace on each one...
 
-        return trace()
+        for (var key in this.target) {
+            if (object.hasOwnProperty(key)) {
+
+                var val = this.target[key];
+
+                if (val && typeof val === "object") {
+                    // FIXME: have change the this.target AND the path here..
+
+                    let newPath = options.path + key;
+                    this.target[key] = this.deepTrace(val, {});
+                }
+
+            }
+        }
+        return this.trace()
+
+    }
+
+    /**
+     * Create a path from two strings
+     */
+    static path(s0, s1) {
 
     }
 
 }
+
+class Paths {
+
+    /**
+     * Create a path from the given parts regardless of their structure.
+     *
+     * Don't allow double // or trailing /.  The output is always sane.
+     *
+     * @param dirname
+     * @param basename
+     */
+    static create(dirname, basename) {
+
+        if(!dirname)
+            throw new Error("Dirname required");
+
+        if(!basename)
+            throw new Error("Basename required");
+
+        // don't accept invalid input
+        if(basename.indexOf("/") !== -1) {
+            throw new Error("No / in basename.");
+        }
+
+        if(dirname.indexOf("//") !== -1) {
+            // don't allow // in dirname already as we would corrupt
+            throw new Error("No // in dirname");
+        }
+
+        if(!dirname.indexOf("/") !== 0) {
+            throw new Error("Dirname must start with /");
+        }
+
+        let result = dirname + "/" + basename;
+
+        // replace multiple slashes in directory parts
+        result.replace(/\/\/+/g, "/");
+
+        return result;
+
+    }
+
+}
+
 
 class ProxyHandler {
 
@@ -200,7 +273,7 @@ class TraceHandler {
  *
  * @constructor
  */
-function TraceListener {
+class TraceListener {
 
     /**
      * Listen to a mutation and we're given a list of names and types.
