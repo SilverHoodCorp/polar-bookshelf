@@ -789,13 +789,13 @@ class AnnotationWithNote extends Annotation {
 
 }
 
-const PagemarkType = {
+export const PagemarkType = {
     SINGLE_COLUMN: new Symbol("SINGLE_COLUMN"),
     DOUBLE_COLUMN: new Symbol("DOUBLE_COLUMN")
 }
 
 
-class Pagemark extends AnnotationWithNote {
+export class Pagemark extends AnnotationWithNote {
 
     constructor(val) {
 

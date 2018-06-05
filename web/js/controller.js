@@ -236,7 +236,7 @@ export class WebController extends Controller {
 
     keyBindingListener(event) {
 
-        if (event.ctrlKey && event.altKey) {
+        if ((event.ctrlKey || event.code === "ControlLeft") && (event.altKey || event.code === "MetaLeft" || event.metaKey)) {
 
             const eCode = 69;
 
@@ -272,7 +272,7 @@ export class WebController extends Controller {
             return;
         }
 
-        document.addEventListener("keyup", this.keyBindingListener.bind(this));
+        document.addEventListener("keydown", this.keyBindingListener.bind(this));
 
         polar.state.listenForKeyBindings = true;
 
@@ -285,3 +285,4 @@ export class WebController extends Controller {
     }
 
 }
+

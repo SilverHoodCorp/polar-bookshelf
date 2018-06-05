@@ -1,4 +1,5 @@
 
+import {Pagemark, PagemarkType} from "./metadata.js";
 
 export class Model {
 
