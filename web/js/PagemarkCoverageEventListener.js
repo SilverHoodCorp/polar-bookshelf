@@ -88,7 +88,15 @@ export class PagemarkCoverageEventListener {
         // FIXME: this must be the bug now...
         let pageOffset = OffsetCalculator.calculate(textLayerElement, viewport.parentElement);
 
+        // FIXME: this is lame.. this is for the border.
+        pageOffset.top += 9;
+
         console.log("FIXME: pageOffset: ", JSON.stringify(pageOffset, null, "  "));
+
+        console.log("FIXME: jq height ", $(textLayerElement).height());
+
+        pageOffset.height = $(textLayerElement).height();
+        pageOffset.bottom = pageOffset.top + pageOffset.height;
 
         let mouseTop = event.pageY + viewport.scrollTop;
 
