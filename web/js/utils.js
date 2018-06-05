@@ -28,7 +28,7 @@ export class Delegator {
  * Get the bounding box for a list of elements, not just one.  This would be
  * the minimum bounding box for all the elements.
  */
-function getBoundingClientRectFromElements(elements) {
+export function getBoundingClientRectFromElements(elements) {
 
     var boundingClientRects = elements.map(Element.getBoundingClientRect);
     return getBoundingClientRectFromBCRs(boundingClientRects);
@@ -38,7 +38,7 @@ function getBoundingClientRectFromElements(elements) {
 /**
  * Get the bounding box from a list of BCRs.
  */
-function getBoundingClientRectFromBCRs(boundingClientRects) {
+export function getBoundingClientRectFromBCRs(boundingClientRects) {
 
     var left = boundingClientRects.map((brc) => brc.left).reduce((a,b) => Math.min(a,b));
     var top = boundingClientRects.map((brc) => brc.top).reduce((a,b) => Math.min(a,b));
@@ -55,7 +55,7 @@ function getBoundingClientRectFromBCRs(boundingClientRects) {
  * are not present these values are null.
  *
  */
-function createSiblingTuples(arr) {
+export function createSiblingTuples(arr) {
 
     let result = [];
 
@@ -76,7 +76,7 @@ function createSiblingTuples(arr) {
 /**
  * @Deprecated use Elements.offset instead.
  */
-function elementOffset(element) {
+export function elementOffset(element) {
 
     let result = {
         left: element.offsetLeft,

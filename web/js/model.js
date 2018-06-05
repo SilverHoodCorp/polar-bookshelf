@@ -132,12 +132,12 @@ class Model {
 
     /**
      *
-     * @param num
+     * @param pageNum
      */
-    async pageLoaded(num) {
+    async pageLoaded(pageNum) {
 
         let docMeta = await this.docMetaPromise;
-        let pageMeta = this.docMeta.getPageMeta(num);
+        let pageMeta = this.docMeta.getPageMeta(pageNum);
 
         forDict(pageMeta.pagemarks, function (pagemarkId, pagemark) {
 
@@ -148,20 +148,20 @@ class Model {
             // loading yet.  We can SEE that a new document was loaded
             // but not that it was finished loading...
 
-            console.log("Dispatching event to create pagemark for page: " + num);
+            console.log("Dispatching event to create pagemark for page: " + pageNum);
 
-            this.reactor.dispatchEvent('createPagemark', {num});
+            this.reactor.dispatchEvent('createPagemark', {pageNum});
 
         }.bind(this));
 
     }
 
-    assertPageNum(num) {
+    assertPageNum(pageNum) {
 
-        if(num == null)
-            throw new Error("Must specify page num");
+        if(pageNum == null)
+            throw new Error("Must specify page pageNum");
 
-        if(num <= 0) {
+        if(pageNum <= 0) {
             throw new Error("Page numbers begin at 1");
         }
 
