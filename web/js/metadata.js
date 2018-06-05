@@ -1,3 +1,5 @@
+import {forDict} from "./utils.js";
+
 /*
 
  general metadata structure
@@ -68,17 +70,6 @@
 
  */
 
-// if I do it like this I can't use the browser unless I use commons-js I think.
-
-readDocMetaFromDisk = function(path) {
-
-
-
-};
-
-writeToDisk = function(path, docMeta) {
-
-};
 
 function createDocMeta(path) {
 
@@ -191,7 +182,7 @@ class SerializedObject {
 
 }
 
-class DocMetaDescriber {
+export class DocMetaDescriber {
 
     static describe(docMeta) {
 
@@ -214,7 +205,7 @@ class DocMetaDescriber {
  * Root metadata for a document including page metadata, and metadata for
  * the specific document.
  */
-class DocMeta extends SerializedObject {
+export class DocMeta extends SerializedObject {
 
     constructor(val) {
 
@@ -412,7 +403,7 @@ class DocInfo extends SerializedObject {
 
 }
 
-class PageMeta extends SerializedObject {
+export class PageMeta extends SerializedObject {
 
     constructor(val) {
 
@@ -872,7 +863,7 @@ class Pagemark extends AnnotationWithNote {
  * All JSON must go through the metadata serializer so we can handle proper
  * serialization but also object validation once they are deserialized.
  */
-class MetadataSerializer {
+export class MetadataSerializer {
 
     static replacer(key, value) {
         if(value instanceof ISODateTime) {

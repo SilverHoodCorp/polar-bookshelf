@@ -1,4 +1,5 @@
-import {Delegator, Styles, Elements} from "./utils.js";
+import {Delegator, Styles, Elements, forDict} from "./utils.js";
+import {DocMetaDescriber} from "./metadata.js";
 
 export class View {
 

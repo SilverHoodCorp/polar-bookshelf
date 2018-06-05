@@ -24,6 +24,22 @@ export class Delegator {
 
 }
 
+export function forDict(dict, callback) {
+
+    if(!dict) {
+        throw new Error("dict required");
+    }
+
+    if(!callback) {
+        throw new Error("callback required");
+    }
+
+    Object.keys(dict).forEach(function (key) {
+        let value = dict[key];
+        callback(key,value);
+    })
+}
+
 /**
  * Get the bounding box for a list of elements, not just one.  This would be
  * the minimum bounding box for all the elements.

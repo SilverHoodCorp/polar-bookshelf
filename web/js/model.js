@@ -230,21 +230,6 @@ class Reactor {
 }
 
 // TODO: move this to a util library
-function forDict(dict, callback) {
-
-    if(!dict) {
-        throw new Error("dict required");
-    }
-
-    if(!callback) {
-        throw new Error("callback required");
-    }
-
-    Object.keys(dict).forEach(function (key) {
-        let value = dict[key];
-        callback(key,value);
-    })
-}
 
 // TODO: move this to a util library
 

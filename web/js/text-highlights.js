@@ -1,5 +1,7 @@
 import {TextHighlightView} from "./TextHighlightView.js";
 import {elementOffset, createSiblingTuples, Elements, Styles} from "./utils.js";
+require("../../lib/TextHighlighter.js");
+
 
 // code for dealing with text highlights
 
