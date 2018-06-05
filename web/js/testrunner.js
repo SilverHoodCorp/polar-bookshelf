@@ -1,6 +1,8 @@
 // all our unit tests...
 
 import {TextHighlightRows} from "./text-highlights.js";
+import {View, WebView} from "./view.js";
+import * as utils from "./utils.js";
 
 var assert = chai.assert;
 var expect = chai.expect;
@@ -10,7 +12,6 @@ chai.use(chaiDiff);
 
 // stable reference date for all tests.
 var date = new Date(Date.parse("2018-05-30T02:47:44.411Z"));
-
 
 describe('Test computeRectForRow for highlighting text...', function() {
 
@@ -324,19 +325,19 @@ describe('Testing createSiblingTupples.', function() {
 
     it('Test with no entries', function() {
 
-        assert.deepEqual( createSiblingTuples([]), []);
+        assert.deepEqual( utils.createSiblingTuples([]), []);
 
     });
 
     it('Test with 1 entry', function() {
 
-        assert.deepEqual( createSiblingTuples([1]), [ { curr: 1, prev: null, next: null } ]);
+        assert.deepEqual( utils.createSiblingTuples([1]), [ { curr: 1, prev: null, next: null } ]);
 
     });
 
     it('Test with 2 entries', function() {
 
-        assert.deepEqual( createSiblingTuples([1,2]),
+        assert.deepEqual( utils.createSiblingTuples([1,2]),
                           [
                               { curr: 1, prev: null, next: 2 },
                               { curr: 2, prev: 1, next: null }
@@ -346,7 +347,7 @@ describe('Testing createSiblingTupples.', function() {
 
     it('Test with 3 entries', function() {
 
-        assert.deepEqual( createSiblingTuples([1,2,3]),
+        assert.deepEqual( utils.createSiblingTuples([1,2,3]),
             [
                 { curr: 1, prev: null, next: 2 },
                 { curr: 2, prev: 1, next: 3 },
@@ -357,7 +358,7 @@ describe('Testing createSiblingTupples.', function() {
 
     it('Test with 4 entries', function() {
 
-        assert.deepEqual( createSiblingTuples([1,2,3,4]),
+        assert.deepEqual( utils.createSiblingTuples([1,2,3,4]),
             [
                 { curr: 1, prev: null, next: 2 },
                 { curr: 2, prev: 1, next: 3 },
@@ -378,7 +379,7 @@ describe('Testing bounding client rect utils.', function() {
             {top: 10, left: 10, bottom: 50, right: 50}
         ];
 
-        var cbr = getBoundingClientRectFromBCRs(boundingClientRects);
+        var cbr = utils.getBoundingClientRectFromBCRs(boundingClientRects);
 
         assert.deepEqual(cbr, { left: 10, top: 10, bottom: 50, right: 50 });
 
@@ -393,7 +394,7 @@ describe('Testing bounding client rect utils.', function() {
             {top: 40, left: 10, bottom: 50, right: 55}
         ];
 
-        var cbr = getBoundingClientRectFromBCRs(boundingClientRects);
+        var cbr = utils.getBoundingClientRectFromBCRs(boundingClientRects);
 
         assert.deepEqual(cbr, { left: 5, top: 10, bottom: 55, right: 55 });
 
@@ -423,7 +424,7 @@ describe('Testing Delegates', function() {
         var delegate0 = new MyDelegate();
         var delegate1 = new MyDelegate();
 
-        var delegator = new Delegator([delegate0, delegate1]);
+        var delegator = new utils.Delegator([delegate0, delegate1]);
 
         delegator.apply("testFunction", "hello", "world");
 
@@ -778,8 +779,9 @@ describe('testing model interaction', function() {
                 this.pagemarks = [];
 
                 this.model.registerListenerForCreatePagemark(function (pagemarkEvent) {
-                    if( ! pagemarkEvent.num){
-                        throw new Error("No pagemark number");
+                    if( ! pagemarkEvent.pageNum){
+                        console.error("Note page number: ", pagemarkEvent);
+                        throw new Error("No pagemark number: ");
                     }
 
                     this.pagemarks.push(pagemarkEvent);
