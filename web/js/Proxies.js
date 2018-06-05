@@ -6,6 +6,12 @@
  */
 export class Proxies {
 
+    // FIXME:
+    //
+    // now I need a way to replace full object graphs with proxies so I can replace / setup mutation listeners on objects.
+    //
+    // I'm going to need to have ___path defined which we ignore in JSON serializers.
+
     // FIXME: it should be possible to listen to a specific property not just
     // all the properties...
     //
@@ -21,10 +27,14 @@ export class Proxies {
      * the dictionary has had keys set or deleted.
      *
      * @param target
-     * @param onSet
-     * @param onDelete
+     * @return ProxyBuilder
      */
-    static createProxy(target) {
+    static create(target) {
+
+        if(typeof target !== "object") {
+            throw new Error("Only works on objects");
+        }
+
         //return new Proxy(target, new ProxyHandler(onSet, onDelete));
         return new ProxyBuilder(target);
     }
@@ -51,8 +61,33 @@ class ProxyBuilder {
      * Listen to the stream of mutations and receive callbacks which you can handle directly.
      * @param onMutation
      */
-    forMutations(onMutation) {
-        return new Proxy(this.target, new MutationHandler(onMutation));
+    forMutations(mutationListener) {
+        return new Proxy(this.target, new MutationHandler(mutationListener));
+    }
+
+    /**
+     *
+     */
+    trace(traceListener, options) {
+
+        if(!options) {
+            options = {};
+        }
+
+        if(!options.path) {
+            options.path = ".";
+        }
+
+        return new Proxy(this.target, new TraceHandler(options.path, traceListener));
+
+    }
+
+    deepTrace(traceListener) {
+
+        //FIXME:  go through each one of these and call deepTrace on each one...
+
+        return trace()
+
     }
 
 }
@@ -98,10 +133,10 @@ class ObjectListener {
 
 }
 
-export const MutationType {
+export const MutationType = {
 
-    SET = 0;
-    DELETE = 1;
+    SET: "SET",
+    DELETE: "DELETE"
 
 }
 
@@ -110,16 +145,16 @@ export const MutationType {
  */
 class MutationHandler {
 
-    constructor(onMutation) {
-        this.onMutation = onMutation;
+    constructor(mutationListener) {
+        this.mutationListener = mutationListener;
     }
 
     set(target, property, value, receiver) {
-        return this.onMutation(MutationType.SET, target, property, value);
+        return this.mutationListener.onMutation(MutationType.SET, target, property, value);
     }
 
     deleteProperty(target, property) {
-        return this.onMutation(MutationType.DELETE, target, property, undefined);
+        return this.mutationListener.onMutation(MutationType.DELETE, target, property, undefined);
     }
 
 }
@@ -135,6 +170,36 @@ class MutationListener {
      * @param value The new value of the field or undefined if it's a delete operation.
      * @return True if the mutation should continue.
      */
-    onMutation(mutationType, target, property, value);
+    onMutation(mutationType, target, property, value) {
+
+    }
+
+}
+
+class TraceHandler {
+
+    constructor(path, traceListener) {
+        this.path = path;
+        this.traceListener = traceListener;
+    }
+
+    set(target, property, value, receiver) {
+        return this.traceListener.onMutation(this.path, MutationType.SET, target, property, value);
+    }
+
+    deleteProperty(target, property) {
+        return this.traceListener.onMutation(this.path, MutationType.DELETE, target, property, undefined);
+    }
+
+}
+
+
+/**
+ * Like a mutation listener, but we also include a 'path' to the object that represents the target that is being
+ * mutated.  This way we proxy deep objects, replacing their objects with proxies if necessary.
+ *
+ * @constructor
+ */
+function TraceListener {
 
 }

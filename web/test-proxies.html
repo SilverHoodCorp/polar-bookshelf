@@ -13,6 +13,7 @@
     class MyListener {
 
         onMutation(mutationType, target, property, value) {
+            // in practice we would write this to a journaled log file.
             console.log("Got mutation: ", {mutationType, target, property, value});
             return true;
         }
@@ -26,6 +27,24 @@
     myDict.animal = 'frog';
 
     delete myDict.animal;
+
+    class MyObject {
+
+        constructor() {
+            this.animal = "lion";
+        }
+
+    }
+
+    var myObject = new MyObject();
+    myObject = Proxies.create(myObject).forMutations(myListener);
+
+    myObject.animal = 'frog';
+
+    delete myObject.animal;
+
+
+
 
                                          // myListener.onSet.bind(myListener),
                                          // myListener.onDelete.bind(myListener))
