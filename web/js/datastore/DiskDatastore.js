@@ -7,8 +7,6 @@ const fs = require("fs");
 const os = require("os");
 const util = require('util');
 
-// node.js doesn't support ES6 classes yet.
-
 /**
  * Datastore just in memory with no on disk persistence.
  */
@@ -17,6 +15,7 @@ module.exports.DiskDatastore = class extends Datastore {
     constructor() {
 
         super();
+        
         /**
          *
          * @type map<string,DocMeta>
