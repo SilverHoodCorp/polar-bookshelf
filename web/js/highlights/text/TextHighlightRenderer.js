@@ -1,7 +1,8 @@
+const {Elements} = require("../../utils");
 const {TextHighlightRows} = require("./TextHighlightRows");
-const {TextHighlight} = require("./TextHighlight");
+const {TextHighlight} = require("../../metadata/TextHighlight");
 
-module.exports.TextHighlightRenderer = class  {
+class TextHighlightRenderer {
 
     constructor(textHighlightRows, selector) {
         this.textHighlightRows = textHighlightRows;
@@ -96,3 +97,5 @@ module.exports.TextHighlightRenderer = class  {
     }
 
 }
+
+module.exports.TextHighlightRenderer = TextHighlightRenderer;

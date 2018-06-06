@@ -1,6 +1,6 @@
 const {SerializedObject} = require("./SerializedObject.js");
 
-class BaseHighlight extends SerializedObject {
+module.exports.BaseHighlight = class extends SerializedObject {
 
     constructor(val) {
         super(val);

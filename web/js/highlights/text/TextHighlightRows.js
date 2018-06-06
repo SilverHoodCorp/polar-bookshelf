@@ -20,7 +20,7 @@ const {IntermediateRow} = require("./IntermediateRow");
  * as a stream of text, not of geometric points.
  *
  */
-module.exports.TextHighlightRows = class {
+class TextHighlightRows {
 
     /**
      * Create a highlight from a CSS selector.
@@ -217,3 +217,5 @@ module.exports.TextHighlightRows = class {
     }
 
 }
+
+module.exports.TextHighlightRows = TextHighlightRows;

@@ -1,3 +1,4 @@
+const {Optional} = require("./Optional");
 
 /**
  * Apply a given function, with arguments, to a list of delegates which have
