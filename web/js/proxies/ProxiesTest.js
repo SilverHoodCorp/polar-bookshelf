@@ -24,7 +24,7 @@ describe('Proxies', function() {
         it("test set", function () {
             let myDict = {'foo': 'bar'};
 
-            var myMutationListener = new MyMutationListener();
+            let myMutationListener = new MyMutationListener();
 
             myDict = Proxies.create(myDict).forMutations(myMutationListener);
 
@@ -46,7 +46,7 @@ describe('Proxies', function() {
         it("test delete", function () {
             let myDict = {'foo': 'bar'};
 
-            var myMutationListener = new MyMutationListener();
+            let myMutationListener = new MyMutationListener();
 
             myDict = Proxies.create(myDict).forMutations(myMutationListener);
 
