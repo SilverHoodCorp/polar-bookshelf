@@ -1,5 +1,6 @@
+console.log("in metadata.js module.exports", module.exports);
 
-import { forDict } from require("./utils.js");
+const { forDict } = require("./utils.js");
 
 /*
 
@@ -183,7 +184,7 @@ class SerializedObject {
 
 }
 
-export class DocMetaDescriber {
+module.exports.DocMetaDescriber = class {
 
     static describe(docMeta) {
 
@@ -206,7 +207,7 @@ export class DocMetaDescriber {
  * Root metadata for a document including page metadata, and metadata for
  * the specific document.
  */
-export class DocMeta extends SerializedObject {
+module.exports.DocMeta = class extends SerializedObject {
 
     constructor(val) {
 
@@ -404,7 +405,7 @@ class DocInfo extends SerializedObject {
 
 }
 
-export class PageMeta extends SerializedObject {
+module.exports.PageMeta = class extends SerializedObject {
 
     constructor(val) {
 
@@ -790,13 +791,12 @@ class AnnotationWithNote extends Annotation {
 
 }
 
-export const PagemarkType = {
+module.exports.PagemarkType = Object.freeze({
     SINGLE_COLUMN: new Symbol("SINGLE_COLUMN"),
     DOUBLE_COLUMN: new Symbol("DOUBLE_COLUMN")
-}
+});
 
-
-export class Pagemark extends AnnotationWithNote {
+module.exports.Pagemark = class extends AnnotationWithNote {
 
     constructor(val) {
 
@@ -864,7 +864,7 @@ export class Pagemark extends AnnotationWithNote {
  * All JSON must go through the metadata serializer so we can handle proper
  * serialization but also object validation once they are deserialized.
  */
-export class MetadataSerializer {
+module.exports.MetadataSerializer = class {
 
     static replacer(key, value) {
         if(value instanceof ISODateTime) {
@@ -908,9 +908,4 @@ export class MetadataSerializer {
 
 class DocMetaWriter {
 
-}
-
-if(typeof exports !== "undefined") {
-    exports.MetadataSerializer = MetadataSerializer;
-    exports.DocMeta = DocMeta;
 }

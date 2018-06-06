@@ -1,16 +1,14 @@
-import $ from 'jquery';
-import {Controller} from "./controller.js";
-import {WebController} from "./controller.js";
-import {WebView} from "./view.js";
-import {TextHighlightController} from "./text-highlights.js";
+//const {$} = require('jquery');
+console.log("FIXME module.exports", module.exports);
+const {DocMeta} = require("./metadata.js");
+const {Controller} = require("./controller/Controller.js");
+const {WebController} = require("./controller/WebController.js");
+const {WebView} = require("./view/WebView.js");
+const {TextHighlightController} = require("./text-highlights.js");
 
-import {SystemClock} from "./clock.js";
-import {MemoryDatastore} from "./datastore/datastore.js";
-import {Model} from "./model.js";
-import {DocMeta} from "./metadata.js";
-
-console.log("FIXME", Model);
-
+const {SystemClock} = require("./time/SystemClock.js");
+const {MemoryDatastore} = require("./datastore/datastore.js");
+const {Model} = require("./model.js");
 
 
 /// /

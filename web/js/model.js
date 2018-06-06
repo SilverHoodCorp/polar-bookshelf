@@ -1,7 +1,7 @@
 
-import {Pagemark, PagemarkType} from "./metadata.js";
+const {Pagemark, PagemarkType} = require("./metadata.js");
 
-export class Model {
+module.exports.Model = class {
 
     constructor(datastore, clock) {
 

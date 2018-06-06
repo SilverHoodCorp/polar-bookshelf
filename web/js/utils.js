@@ -1,3 +1,6 @@
+console.log("FIXME3 module.exports", module.exports);
+
+
 /**
  * Apply a given function, with arguments, to a list of delegates which have
  * that function name defined.
@@ -268,7 +271,7 @@ module.exports.Styles = class {
 
 }
 
-module.exports.exports.Objects = class {
+module.exports.Objects = class {
 
     static duplicate(obj) {
           return JSON.parse(JSON.stringify(obj));

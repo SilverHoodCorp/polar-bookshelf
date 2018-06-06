@@ -1,6 +1,6 @@
-import {WebController} from "./controller.js";
-import {WebView} from "./view.js";
-import {TextHighlightController} from "./text-highlights.js";
+const {WebController} = require("./controller.js");
+const {WebView} = require("./view.js");
+const {TextHighlightController} = require("./text-highlights.js");
 
 function injectScript(src,type) {
 

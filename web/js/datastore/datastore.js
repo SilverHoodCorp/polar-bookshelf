@@ -1,7 +1,7 @@
-import {DocMeta, MetadataSerializer} from "../metadata.js";
+const {MetadataSerializer, DocMeta} = require("../metadata.js");
 
 // A datastore that supports ledgers and checkpoints.
-export class Datastore {
+module.exports.Datastore = class {
 
     /**
      * Init the datastore, potentially reading files of disk, the network, etc.
@@ -30,7 +30,7 @@ export class Datastore {
 /**
  * Datastore just in memory with no on disk persistence.
  */
-export class MemoryDatastore extends Datastore {
+module.exports.MemoryDatastore = class extends Datastore {
 
     constructor() {
 
@@ -71,8 +71,4 @@ export class MemoryDatastore extends Datastore {
         this.docMetas[fingerprint] = docMeta;
     }
 
-}
-
-if(typeof exports !== "undefined") {
-    exports.Datastore = Datastore
 }

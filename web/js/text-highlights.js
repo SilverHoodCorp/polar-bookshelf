@@ -1,5 +1,9 @@
-import {TextHighlightView} from "./TextHighlightView.js";
-import {elementOffset, createSiblingTuples, Elements, Styles} from "./utils.js";
+
+console.log("FIXME3 module.exports", module.exports);
+
+const {TextHighlightView} = require("./TextHighlightView.js");
+const {elementOffset, createSiblingTuples, Elements, Styles} = require("./utils.js");
+
 require("../../lib/TextHighlighter.js");
 
 
@@ -8,7 +12,7 @@ require("../../lib/TextHighlighter.js");
 // given some text, compute a list of rects that can overlap the text to form
 // one coherent highlight.
 
-export class TextHighlightController {
+module.exports.TextHighlightController = class {
 
     constructor(textHighlighter) {
         this.textHighlighter = textHighlighter;
@@ -239,7 +243,7 @@ class TextHighlightRow {
  * as a stream of text, not of geometric points.
  *
  */
-export class TextHighlightRows {
+module.exports.TextHighlightRows = class {
 
     /**
      * Create a highlight from a CSS selector.

@@ -1,8 +1,11 @@
-import $ from 'jquery';
-import {Delegator, Styles, Elements, OffsetCalculator} from "./utils.js";
-import {KeyEvents} from "./KeyEvents.js";
+//import $ from 'jquery';
 
-export class PagemarkCoverageEventListener {
+console.log("FIXME6 module.exports", module.exports);
+
+const {Delegator, Styles, Elements, OffsetCalculator} = require("./utils.js");
+const {KeyEvents} = require("./KeyEvents.js");
+
+module.exports.PagemarkCoverageEventListener = class {
 
     constructor(controller) {
         this.controller = controller;
@@ -104,4 +107,4 @@ export class PagemarkCoverageEventListener {
         document.addEventListener("click", this.mouseListener.bind(this));
     }
 
-}
+};

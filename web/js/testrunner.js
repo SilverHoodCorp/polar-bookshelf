@@ -1,7 +1,7 @@
 // all our unit tests...
 
-import {TextHighlightRows} from "./text-highlights.js";
-import {View, WebView} from "./view.js";
+const {TextHighlightRows} = require("./text-highlights.js");
+const {View, WebView} = require("./view.js");
 import * as utils from "./utils.js";
 
 var assert = chai.assert;

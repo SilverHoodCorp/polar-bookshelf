@@ -1,4 +1,7 @@
-export class TextHighlightView {
+console.log("FIXME4 module.exports", module.exports);
+
+
+module.exports.TextHighlightView = class {
 
     constructor(model) {
         this.model = mode;

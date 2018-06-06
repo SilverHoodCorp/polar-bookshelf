@@ -4,7 +4,7 @@
  * DELETE operations but since we're not really using RxJS or anything of the
  * sort yet our options are open.
  */
-export class Proxies {
+module.exports.Proxies = class {
 
     // FIXME:
     //

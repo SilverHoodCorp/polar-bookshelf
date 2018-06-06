@@ -1,4 +1,4 @@
-export class KeyEvents {
+module.exports.KeyEvents = class {
 
     /**
      * Return true if the 'meta' keys are active. 
@@ -15,4 +15,4 @@ export class KeyEvents {
         return navigator.platform === "MacIntel";
     }
 
-}
+};
