@@ -12,7 +12,7 @@ const BrowserWindow = electron.BrowserWindow;
 const nativeImage = require('electron').nativeImage;
 const options = { extraHeaders: 'pragma: no-cache\n' }
 const app_icon = nativeImage.createFromPath(fspath.join(__dirname, 'icon.ico'));
-const diskstore = require("./web/js/datastore/diskstore.js")
+const DiskDatastore = require("./web/js/datastore/DiskDatastore")
 const webserver = require("./node/webserver");
 
 let mainWindow, splashwindow;
@@ -20,9 +20,10 @@ var contextMenu = null;
 var filepath = null;
 var quitapp, URL;
 
+console.log("FIXME:", DiskDatastore)
 
 // share the disk datastore with the remote.
-global.diskDatastore = new diskstore.DiskDatastore();
+global.diskDatastore = new DiskDatastore();
 
 function sleep(millis) {
     var date = new Date();
