@@ -1,6 +1,6 @@
 
-const datastore = require("./datastore");
-const metadata = require("../metadata");
+const {Datastore} = require("./datastore");
+const {MetadataSerializer, DocMeta} = require("../metadata");
 
 const fs = require("fs");
 const os = require("os");
@@ -9,7 +9,7 @@ const util = require('util');
 /**
  * Datastore just in memory with no on disk persistence.
  */
-class DiskDatastore extends datastore.Datastore {
+module.exports.DiskDatastore = class extends Datastore {
 
     constructor() {
 
@@ -72,7 +72,7 @@ class DiskDatastore extends datastore.Datastore {
 
         var data = await this.readFileAsync(statePath);
 
-        return metadata.MetadataSerializer.deserialize(new metadata.DocMeta(), data);
+        return MetadataSerializer.deserialize(new DocMeta(), data);
 
     }
 
@@ -107,7 +107,7 @@ class DiskDatastore extends datastore.Datastore {
         //
         // The ledger system would also have a similar problem but we can work
         // on that by making it inherently something that can't conflict
-        var data = metadata.MetadataSerializer.serialize(docMeta, "  ");
+        var data = MetadataSerializer.serialize(docMeta, "  ");
 
         return this.writeFileAsync(statePath, data);
 
@@ -129,5 +129,3 @@ class DiskDatastore extends datastore.Datastore {
     }
 
 }
-
-exports.DiskDatastore = DiskDatastore;

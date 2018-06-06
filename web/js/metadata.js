@@ -1,4 +1,5 @@
-import {forDict} from "./utils.js";
+
+import { forDict } from require("./utils.js");
 
 /*
 

@@ -2,7 +2,7 @@
  * Apply a given function, with arguments, to a list of delegates which have
  * that function name defined.
  */
-export class Delegator {
+module.exports.Delegator = class {
 
     constructor(delegates) {
         this.delegates = delegates;
@@ -24,7 +24,7 @@ export class Delegator {
 
 }
 
-export function forDict(dict, callback) {
+module.exports.forDict = function(dict, callback) {
 
     if(!dict) {
         throw new Error("dict required");
@@ -44,7 +44,7 @@ export function forDict(dict, callback) {
  * Get the bounding box for a list of elements, not just one.  This would be
  * the minimum bounding box for all the elements.
  */
-export function getBoundingClientRectFromElements(elements) {
+module.exports.getBoundingClientRectFromElements = function(elements) {
 
     var boundingClientRects = elements.map(Element.getBoundingClientRect);
     return getBoundingClientRectFromBCRs(boundingClientRects);
@@ -54,7 +54,7 @@ export function getBoundingClientRectFromElements(elements) {
 /**
  * Get the bounding box from a list of BCRs.
  */
-export function getBoundingClientRectFromBCRs(boundingClientRects) {
+module.exports.getBoundingClientRectFromBCRs = function(boundingClientRects) {
 
     var left = boundingClientRects.map((brc) => brc.left).reduce((a,b) => Math.min(a,b));
     var top = boundingClientRects.map((brc) => brc.top).reduce((a,b) => Math.min(a,b));
@@ -71,7 +71,7 @@ export function getBoundingClientRectFromBCRs(boundingClientRects) {
  * are not present these values are null.
  *
  */
-export function createSiblingTuples(arr) {
+module.exports.createSiblingTuples = function(arr) {
 
     let result = [];
 
@@ -92,7 +92,7 @@ export function createSiblingTuples(arr) {
 /**
  * @Deprecated use Elements.offset instead.
  */
-export function elementOffset(element) {
+module.exports.elementOffset = function(element) {
 
     let result = {
         left: element.offsetLeft,
@@ -108,7 +108,7 @@ export function elementOffset(element) {
 
 }
 
-export class Elements {
+module.exports.Elements = class {
 
     static offset(element) {
 
@@ -190,7 +190,7 @@ export class Elements {
 /**
  * Support the ability to calculate an offset relative to another element.
  */
-export class OffsetCalculator {
+module.exports.OffsetCalculator = class {
 
     // https://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
     static calculate(element, rootElement) {
@@ -240,7 +240,7 @@ export class OffsetCalculator {
 
 }
 
-export class Styles {
+module.exports.Styles = class {
 
     static parseTransformScaleX(transform) {
 
@@ -268,7 +268,7 @@ export class Styles {
 
 }
 
-export class Objects {
+module.exports.exports.Objects = class {
 
     static duplicate(obj) {
           return JSON.parse(JSON.stringify(obj));
