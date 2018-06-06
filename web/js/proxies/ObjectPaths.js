@@ -1,0 +1,59 @@
+/**
+ * A simple map of the object and the path to get to that object.
+ *
+ * We're able walk an entire object decomposing it into a list of
+ * ObjectPathEntry objects which make it easier to test and debug rather than
+ * dealing with recursive objects.
+ *
+ * The output will be a list of path objects.
+ *
+ *
+ * @type {ObjectPathEntry}
+ */
+const {ObjectPathEntry} = require("./ObjectPathEntry");
+const {Paths} = require("./Paths");
+
+class ObjectPaths {
+
+    static recurse(obj) {
+
+        let result = [];
+
+        ObjectPaths._recurse("/", obj, null, null, result);
+
+        // sort the result to give the data back sorted by path.  It's
+        // deterministic either way but its nice for testing to have them sorted
+        // by path
+        result.sort(function (val0, val1) {
+            return val0.path.localeCompare(val1.path);
+        });
+
+        return result;
+
+    }
+
+    static _recurse(path, obj, parent, parentKey, result) {
+
+        result.push(new ObjectPathEntry(path, obj, parent, parentKey));
+
+        for (let key in obj) {
+
+            if (obj.hasOwnProperty(key)) {
+
+                let val = obj[key];
+
+                if (val && typeof val === "object") {
+                    let childPath = Paths.create(path, key);
+                    ObjectPaths._recurse(childPath, val, obj, key, result);
+                }
+
+            }
+
+        }
+
+    }
+
+
+}
+
+module.exports.ObjectPaths = ObjectPaths;
