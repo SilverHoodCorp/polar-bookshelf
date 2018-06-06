@@ -3,8 +3,9 @@
  */
 const {TraceHandler} = require("./TraceHandler");
 const {MutationHandler} = require("./MutationHandler");
+const {ObjectPaths} = require("./ObjectPaths");
 
-module.exports.ProxyBuilder = class  {
+class ProxyBuilder {
 
     constructor(target) {
         this.target = target;
@@ -42,33 +43,33 @@ module.exports.ProxyBuilder = class  {
 
     }
 
-    deepTrace(traceListener, options) {
+    static _traceObject(path, value, traceListener) {
 
-        if(!options) {
-            options = {};
-        }
+        return new Proxy(value, new TraceHandler(path, traceListener));
 
-        if(!options.path) {
-            options.path = "/";
-        }
+    }
 
-        //FIXME:  go through each one of these and call deepTrace on each one...
+    deepTrace(traceListener) {
 
-        for (var key in this.target) {
-            if (object.hasOwnProperty(key)) {
+        let objectPaths = ObjectPaths.recurse(this.target);
 
-                var val = this.target[key];
+        let root = null;
 
-                if (val && typeof val === "object") {
-                    // FIXME: have change the this.target AND the path here..
+        objectPaths.forEach(function (objectPathEntry) {
 
-                    let newPath = options.path + key;
-                    this.target[key] = this.deepTrace(val, {});
-                }
+            let proxy = ProxyBuilder._traceObject(objectPathEntry.path, objectPathEntry.value, traceListener);
 
+            // replace the object key in the parent with a new object that is
+            // traced.
+            if(objectPathEntry.parent != null) {
+                objectPathEntry.parent[objectPathEntry.parentKey] = proxy;
+            } else {
+                root = proxy;
             }
-        }
-        return this.trace()
+
+        });
+
+        return root;
 
     }
 
@@ -79,4 +80,6 @@ module.exports.ProxyBuilder = class  {
 
     }
 
-};
+}
+
+module.exports.ProxyBuilder = ProxyBuilder;

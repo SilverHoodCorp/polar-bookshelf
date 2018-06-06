@@ -17,7 +17,7 @@ module.exports.TraceListener = class {
      * @param value The new value of the field or undefined if it's a delete operation.
      * @return True if the mutation should continue.
      */
-    onTrace(path, mutationType, target, property, value) {
+    onMutation(path, mutationType, target, property, value) {
 
     }
 

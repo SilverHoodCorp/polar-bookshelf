@@ -1,6 +1,10 @@
+const {Preconditions} = require("../Preconditions");
+const {MutationType} = require("./MutationType");
+
 module.exports.TraceHandler = class {
 
     constructor(path, traceListener) {
+        Preconditions.assertNotNull(path, "path");
         this.path = path;
         this.traceListener = traceListener;
     }
@@ -13,4 +17,4 @@ module.exports.TraceHandler = class {
         return this.traceListener.onTrace(this.path, MutationType.DELETE, target, property, undefined);
     }
 
-}
+};
