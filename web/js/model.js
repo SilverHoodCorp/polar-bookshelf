@@ -49,27 +49,6 @@ module.exports.Model = class {
 
     }
 
-    // FIXME: remiove this:
-    computeInitialPagemarkPageNumbers(docMeta, nrPages, currentPageNumber) {
-
-        var result = [];
-
-        var range = computeRangeBuffer(currentPageNumber, 3, 1, nrPages);
-
-        for(var pageNum = range.start; pageNum <= range.end; ++pageNum) {
-
-            var pageMeta = docMeta.pageMetas[pageNum];
-
-            forDict(pageMeta.pagemarks, function (pagemarkId, pagemark) {
-                result.push(pageNum);
-            });
-
-        }
-
-        return result;
-
-    }
-
     registerListenerForDocumentLoaded(eventListener) {
         this.reactor.addEventListener('documentLoaded', eventListener);
     }
@@ -116,7 +95,7 @@ module.exports.Model = class {
         // FIXME: we need a fingerprint in the docInfo too.
 
         // TODO: consider only marking the page read once the datastore has
-        //        been written.
+        // been written or some sort of UI update that the data is persisted.
         this.datastore.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
 
     }
@@ -135,7 +114,7 @@ module.exports.Model = class {
         this.reactor.dispatchEvent('erasePagemark', {pageNum});
 
         // TODO: consider only marking the page read once the datastore has
-        //        been written.
+        // been written or some sort of UI update that the data is persisted.
         this.datastore.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
 
     }

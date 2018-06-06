@@ -8,11 +8,14 @@
 
 # Release
 
-- FONTS look like complete shit compared to the official version!!!
-    - is this cmaaps?
-    - my local pdf.js build looks horrible too.
 
-- NOW the thumbnaails look like shit too!!!
+- on electron, page resize doesn't keep the MAIN pagemark.  It vanishes.
+
+- persistence stopped working
+
+- the bookmarks aren't being persisted to disk.
+
+- screenshot and video of the app
 
 - Screenshots with pagemarks.
 
@@ -24,6 +27,16 @@
 - Ability to disable PDF links as they would impact our ability to annotate but
   maybe they have to click the annotation button (highlight, highlight region)
   so that the links are then disabled.
+
+
+- FONTS look like complete shit compared to the official version!!!
+    - is this cmaaps?
+    - my local pdf.js build looks horrible too.
+    - this might only be on chrome, not in electron
+
+- NOW the thumbnaails look like shit too!!!
+    - this might only be on chrome, not in electron
+
 
 # Development productivity
 

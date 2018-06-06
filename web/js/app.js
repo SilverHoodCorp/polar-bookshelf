@@ -11,18 +11,18 @@ const {SystemClock} = require("./time/SystemClock.js");
 const {MemoryDatastore} = require("./datastore/MemoryDatastore.js");
 const {Model} = require("./model.js");
 
-function launchDev() {
+async function launchDev() {
 
     console.log("Launching in dev mode.");
 
-    var clock = new SystemClock();
-    var datastore = new MemoryDatastore();
-    var model = new Model(datastore, clock);
-    var controller = new WebController(datastore, model);
-    var view = new WebView(model);
+    let clock = new SystemClock();
+    let datastore = new MemoryDatastore();
+    let model = new Model(datastore, clock);
+    let controller = new WebController(datastore, model);
+    let view = new WebView(model);
 
     // create some fake documents for our example PDFs
-    var fingerprint = "110dd61fd57444010b1ab5ff38782f0f";
+    let fingerprint = "110dd61fd57444010b1ab5ff38782f0f";
 
     let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
     DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 4, percentage: 50})
@@ -30,7 +30,7 @@ function launchDev() {
 
     view.init();
 
-    start(datastore, controller, "dev");
+    await start(datastore, controller, "dev");
 
 }
 
@@ -41,18 +41,18 @@ async function launchProd() {
     const remote = require('electron').remote;
 
     console.log("Accessing datastore...");
-    var datastore = remote.getGlobal("diskDatastore" );
+    let datastore = remote.getGlobal("diskDatastore" );
     console.log("Accessing datastore...done");
 
-    var clock = new SystemClock();
-    var model = new Model(datastore, clock);
-    var controller = new WebController(datastore, model);
-    var view = new WebView(model);
+    let clock = new SystemClock();
+    let model = new Model(datastore, clock);
+    let controller = new WebController(datastore, model);
+    let view = new WebView(model);
     view.init();
 
     console.log("Starting ...");
 
-    start(datastore, controller, "prod");
+    await start(datastore, controller, "prod");
 
 }
 

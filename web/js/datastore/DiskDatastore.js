@@ -8,19 +8,13 @@ const os = require("os");
 const util = require('util');
 
 /**
- * Datastore just in memory with no on disk persistence.
+ * A disk based datastore with long term persistence.
  */
 module.exports.DiskDatastore = class extends Datastore {
 
     constructor() {
 
         super();
-        
-        /**
-         *
-         * @type map<string,DocMeta>
-         */
-        this.docMetas = {}
 
         this.dataDir = this.getDataDir();
 
@@ -36,7 +30,7 @@ module.exports.DiskDatastore = class extends Datastore {
 
     async init() {
 
-        var dirStat = await this.statAsync(this.dataDir);
+        let dirStat = await this.statAsync(this.dataDir);
 
         if ( ! dirStat.isDirectory()) {
             await this.mkdirAsync(this.dataDir);
@@ -49,21 +43,21 @@ module.exports.DiskDatastore = class extends Datastore {
      */
     async getDocMeta(fingerprint) {
 
-        var docDir = this.dataDir + "/" + fingerprint;
+        let docDir = this.dataDir + "/" + fingerprint;
 
         if(! await this.existsAsync(docDir)) {
             return null;
         }
 
-        var statePath = docDir + "/state.json";
+        let statePath = docDir + "/state.json";
 
-        var statePathStat = await this.statAsync(statePath);
+        let statePathStat = await this.statAsync(statePath);
 
         if( ! statePathStat.isFile() ) {
             return null;
         }
 
-        var canAccess =
+        let canAccess =
             await this.accessAsync(statePath, fs.constants.R_OK | fs.constants.W_OK)
                       .then(() => true)
                       .catch(() => false);
@@ -72,7 +66,7 @@ module.exports.DiskDatastore = class extends Datastore {
             return null;
         }
 
-        var data = await this.readFileAsync(statePath);
+        let data = await this.readFileAsync(statePath);
 
         return MetadataSerializer.deserialize(new DocMeta(), data);
 
@@ -89,9 +83,11 @@ module.exports.DiskDatastore = class extends Datastore {
      */
     async sync(fingerprint, docMeta) {
 
-        var docDir = this.dataDir + "/" + fingerprint;
+        console.log("Performing sync of content into disk datastore.");
 
-        var dirExists =
+        let docDir = this.dataDir + "/" + fingerprint;
+
+        let dirExists =
             await this.statAsync(docDir)
                       .then(() => true)
                       .catch(() => false)
@@ -101,15 +97,15 @@ module.exports.DiskDatastore = class extends Datastore {
             await this.mkdirAsync(docDir)
         }
 
-        var statePath = docDir + "/state.json";
+        let statePath = docDir + "/state.json";
 
         // NOTE that we always write the state with JSON pretty printing.
-        // Otherwise tools like git diff , etc will be impossibe to deal with
+        // Otherwise tools like git diff , etc will be impossible to deal with
         // in practice.
         //
         // The ledger system would also have a similar problem but we can work
         // on that by making it inherently something that can't conflict
-        var data = MetadataSerializer.serialize(docMeta, "  ");
+        let data = MetadataSerializer.serialize(docMeta, "  ");
 
         return this.writeFileAsync(statePath, data);
 
@@ -117,7 +113,7 @@ module.exports.DiskDatastore = class extends Datastore {
 
     getUserHome() {
 
-        var result = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
+        let result = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
 
         if(!result) {
             result = os.homedir();
@@ -130,4 +126,4 @@ module.exports.DiskDatastore = class extends Datastore {
         return this.getUserHome() + "/.polar";
     }
 
-}
+};

@@ -66,7 +66,7 @@ webserverDaemon.start();
 // wrong.
 
 //const DEFAULT_URL = `http://localhost:${WEBSERVER_PORT}/default.html`;
-const DEFAULT_URL = 'file://' + __dirname + '/web/test-pagemark.html';
+const DEFAULT_URL = 'file://' + __dirname + '/default.html';
 
 if (process.argv.includes("--enable-remote-debugging")) {
 
