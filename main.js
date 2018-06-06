@@ -66,8 +66,8 @@ webserverDaemon.start();
 // TODO: if the __dirname has a space in it then I think the file URL will be
 // wrong.
 
-const DEFAULT_URL = `http://localhost:${WEBSERVER_PORT}/default.html`;
-//const DEFAULT_URL = 'file://' + __dirname + '/web/test-pagemark.html';
+//const DEFAULT_URL = `http://localhost:${WEBSERVER_PORT}/default.html`;
+const DEFAULT_URL = 'file://' + __dirname + '/web/test-pagemark.html';
 
 if (process.argv.includes("--enable-remote-debugging")) {
 
@@ -105,7 +105,8 @@ const template = [{
                                     path = path[0];
 
                                 // FIXME: cmaps are disabled when loading from file URLs so I need to look into this problem...
-                                mainWindow.loadURL(`http://localhost:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=` + encodeURIComponent(path), options);
+                                mainWindow.loadURL('file://' + __dirname + '/pdfviewer/web/viewer.html?file=' + encodeURIComponent(path), options);
+                                //mainWindow.loadURL(`http://localhost:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=` + encodeURIComponent(path), options);
 
                                 mainWindow.webContents.on('did-finish-load', function() {
                                     console.log("Finished loading. Now injecting customizations.");
@@ -225,7 +226,8 @@ var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) 
 if (shouldQuit) { app.quit(); return; }
 app.on('ready', function() {
     splashwindow = new BrowserWindow({ width: 600, height: 400, center: true, resizable: false, movable: false, alwaysOnTop: true, skipTaskbar: true, frame: false });
-    splashwindow.loadURL(`http://localhost:${WEBSERVER_PORT}/splash.html`);
+    splashwindow.loadURL('file://' + __dirname + '/splash.html');
+    //splashwindow.loadURL(`http://localhost:${WEBSERVER_PORT}/splash.html`);
     contextMenu = Menu.buildFromTemplate([
         { label: 'Minimize', type: 'radio', role: 'minimize' },
         { type: 'separator' },
