@@ -1,5 +1,5 @@
 
-const {Pagemark, PagemarkType} = require("./metadata.js");
+const {Pagemark, PagemarkType} = require("./metadata/metadata.js");
 
 module.exports.Model = class {
 

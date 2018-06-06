@@ -1,7 +1,7 @@
 const fs = require('fs');
 const assert = require('assert');
 const diskstore = require("./diskstore");
-const metadata = require("../metadata");
+const metadata = require("../metadata/metadata");
 
 // FIXME: this just overwrites the pervious var becuase it's not a good module name.
 var diskDatastore = new diskstore.DiskDatastore();

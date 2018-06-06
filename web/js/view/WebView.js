@@ -1,5 +1,5 @@
 const {Delegator, Styles, Elements, forDict} = require("../utils.js");
-const {DocMetaDescriber} = require("../metadata.js");
+const {DocMetaDescriber} = require("../metadata/metadata.js");
 const {View} = require("./View.js");
 
 module.exports.WebView = class extends View {
