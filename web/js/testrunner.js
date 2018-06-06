@@ -1,8 +1,6 @@
 // all our unit tests...
-
-const {TextHighlightRows} = require("./text-highlights.js");
-const {View, WebView} = require("./view.js");
-import * as utils from "./utils.js";
+var chai = require("chai");
+var chaiDiff = require("chai-diff");
 
 var assert = chai.assert;
 var expect = chai.expect;
