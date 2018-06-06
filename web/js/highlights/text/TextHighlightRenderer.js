@@ -15,9 +15,11 @@ class TextHighlightRenderer {
 
         let rects = textHighlightRows.map(current => current.rect);
 
-        var textSelections = {}; // FIXME: do this later
-        var text = ""; // FIXME: do this later
+        let textSelections = {}; // FIXME: do this later
+        let text = ""; // FIXME: do this later
 
+        // FIXME: before we can position it, we need to figure out how to
+        // reliably paint it on the screen... and how to anchor it.
         let textHighlight = new TextHighlight({rects, textSelections, text});
 
         // FIXME: this needs to be done in the VIEW and not in the controller...
@@ -30,12 +32,12 @@ class TextHighlightRenderer {
 
             if(textHighlightRow.rectElements.length > 0) {
 
-                var rectElement = textHighlightRow.rectElements[0];
+                let rectElement = textHighlightRow.rectElements[0];
 
                 // We only need to call render on the first one because the row
                 // has the rect we're using to highlight and we're only using
                 // the element for positioning.
-                this.render(rectElement.element, textHighlightRow.rect);
+                TextHighlightRenderer.render(rectElement.element, textHighlightRow.rect);
 
             }
 
@@ -61,19 +63,19 @@ class TextHighlightRenderer {
 
         // this is the overlay element we're goign to paint yellow to show
         // that we've highlighted the text.
-        var highlightElement = document.createElement("div");
+        let highlightElement = document.createElement("div");
 
         // this is the 'div' within the textLayer holding the style information
         // we need to compute offset and location.
-        var textLayerDivElement = element.parentElement;
+        let textLayerDivElement = element.parentElement;
 
         // this is the <div class='textLayer'> that holds all the <div> text
-        var textLayerElement = textLayerDivElement.parentElement;
+        let textLayerElement = textLayerDivElement.parentElement;
 
         Elements.requireClass(textLayerElement, "textLayer");
 
         // thisis the holder element which contains .canvasWrapper, .textLayer, etc.
-        var pageElement = textLayerElement.parentElement;
+        let pageElement = textLayerElement.parentElement;
 
         highlightElement.className = "text-highlight";
 

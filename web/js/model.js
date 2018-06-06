@@ -30,8 +30,6 @@ module.exports.Model = class {
      */
     async documentLoaded(fingerprint, nrPages, currentPageNumber) {
 
-        console.log("model: New document loaded!");
-
         // docMetaPromise is used for future readers after the document is loaded
         this.docMetaPromise = this.persistenceLayer.getDocMeta(fingerprint);
 
@@ -42,6 +40,15 @@ module.exports.Model = class {
             //this.docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, nrPages);
             this.docMeta = DocMetas.create(fingerprint, nrPages);
             this.persistenceLayer.sync(fingerprint, this.docMeta);
+
+            // I'm not sure this is the best way to resolve this as swapping in
+            // the docMetaPromise without any synchronization seems like we're
+            // asking for a rae condition.
+
+            this.docMetaPromise = new Promise(function (resolve, reject) {
+                resolve(this.docMeta);
+            }.bind(this));
+
         }
 
         this.reactor.dispatchEvent('documentLoaded', {fingerprint, nrPages, currentPageNumber});

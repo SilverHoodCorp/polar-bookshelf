@@ -1,9 +1,5 @@
 //import $ from 'jquery';
 
-const {PagemarkCoverageEventListener} = require("../PagemarkCoverageEventListener.js");
-const {KeyEvents} = require("../KeyEvents.js");
-const {polar} = require("../polar.js");
-
 module.exports.Controller = class {
 
     constructor(model) {
@@ -13,8 +9,6 @@ module.exports.Controller = class {
         }
 
         this.model = model;
-        this.docMeta = null;
-        this.docMetaPromise = null;
     }
 
     /**
@@ -22,7 +16,7 @@ module.exports.Controller = class {
      */
     onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
 
-        this.docMetaPromise = this.model.documentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
+        this.model.documentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
 
     }
 

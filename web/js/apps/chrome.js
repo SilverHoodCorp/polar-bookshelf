@@ -5,7 +5,6 @@ const {DocInfo} = require("../metadata/DocInfo");
 const {Controller} = require("../controller/Controller.js");
 const {WebController} = require("../controller/WebController.js");
 const {WebView} = require("../view/WebView.js");
-const {TextHighlightController} = require("../highlights/text/text-highlights.js");
 
 const {SystemClock} = require("../time/SystemClock.js");
 const {PersistenceLayer} = require("../datastore/PersistenceLayer.js");

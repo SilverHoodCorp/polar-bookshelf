@@ -26,7 +26,7 @@ module.exports.WebView = class extends View {
 
     updateProgress() {
 
-        var perc = this.computeProgress(this.model.docMeta);
+        let perc = this.computeProgress(this.model.docMeta);
 
         console.log("Percentage is now: " + perc);
 
@@ -34,7 +34,7 @@ module.exports.WebView = class extends View {
 
         // now update the description of the doc at the bottom.
 
-        var description = DocMetaDescriber.describe(this.model.docMeta);
+        let description = DocMetaDescriber.describe(this.model.docMeta);
 
         document.querySelector("#polar-doc-overview").textContent = description;
 
@@ -44,11 +44,7 @@ module.exports.WebView = class extends View {
 
         // I think this is an issue of being async maybel?
 
-        var total = 0;
-
-        // TODO: this isn't going to work with multiple columns...
-
-        console.log(docMeta.pageMetas);
+        let total = 0;
 
         forDict(docMeta.pageMetas, function (key, pageMeta) {
 
@@ -60,7 +56,7 @@ module.exports.WebView = class extends View {
 
         }.bind(this));
 
-        var perc = total / (docMeta.docInfo.nrPages * 100);
+        let perc = total / (docMeta.docInfo.nrPages * 100);
 
         return perc;
     }
@@ -72,7 +68,7 @@ module.exports.WebView = class extends View {
 
         console.log("WebView.onDocumentLoaded");
 
-        var pagemarkRendererDelegates = [
+        let pagemarkRendererDelegates = [
             new MainPagemarkRenderer(this),
             new ThumbnailPagemarkRenderer(this)
         ];
@@ -90,11 +86,11 @@ module.exports.WebView = class extends View {
             throw new Error("Page number not specified");
         }
 
-        var pageElements = document.querySelectorAll(".page");
+        let pageElements = document.querySelectorAll(".page");
 
         // note that elements are 0 based indexes but our pages are 1 based
         // indexes.
-        var pageElement = pageElements[num - 1];
+        let pageElement = pageElements[num - 1];
 
         if(pageElement == null) {
             throw new Error("Unable to find page element for page num: " + num);
@@ -128,17 +124,17 @@ module.exports.WebView = class extends View {
 
     async recreatePagemarksFromPagemarks(pageElement, options) {
 
-        var pageNum = this.getPageNum(pageElement);
+        let pageNum = this.getPageNum(pageElement);
 
-        var docMeta = this.model.docMeta;
+        let docMeta = this.model.docMeta;
 
-        var pageMeta = docMeta.pageMetas[pageNum];
+        let pageMeta = docMeta.pageMetas[pageNum];
 
         forDict(pageMeta.pagemarks, function (column, pagemark) {
 
             console.log("Creating pagemarks for page: " + pageNum);
 
-            var recreatePagemarkOptions = Object.assign({}, options);
+            let recreatePagemarkOptions = Object.assign({}, options);
 
             recreatePagemarkOptions.pagemark = pagemark;
 

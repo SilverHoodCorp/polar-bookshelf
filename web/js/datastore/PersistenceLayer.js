@@ -39,8 +39,6 @@ module.exports.PersistenceLayer = class {
         if(!data)
             return null;
 
-        console.log("FIXME: ", data)
-
         return MetadataSerializer.deserialize(new DocMeta(), data);
     }
 

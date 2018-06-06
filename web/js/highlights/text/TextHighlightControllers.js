@@ -1,6 +1,10 @@
 const {TextHighlightController} = require("./TextHighlightController");
 const {TextHighlightRenderer} = require("./TextHighlightRenderer");
 
+require("../../../../lib/TextHighlighter.js");
+
+const TextHighlighter = global.TextHighlighter;
+
 module.exports.TextHighlightControllers = class {
 
     static create() {
