@@ -1,6 +1,6 @@
-const {BaseHighlight} = require("./BaseHighlight.js");
+const {BaseHighlight} = require("./BaseHighlight");
 
-class TextHighlight extends BaseHighlight {
+module.exports.TextHighlight = class extends BaseHighlight {
 
     constructor(val) {
 
@@ -26,4 +26,4 @@ class TextHighlight extends BaseHighlight {
 
     }
 
-}
+};

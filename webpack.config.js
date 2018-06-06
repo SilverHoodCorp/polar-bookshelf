@@ -1,9 +1,12 @@
 var path = require('path');
 
-
 module.exports = {
     mode: 'development',
-    entry: path.resolve(__dirname, 'web/js/entry.js'),
+    target: "electron-renderer",
+    entry: {
+        app: './web/js/app.js',
+        test: './web/js/test.js'
+    },
     output: {
         path: path.resolve(__dirname, 'web/js'),
         filename: 'bundle.js',

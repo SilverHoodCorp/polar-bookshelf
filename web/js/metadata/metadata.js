@@ -91,15 +91,6 @@ function createDocMeta(path) {
 
 
 
-class AreaHighlight extends BaseHighlight {
-
-    constructor(val) {
-
-        super(val);
-
-    }
-
-}
 
 class DocMetaWriter {
 

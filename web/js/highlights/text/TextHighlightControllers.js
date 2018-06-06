@@ -1,4 +1,5 @@
-const TextHighlightController = require("./TextHighlightController").TextHighlightController;
+const {TextHighlightController} = require("./TextHighlightController");
+const {TextHighlightRenderer} = require("./TextHighlightRenderer");
 
 module.exports.TextHighlightControllers = class {
 

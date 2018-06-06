@@ -2,6 +2,11 @@
 var chai = require("chai");
 var chaiDiff = require("chai-diff");
 
+const {TextHighlightRows} = require("./highlights/text/text-highlights.js");
+const {View, WebView} = require("./view.js");
+
+//import * as utils from "./utils.js";
+
 var assert = chai.assert;
 var expect = chai.expect;
 

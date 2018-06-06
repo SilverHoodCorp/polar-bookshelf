@@ -1,8 +1,6 @@
 //import $ from 'jquery';
-console.log("FIXME module.exports", module.exports);
 
-
-const {TextHighlightController} = require("../text-highlights.js");
+const {TextHighlightController} = require("../highlights/text/text-highlights.js");
 const {PagemarkCoverageEventListener} = require("../PagemarkCoverageEventListener.js");
 const {KeyEvents} = require("../KeyEvents.js");
 const {polar} = require("../polar.js");

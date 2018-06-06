@@ -5,7 +5,7 @@ const {DocInfo} = require("./metadata/DocInfo");
 const {Controller} = require("./controller/Controller.js");
 const {WebController} = require("./controller/WebController.js");
 const {WebView} = require("./view/WebView.js");
-const {TextHighlightController} = require("./text-highlights.js");
+const {TextHighlightController} = require("./highlights/text/text-highlights.js");
 
 const {SystemClock} = require("./time/SystemClock.js");
 const {MemoryDatastore} = require("./datastore/MemoryDatastore.js");
@@ -39,13 +39,18 @@ async function launchProd() {
     console.log("Launching in prod mode.");
 
     const remote = require('electron').remote;
+
+    console.log("Accessing datastore...");
     var datastore = remote.getGlobal("diskDatastore" );
+    console.log("Accessing datastore...done");
 
     var clock = new SystemClock();
     var model = new Model(datastore, clock);
     var controller = new WebController(datastore, model);
     var view = new WebView(model);
     view.init();
+
+    console.log("Starting ...");
 
     start(datastore, controller, "prod");
 
