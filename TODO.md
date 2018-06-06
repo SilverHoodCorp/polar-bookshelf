@@ -8,12 +8,13 @@
 
 # Release
 
-
 - on electron, page resize doesn't keep the MAIN pagemark.  It vanishes.
 
 - persistence stopped working
 
 - the bookmarks aren't being persisted to disk.
+
+- file associations working for *.pdf with elecron-builder
 
 - screenshot and video of the app
 
