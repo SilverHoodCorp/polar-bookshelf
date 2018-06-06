@@ -3,6 +3,10 @@ const {MutationType} = require("./MutationType");
 
 module.exports.TraceHandler = class {
 
+    // FIXME: add the ability to add our own listeners to a TraceHandler... this
+    // way you can take an arbitrary object path, and register a handler for it
+    // and perform some action when it changes.
+
     constructor(path, traceListener) {
         Preconditions.assertNotNull(path, "path");
         this.path = path;
