@@ -1,6 +1,5 @@
-const {MetadataSerializer} = require("../metadata/MetadataSerializer");
-const {DocMeta} = require("../metadata/DocMeta");
 const {Datastore} = require("./Datastore.js");
+const {Preconditions} = require("../Preconditions");
 
 /**
  * Datastore just in memory with no on disk persistence.
@@ -10,9 +9,10 @@ module.exports.MemoryDatastore = class extends Datastore {
     constructor() {
 
         super();
+
         /**
          *
-         * @type map<string,DocMeta>
+         * @type map<string,string>
          */
         this.docMetas = {}
 
@@ -28,7 +28,7 @@ module.exports.MemoryDatastore = class extends Datastore {
      */
     async getDocMeta(fingerprint) {
 
-        var nrDocs = Object.keys(this.docMetas).length;
+        let nrDocs = Object.keys(this.docMetas).length;
 
         console.log(`Fetching document from datastore with fingerprint ${fingerprint} of ${nrDocs} docs.`)
 
@@ -38,12 +38,11 @@ module.exports.MemoryDatastore = class extends Datastore {
     /**
      * Write the datastore to disk.
      */
-    async sync(fingerprint, docMeta) {
+    async sync(fingerprint, data) {
 
-        // create a copy of the docMeta so that the version we store is NOT
-        // the same version we have in memory.
-        docMeta = MetadataSerializer.deserialize(new DocMeta(), MetadataSerializer.serialize(docMeta));
-        this.docMetas[fingerprint] = docMeta;
+        Preconditions.assertTypeof(data, "data", "string");
+
+        this.docMetas[fingerprint] = data;
     }
 
 };

@@ -1,8 +1,5 @@
-
+const {Preconditions} = require("../Preconditions");
 const {Datastore} = require("./Datastore.js");
-const {MetadataSerializer} = require("../metadata/MetadataSerializer");
-const {DocMeta} = require("../metadata/DocMeta");
-const {DocMetaDescriber} = require("../metadata/DocMetaDescriber");
 
 const fs = require("fs");
 const os = require("os");
@@ -67,9 +64,7 @@ module.exports.DiskDatastore = class extends Datastore {
             return null;
         }
 
-        let data = await this.readFileAsync(statePath);
-
-        return MetadataSerializer.deserialize(new DocMeta(), data);
+        return await this.readFileAsync(statePath);
 
     }
 
@@ -82,10 +77,13 @@ module.exports.DiskDatastore = class extends Datastore {
     /**
      * Write the datastore to disk.
      */
-    async sync(fingerprint, docMeta) {
+    async sync(fingerprint, data) {
+
+        Preconditions.assertTypeof(data, "data", "string");
+
+        console.log("FIXME: got raw JSON data: ", data);
 
         console.log("Performing sync of content into disk datastore.");
-        console.log("DocMeta described as: " + DocMetaDescriber.describe(docMeta));
 
         let docDir = this.dataDir + "/" + fingerprint;
 
@@ -101,14 +99,6 @@ module.exports.DiskDatastore = class extends Datastore {
         }
 
         let statePath = docDir + "/state.json";
-
-        // NOTE that we always write the state with JSON pretty printing.
-        // Otherwise tools like git diff , etc will be impossible to deal with
-        // in practice.
-        //
-        // The ledger system would also have a similar problem but we can work
-        // on that by making it inherently something that can't conflict
-        let data = MetadataSerializer.serialize(docMeta, "  ");
 
         console.log(`Writing data to state file: ${statePath}`);
 

@@ -3,7 +3,9 @@ var chai = require("chai");
 var chaiDiff = require("chai-diff");
 
 const {TextHighlightRows} = require("./highlights/text/text-highlights.js");
-const {View, WebView} = require("./view.js");
+
+const {View} = require("./view/View");
+const {WebView} = require("./view/WebView");
 
 //import * as utils from "./utils.js";
 

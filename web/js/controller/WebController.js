@@ -5,15 +5,17 @@ const TextHighlightControllers = require("../highlights/text/TextHighlightContro
 const {TextHighlightController} = require("../highlights/text/text-highlights.js");
 const {PagemarkCoverageEventListener} = require("../PagemarkCoverageEventListener.js");
 const {KeyEvents} = require("../KeyEvents.js");
+const {Preconditions} = require("../Preconditions.js");
 const {Controller} = require("./Controller.js");
 const {polar} = require("../polar");
 
 module.exports.WebController = class extends Controller {
 
-    constructor(datastore, model) {
-        super(datastore, model);
+    constructor(model) {
 
-        this.datastore = datastore;
+        Preconditions.assertNotNull(model, "model");
+
+        super(model);
 
         /**
          * The document fingerprint that we have loaded to detect when the

@@ -8,6 +8,7 @@ const {WebView} = require("./view/WebView.js");
 const {TextHighlightController} = require("./highlights/text/text-highlights.js");
 
 const {SystemClock} = require("./time/SystemClock.js");
+const {PersistenceLayer} = require("./datastore/PersistenceLayer.js");
 const {MemoryDatastore} = require("./datastore/MemoryDatastore.js");
 const {Model} = require("./model.js");
 
@@ -15,10 +16,12 @@ async function launchDev() {
 
     console.log("Launching in dev mode.");
 
-    let clock = new SystemClock();
     let datastore = new MemoryDatastore();
-    let model = new Model(datastore, clock);
-    let controller = new WebController(datastore, model);
+
+    let persistenceLayer = new PersistenceLayer(datastore);
+    let clock = new SystemClock();
+    let model = new Model(persistenceLayer, clock);
+    let controller = new WebController(model);
     let view = new WebView(model);
 
     // create some fake documents for our example PDFs
@@ -26,39 +29,39 @@ async function launchDev() {
 
     let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
     DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 4, percentage: 50})
-    await datastore.sync(fingerprint, docMeta);
+    await persistenceLayer.sync(fingerprint, docMeta);
 
     view.init();
 
     await start(datastore, controller, "dev");
 
 }
+//
+// async function launchProd() {
+//
+//     console.log("Launching in prod mode.");
+//     const remote = require('electron').remote;
+//
+//     console.log("Accessing datastore...");
+//     let datastore = remote.getGlobal("diskDatastore" );
+//     console.log("Accessing datastore...done");
+//
+//     let persistenceLayer = new PersistenceLayer(datastore);
+//     let clock = new SystemClock();
+//     let model = new Model(persistenceLayer, clock);
+//     let controller = new WebController(model);
+//     let view = new WebView(model);
+//     view.init();
+//
+//     console.log("Starting ...");
+//
+//     await start(persistenceLayer, controller, "prod");
+//
+// }
 
-async function launchProd() {
+async function start(persistenceLayer, controller, mode) {
 
-    console.log("Launching in prod mode.");
-
-    const remote = require('electron').remote;
-
-    console.log("Accessing datastore...");
-    let datastore = remote.getGlobal("diskDatastore" );
-    console.log("Accessing datastore...done");
-
-    let clock = new SystemClock();
-    let model = new Model(datastore, clock);
-    let controller = new WebController(datastore, model);
-    let view = new WebView(model);
-    view.init();
-
-    console.log("Starting ...");
-
-    await start(datastore, controller, "prod");
-
-}
-
-async function start(datastore, controller, mode) {
-
-    await datastore.init();
+    await persistenceLayer.init();
 
     controller.startListeners();
     console.log("Controller started in mode: " + mode);

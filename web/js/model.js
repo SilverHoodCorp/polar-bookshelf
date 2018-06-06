@@ -7,9 +7,9 @@ const {DocMetaDescriber} = require("./metadata/DocMetaDescriber");
 
 module.exports.Model = class {
 
-    constructor(datastore, clock) {
+    constructor(persistenceLayer, clock) {
 
-        this.datastore = datastore;
+        this.persistenceLayer = persistenceLayer;
         this.clock = clock;
 
         this.reactor = new Reactor();
@@ -33,7 +33,7 @@ module.exports.Model = class {
         console.log("model: New document loaded!");
 
         // docMetaPromise is used for future readers after the document is loaded
-        this.docMetaPromise = this.datastore.getDocMeta(fingerprint);
+        this.docMetaPromise = this.persistenceLayer.getDocMeta(fingerprint);
 
         this.docMeta = await this.docMetaPromise;
 
@@ -41,7 +41,7 @@ module.exports.Model = class {
             // this is a new document...
             //this.docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, nrPages);
             this.docMeta = DocMetas.create(fingerprint, nrPages);
-            this.datastore.sync(fingerprint, this.docMeta);
+            this.persistenceLayer.sync(fingerprint, this.docMeta);
         }
 
         this.reactor.dispatchEvent('documentLoaded', {fingerprint, nrPages, currentPageNumber});
@@ -93,12 +93,12 @@ module.exports.Model = class {
         // TODO: this can be done with a mutation listener in the future
         this.reactor.dispatchEvent('createPagemark', {pageNum, pagemark});
 
-        console.log("Performing sync of content into disk datastore.");
+        console.log("Performing sync of content into disk persistenceLayer.");
         console.log("DocMeta described as: " + DocMetaDescriber.describe(docMeta));
 
-        // TODO: consider only marking the page read once the datastore has
+        // TODO: consider only marking the page read once the persistenceLayer has
         // been written or some sort of UI update that the data is persisted.
-        this.datastore.sync(this.docMeta.docInfo.fingerprint, docMeta);
+        this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, docMeta);
 
     }
 
@@ -115,9 +115,9 @@ module.exports.Model = class {
         // FIXME: this can be done with a mutation listener...
         this.reactor.dispatchEvent('erasePagemark', {pageNum});
 
-        // TODO: consider only marking the page read once the datastore has
+        // TODO: consider only marking the page read once the persistenceLayer has
         // been written or some sort of UI update that the data is persisted.
-        this.datastore.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
+        this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
 
     }
 

@@ -7,10 +7,15 @@ const {polar} = require("../polar.js");
 
 module.exports.Controller = class {
 
-    constructor(datastore, model) {
-        this.datastore = datastore;
+    constructor(model) {
+
+        if(! model) {
+            throw new Error("No model");
+        }
+
         this.model = model;
         this.docMeta = null;
+        this.docMetaPromise = null;
     }
 
     /**

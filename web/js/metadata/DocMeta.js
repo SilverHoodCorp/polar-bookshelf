@@ -25,7 +25,7 @@ module.exports.DocMeta = class extends SerializedObject {
          *
          * @type map<int,PageMeta>
          */
-        this.pageMetas = {}
+        this.pageMetas = {};
 
         /**
          * The version of this DocMeta version.

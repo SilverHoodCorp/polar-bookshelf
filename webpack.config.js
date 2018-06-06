@@ -2,16 +2,21 @@ var path = require('path');
 
 module.exports = {
     mode: 'development',
-    target: "electron-renderer",
+    //target: "electron-renderer",
     entry: {
         app: './web/js/app.js',
-        test: './web/js/test.js'
+        //test: './web/js/test.js'
     },
     output: {
         path: path.resolve(__dirname, 'web/js'),
-        filename: 'bundle.js',
+        filename: '[name]-bundle.js',
         publicPath: '/web/js'
+    },
+    node: {
+        //needed to make webpack work.
+        fs: 'empty'
     }
+
 };
 
 // move these to /dist
