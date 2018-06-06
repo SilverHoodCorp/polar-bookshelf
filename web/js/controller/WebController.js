@@ -2,7 +2,6 @@ const $ = require('jquery');
 
 const TextHighlightControllers = require("../highlights/text/TextHighlightControllers").TextHighlightControllers;
 
-const {TextHighlightController} = require("../highlights/text/text-highlights.js");
 const {PagemarkCoverageEventListener} = require("../PagemarkCoverageEventListener.js");
 const {KeyEvents} = require("../KeyEvents.js");
 const {Preconditions} = require("../Preconditions.js");

@@ -1,6 +1,5 @@
 const {WebController} = require("./controller.js");
 const {WebView} = require("./view.js");
-const {TextHighlightController} = require("./highlights/text/text-highlights.js");
 
 function injectScript(src,type) {
 

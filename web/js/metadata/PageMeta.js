@@ -20,6 +20,20 @@ module.exports.PageMeta = class extends SerializedObject {
          */
         this.pagemarks = {};
 
+        /**
+         * An index of test highlights for the page.
+         *
+         * @type map<string,TextHighlight>
+         */
+        this.textHighlights = {};
+
+        /**
+         * An index of area highlights for the page.
+         *
+         * @type map<string,AreaHighlight>
+         */
+        this.areaHighlights = {};
+
         this.init(val);
 
     }
@@ -31,3 +45,4 @@ module.exports.PageMeta = class extends SerializedObject {
     }
 
 }
+

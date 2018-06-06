@@ -3,6 +3,9 @@
  * change these into observables if we want by making them streams of SET and
  * DELETE operations but since we're not really using RxJS or anything of the
  * sort yet our options are open.
+ *
+ * Note that Object.observe and other changes were apparently never ratified
+ * so we have to use Proxy objects to implement this functionality.
  */
 const {ProxyBuilder} = require("./ProxyBuilder");
 
