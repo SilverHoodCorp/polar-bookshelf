@@ -17,27 +17,21 @@ module.exports.Paths = class {
         if(!basename)
             throw new Error("Basename required");
 
-        // don't accept invalid input
-        if(basename.indexOf("/") !== -1) {
-            throw new Error("No / in basename.");
-        }
-
-        if(dirname.indexOf("//") !== -1) {
+        if(dirname.indexOf("//") !== -1 || basename.indexOf("//") !== -1  ) {
             // don't allow // in dirname already as we would corrupt
             throw new Error("No // in dirname");
-        }
-
-        if(!dirname.indexOf("/") !== 0) {
-            throw new Error("Dirname must start with /");
         }
 
         let result = dirname + "/" + basename;
 
         // replace multiple slashes in directory parts
-        result.replace(/\/\/+/g, "/");
+        result = result.replace(/\/\/+/g, "/");
+
+        // remove any trailing slashes
+        result = result.replace(/\/$/g, "");
 
         return result;
 
     }
 
-}
+};
