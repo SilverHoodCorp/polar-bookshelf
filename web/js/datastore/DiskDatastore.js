@@ -2,6 +2,7 @@
 const {Datastore} = require("./Datastore.js");
 const {MetadataSerializer} = require("../metadata/MetadataSerializer");
 const {DocMeta} = require("../metadata/DocMeta");
+const {DocMetaDescriber} = require("../metadata/DocMetaDescriber");
 
 const fs = require("fs");
 const os = require("os");
@@ -84,6 +85,7 @@ module.exports.DiskDatastore = class extends Datastore {
     async sync(fingerprint, docMeta) {
 
         console.log("Performing sync of content into disk datastore.");
+        console.log("DocMeta described as: " + DocMetaDescriber.describe(docMeta));
 
         let docDir = this.dataDir + "/" + fingerprint;
 
@@ -94,6 +96,7 @@ module.exports.DiskDatastore = class extends Datastore {
 
         if ( ! dirExists) {
             // the directory for this file is missing.
+            console.log(`Doc dir does not exist. Creating ${docDir}`);
             await this.mkdirAsync(docDir)
         }
 
@@ -107,7 +110,9 @@ module.exports.DiskDatastore = class extends Datastore {
         // on that by making it inherently something that can't conflict
         let data = MetadataSerializer.serialize(docMeta, "  ");
 
-        return this.writeFileAsync(statePath, data);
+        console.log(`Writing data to state file: ${statePath}`);
+
+        return await this.writeFileAsync(statePath, data);
 
     }
 

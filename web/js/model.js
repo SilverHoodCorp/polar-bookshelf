@@ -3,6 +3,7 @@ const {Pagemark} = require("./metadata/Pagemark");
 const {PagemarkType} = require("./metadata/PagemarkType");
 const {DocMeta} = require("./metadata/DocMeta");
 const {DocMetas} = require("./metadata/DocMetas");
+const {DocMetaDescriber} = require("./metadata/DocMetaDescriber");
 
 module.exports.Model = class {
 
@@ -84,19 +85,20 @@ module.exports.Model = class {
 
         let docMeta = await this.docMetaPromise;
 
-        let pageMeta = this.docMeta.getPageMeta(pageNum);
+        let pageMeta = docMeta.getPageMeta(pageNum);
 
-        // set the pagemark that we just created.
+        // set the pagemark that we just created into the map
         pageMeta.pagemarks[pagemark.column] = pagemark;
 
-        // FIXME: this can be done with a mutation listener...
+        // TODO: this can be done with a mutation listener in the future
         this.reactor.dispatchEvent('createPagemark', {pageNum, pagemark});
 
-        // FIXME: we need a fingerprint in the docInfo too.
+        console.log("Performing sync of content into disk datastore.");
+        console.log("DocMeta described as: " + DocMetaDescriber.describe(docMeta));
 
         // TODO: consider only marking the page read once the datastore has
         // been written or some sort of UI update that the data is persisted.
-        this.datastore.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
+        this.datastore.sync(this.docMeta.docInfo.fingerprint, docMeta);
 
     }
 

@@ -68,6 +68,12 @@ webserverDaemon.start();
 //const DEFAULT_URL = `http://localhost:${WEBSERVER_PORT}/default.html`;
 const DEFAULT_URL = 'file://' + __dirname + '/default.html';
 
+let enableConsoleLogging = process.argv.includes("--enable-console-logging");
+
+if(enableConsoleLogging) {
+    console.log("Console logging enabled.");
+}
+
 if (process.argv.includes("--enable-remote-debugging")) {
 
     console.log(`Remote debugging port enabled on port ${REMOTE_DEBUGGING_PORT}.`);
@@ -106,6 +112,10 @@ const template = [{
                                 // FIXME: cmaps are disabled when loading from file URLs so I need to look into this problem...
                                 mainWindow.loadURL('file://' + __dirname + '/pdfviewer/web/viewer.html?file=' + encodeURIComponent(path), options);
                                 //mainWindow.loadURL(`http://localhost:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=` + encodeURIComponent(path), options);
+
+                                if(enableConsoleLogging) {
+                                    mainWindow.webContents.on("console-message", consoleListener);
+                                }
 
                                 mainWindow.webContents.on('did-finish-load', function() {
                                     console.log("Finished loading. Now injecting customizations.");
@@ -253,6 +263,28 @@ app.on('activate', function() {
     // dock icon is clicked and there are no other windows open.
     if (mainWindow === null) { createWindow(); }
 });
+
+/**
+ * Listen to messages generated in the console so that we can log them to the
+ * main console when --enable-console is used.
+ *
+ * https://github.com/electron/electron/blob/master/docs/api/web-contents.md#event-console-message
+ *
+ *
+ * Returns:
+ *
+ * event Event
+ * level Integer
+ * message String
+ * line Integer
+ * sourceId String
+ *
+ */
+function consoleListener(event, level, message, line, sourceId) {
+
+    console.log(`level=${level} ${sourceId}:${line}: ${message}`);
+
+}
 
 function injectScript(webContents, src) {
     webContents.executeJavaScript(`var script = document.createElement('script'); script.setAttribute('src', '${src}'); document.head.appendChild(script);`)

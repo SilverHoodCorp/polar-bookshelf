@@ -26,7 +26,7 @@ async function launchDev() {
 
     let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
     DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 4, percentage: 50})
-    datastore.sync(fingerprint, docMeta);
+    await datastore.sync(fingerprint, docMeta);
 
     view.init();
 
