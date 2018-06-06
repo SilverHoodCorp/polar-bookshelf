@@ -20,8 +20,6 @@ var contextMenu = null;
 var filepath = null;
 var quitapp, URL;
 
-console.log("FIXME:", DiskDatastore)
-
 // share the disk datastore with the remote.
 global.diskDatastore = new DiskDatastore();
 

@@ -1,6 +1,8 @@
 
 const {Pagemark} = require("./metadata/Pagemark");
 const {PagemarkType} = require("./metadata/PagemarkType");
+const {DocMeta} = require("./metadata/DocMeta");
+const {DocMetas} = require("./metadata/DocMetas");
 
 module.exports.Model = class {
 
@@ -37,7 +39,7 @@ module.exports.Model = class {
         if(this.docMeta == null) {
             // this is a new document...
             //this.docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, nrPages);
-            this.docMeta = DocMeta.create(fingerprint, nrPages);
+            this.docMeta = DocMetas.create(fingerprint, nrPages);
             this.datastore.sync(fingerprint, this.docMeta);
         }
 

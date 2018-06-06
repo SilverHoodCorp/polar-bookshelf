@@ -1,5 +1,3 @@
-console.log("FIXME3 module.exports", module.exports);
-
 
 /**
  * Apply a given function, with arguments, to a list of delegates which have

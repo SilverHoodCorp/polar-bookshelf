@@ -1,4 +1,3 @@
-console.log("FIXME4 module.exports", module.exports);
 
 
 module.exports.TextHighlightView = class {

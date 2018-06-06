@@ -1,6 +1,6 @@
 // all our unit tests...
 
-const {TextHighlightRows} = require("./text-highlights.js");
+const {TextHighlightRows} = require("./highlights/text/text-highlights.js");
 const {View, WebView} = require("./view.js");
 import * as utils from "./utils.js";
 

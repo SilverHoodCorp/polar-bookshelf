@@ -12,6 +12,7 @@ var path = require('path');
 
 module.exports = {
     mode: 'development',
+    target: "electron-renderer",
     entry: {
         app: './web/js/app.js',
         test: './web/js/test.js'
