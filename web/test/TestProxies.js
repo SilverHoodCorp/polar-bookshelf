@@ -3,7 +3,7 @@
 var assert = chai.assert;
 var expect = chai.expect;
 
-import {Proxies} from "../js/Proxies.js";
+import {Proxies} from "../js/proxies/Proxies.js";
 
 class MyTracingListener {
 

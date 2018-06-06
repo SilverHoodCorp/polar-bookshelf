@@ -8,15 +8,6 @@
 
 # Release
 
-- need different webpack configurations when running in chrome vs electron...
-
-- on electron, page resize doesn't keep the MAIN pagemark.  It vanishes.
-
-- persistence stopped working
-
-
-- the bookmarks aren't being persisted to disk.
-
 - file associations working for *.pdf with elecron-builder
 
 - screenshot and video of the app
@@ -81,5 +72,4 @@
     - this would give me the ability to import a specific URL or to send a URL
       from chrome to polar.
 
-
-- chagge REMOVE to ERASE to avid confusion with 'read'
+- change REMOVE to ERASE to avoid confusion with 'read'
