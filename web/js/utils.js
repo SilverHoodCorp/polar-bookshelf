@@ -1,5 +1,34 @@
 const {Optional} = require("./Optional");
 
+module.exports.injectScript = function(src,type) {
+
+    let script = document.createElement('script');
+    script.src = src;
+
+    // loading async is ugly but we're going to move to webpack and clean this
+    // up eventually.
+    script.async = false;
+    script.defer = false;
+
+    if(type)
+        script.type = type;
+
+    return new Promise(function (resolve, reject) {
+
+        document.head.appendChild(script);
+
+        script.addEventListener('load', function() {
+            resolve();
+        });
+
+        script.addEventListener('error', function(err) {
+            reject(err);
+        });
+
+    });
+
+};
+
 /**
  * Apply a given function, with arguments, to a list of delegates which have
  * that function name defined.

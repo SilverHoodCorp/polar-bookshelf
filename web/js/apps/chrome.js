@@ -12,8 +12,9 @@ const {PersistenceLayer} = require("../datastore/PersistenceLayer.js");
 const {MemoryDatastore} = require("../datastore/MemoryDatastore.js");
 const {Model} = require("../model.js");
 const {Electron} = require("../Electron");
+const {Launcher} = require("./Launcher");
 
-async function launchDev() {
+async function launchDev(launcher) {
 
     console.log("Launching in dev mode.");
 
@@ -34,66 +35,8 @@ async function launchDev() {
 
     view.init();
 
-    await start(datastore, controller, "dev");
-
-}
-//
-// async function launchProd() {
-//
-//     console.log("Launching in prod mode.");
-//     const remote = require('electron').remote;
-//
-//     console.log("Accessing datastore...");
-//     let datastore = remote.getGlobal("diskDatastore" );
-//     console.log("Accessing datastore...done");
-//
-//     let persistenceLayer = new PersistenceLayer(datastore);
-//     let clock = new SystemClock();
-//     let model = new Model(persistenceLayer, clock);
-//     let controller = new WebController(model);
-//     let view = new WebView(model);
-//     view.init();
-//
-//     console.log("Starting ...");
-//
-//     await start(persistenceLayer, controller, "prod");
-//
-// }
-
-async function start(persistenceLayer, controller, mode) {
-
-    await persistenceLayer.init();
-
-    controller.startListeners();
-    console.log("Controller started in mode: " + mode);
+    await launcher.start(datastore, controller, "dev");
 
 }
 
-function launch(launcherFunction) {
-
-    if (document.readyState === "complete" || document.readyState === "loaded" || document.readyState === "interactive") {
-        console.log("Already completed loading.");
-        launcherFunction();
-    } else {
-        console.log("Waiting for DOM content to load");
-        document.addEventListener('DOMContentLoaded', launcherFunction, true);
-    }
-
-}
-
-/**
- * Init the page by loading all scripts, etc.
- */
-async function init() {
-
-    // await injectAllScripts();
-
-    if(Electron.isElectron()) {
-        launch(launchProd);
-    } else {
-        launch(launchDev);
-    }
-
-}
-
-init();
+new Launcher(launchDev).launch();
