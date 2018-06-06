@@ -1,13 +1,13 @@
 //const {$} = require('jquery');
 console.log("FIXME module.exports", module.exports);
-const {DocMeta} = require("./metadata.js");
+const {DocMeta} = require("./metadata/metadata.js");
 const {Controller} = require("./controller/Controller.js");
 const {WebController} = require("./controller/WebController.js");
 const {WebView} = require("./view/WebView.js");
 const {TextHighlightController} = require("./text-highlights.js");
 
 const {SystemClock} = require("./time/SystemClock.js");
-const {MemoryDatastore} = require("./datastore/datastore.js");
+const {MemoryDatastore} = require("./datastore/MemoryDatastore.js");
 const {Model} = require("./model.js");
 
 
