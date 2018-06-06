@@ -184,7 +184,7 @@ module.exports.Elements = class {
             return null;
         }
 
-        return Elements.untilRoot(element.parentElement, selector);
+        return this.untilRoot(element.parentElement, selector);
 
     }
 
@@ -205,17 +205,14 @@ module.exports.OffsetCalculator = class {
             if(element == null)
                 break;
 
-            console.log("FIXME: element: ", element);
-            console.log("FIXME: has offset: ", Elements.offset(element));
-
             // FIXME: log the full offsets of EACH element...
 
-            offset.left += OffsetCalculator._toInt(element.offsetLeft)
-            offset.top += OffsetCalculator._toInt(element.offsetTop)
+            offset.left += this._toInt(element.offsetLeft)
+            offset.top += this._toInt(element.offsetTop)
             // offset.width += OffsetCalculator._toInt(element.offsetWidth)
             // offset.height += OffsetCalculator._toInt(element.offsetHeight)
-            offset.width = OffsetCalculator._toInt(element.offsetWidth)
-            offset.height = OffsetCalculator._toInt(element.offsetHeight)
+            offset.width = this._toInt(element.offsetWidth)
+            offset.height = this._toInt(element.offsetHeight)
 
             if(element === rootElement)
                 break;

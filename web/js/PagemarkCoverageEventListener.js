@@ -1,6 +1,4 @@
-//import $ from 'jquery';
-
-console.log("FIXME6 module.exports", module.exports);
+const $ = require('jquery');
 
 const {Delegator, Styles, Elements, OffsetCalculator} = require("./utils.js");
 const {KeyEvents} = require("./KeyEvents.js");
