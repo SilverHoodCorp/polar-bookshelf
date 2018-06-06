@@ -8,9 +8,12 @@
 
 # Release
 
+- need different webpack configurations when running in chrome vs electron...
+
 - on electron, page resize doesn't keep the MAIN pagemark.  It vanishes.
 
 - persistence stopped working
+
 
 - the bookmarks aren't being persisted to disk.
 

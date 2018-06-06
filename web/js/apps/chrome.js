@@ -1,16 +1,17 @@
 //const {$} = require('jquery');
-const {DocMeta} = require("./metadata/DocMeta");
-const {DocMetas} = require("./metadata/DocMetas");
-const {DocInfo} = require("./metadata/DocInfo");
-const {Controller} = require("./controller/Controller.js");
-const {WebController} = require("./controller/WebController.js");
-const {WebView} = require("./view/WebView.js");
-const {TextHighlightController} = require("./highlights/text/text-highlights.js");
+const {DocMeta} = require("../metadata/DocMeta");
+const {DocMetas} = require("../metadata/DocMetas");
+const {DocInfo} = require("../metadata/DocInfo");
+const {Controller} = require("../controller/Controller.js");
+const {WebController} = require("../controller/WebController.js");
+const {WebView} = require("../view/WebView.js");
+const {TextHighlightController} = require("../highlights/text/text-highlights.js");
 
-const {SystemClock} = require("./time/SystemClock.js");
-const {PersistenceLayer} = require("./datastore/PersistenceLayer.js");
-const {MemoryDatastore} = require("./datastore/MemoryDatastore.js");
-const {Model} = require("./model.js");
+const {SystemClock} = require("../time/SystemClock.js");
+const {PersistenceLayer} = require("../datastore/PersistenceLayer.js");
+const {MemoryDatastore} = require("../datastore/MemoryDatastore.js");
+const {Model} = require("../model.js");
+const {Electron} = require("../Electron");
 
 async function launchDev() {
 
@@ -87,17 +88,12 @@ async function init() {
 
     // await injectAllScripts();
 
-    if(isElectron()) {
+    if(Electron.isElectron()) {
         launch(launchProd);
     } else {
         launch(launchDev);
     }
 
-}
-
-function isElectron() {
-    var userAgent = navigator.userAgent.toLowerCase();
-    return userAgent.indexOf(' electron/') !== -1;
 }
 
 init();
