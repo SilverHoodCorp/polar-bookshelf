@@ -5,6 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "test": "./node_modules/.bin/mocha --recursive \"web/js/**/*Test.js\"",
     "webpack": "npx webpack --config=webpack-chrome.config.js && npx webpack --config=webpack-injector.config.js && npx webpack --config=webpack-electron.config.js"
   },
   "repository": "https://github.com/burtonator/polar-bookshelf",
