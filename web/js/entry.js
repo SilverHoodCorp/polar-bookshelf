@@ -1,6 +1,8 @@
 //const {$} = require('jquery');
 console.log("FIXME module.exports", module.exports);
-const {DocMeta} = require("./metadata/metadata.js");
+const {DocMeta} = require("./metadata/DocMeta");
+const {DocMetas} = require("./metadata/DocMetas");
+const {DocInfo} = require("./metadata/DocInfo");
 const {Controller} = require("./controller/Controller.js");
 const {WebController} = require("./controller/WebController.js");
 const {WebView} = require("./view/WebView.js");
@@ -61,8 +63,8 @@ function launchDev() {
     // create some fake documents for our example PDFs
     var fingerprint = "110dd61fd57444010b1ab5ff38782f0f";
 
-    let docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, 14);
-    DocMeta.addPagemarks(docMeta, {nrPages: 1, offsetPage: 4, percentage: 50})
+    let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
+    DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 4, percentage: 50})
     datastore.sync(fingerprint, docMeta);
 
     view.init();
