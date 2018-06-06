@@ -1,4 +1,5 @@
 const {SerializedObject} = require("./SerializedObject.js");
+const {ISODateTime} = require("./ISODateTime");
 
 /* abstract */
 module.exports.Annotation = class extends SerializedObject {
@@ -42,11 +43,11 @@ module.exports.Annotation = class extends SerializedObject {
 
         // FIXME: move this to validateMembers
         if(!this.created instanceof ISODateTime) {
-            throw new Error("Member created has wrong type: ", typeof this.created);
+            throw new Error("Member created has wrong type: " + typeof this.created);
         }
 
         if(!this.lastUpdated instanceof ISODateTime) {
-            throw new Error("Member lastUpdated has wrong type: ", typeof this.lastUpdated);
+            throw new Error("Member lastUpdated has wrong type: " + typeof this.lastUpdated);
         }
 
     }

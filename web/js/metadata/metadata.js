@@ -82,24 +82,6 @@ function createDocMeta(path) {
 
 }
 
-module.exports.DocMetaDescriber = class {
-
-    static describe(docMeta) {
-
-        var nrPagemarks = 0;
-
-        forDict(docMeta.pageMetas, function (key, pageMeta) {
-            forDict(pageMeta.pagemarks, function (column, pagemark) {
-                ++nrPagemarks;
-            }.bind(this));
-
-        }.bind(this));
-
-
-        return `PDF with ${docMeta.docInfo.nrPages} pages and ${nrPagemarks} pagemarks.`
-    }
-
-}
 
 
 
@@ -107,90 +89,7 @@ module.exports.DocMetaDescriber = class {
 
 
 
-class Author extends SerializedObject {
 
-    constructor(val) {
-        super(val);
-
-        /**
-         * The name of this author.
-         * @type string
-         */
-        this.name = null;
-
-    }
-
-}
-
-
-
-class BaseHighlight extends SerializedObject {
-
-    constructor(val) {
-        super(val);
-
-        /**
-         * The rectangles where we need to place content for this highlights.
-         * @type {{}}
-         */
-        this.rects = {};
-
-        // this.linesOfText = {};
-        //
-        // this.text
-
-        /**
-         * Optional thumbnail for this highlight.
-         * @type {null}
-         */
-        this.thumbnail = null;
-
-    }
-
-}
-
-class TextRect extends SerializedObject {
-
-    constructor(val) {
-        super(val);
-
-        // the actual text in this rect.
-        this.text = null;
-
-        // A rect area that the user has selected text.
-        this.rect = null;
-
-    }
-
-}
-
-class TextHighlight extends BaseHighlight {
-
-    constructor(val) {
-
-        super(val);
-
-        /**
-         * A raw array-like object of text from the regions that the user
-         * has highlighted in the UI. In PDF and pdf.js there isn't really
-         * the concept of flowing text so we try to show the user the text
-         * in the specific regions they selected.
-         *
-         * @type map<int,TextRect>
-         */
-        this.textSelections = {};
-
-        /**
-         * The text selections converted to a text string which may or may not
-         * be human readable.
-         *
-         * @type {string}
-         */
-        this.text = "";
-
-    }
-
-}
 
 class AreaHighlight extends BaseHighlight {
 

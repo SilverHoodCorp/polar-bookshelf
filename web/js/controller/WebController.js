@@ -1,8 +1,12 @@
+const $ = require('jquery');
+
+const TextHighlightControllers = require("../TextHighlightControllers").TextHighlightControllers;
 
 const {TextHighlightController} = require("../text-highlights.js");
 const {PagemarkCoverageEventListener} = require("../PagemarkCoverageEventListener.js");
 const {KeyEvents} = require("../KeyEvents.js");
 const {Controller} = require("./Controller.js");
+const {polar} = require("../polar");
 
 module.exports.WebController = class extends Controller {
 
@@ -240,7 +244,7 @@ module.exports.WebController = class extends Controller {
 
         console.log("Key bindings registered");
 
-        TextHighlightController.create().listenForKeyBindings();
+        TextHighlightControllers.create().listenForKeyBindings();
 
         new PagemarkCoverageEventListener(this).startListening();
 

@@ -1,4 +1,5 @@
-const {MetadataSerializer, DocMeta} = require("../metadata/metadata.js");
+const {MetadataSerializer} = require("../metadata/MetadataSerializer");
+const {DocMeta} = require("../metadata/DocMeta");
 const {Datastore} = require("./Datastore.js");
 
 /**

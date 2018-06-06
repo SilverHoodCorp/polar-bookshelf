@@ -2,6 +2,7 @@
 const {AnnotationWithNote} = require("./AnnotationWithNote");
 const {PagemarkType} = require("./PagemarkType");
 const {MetadataSerializer} = require("./MetadataSerializer");
+const {ISODateTime} = require("./ISODateTime");
 
 module.exports.Pagemark = class extends AnnotationWithNote {
 
