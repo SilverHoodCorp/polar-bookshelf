@@ -3,7 +3,7 @@ const {TextHighlight} = require("./TextHighlight");
 const {Hashcodes} = require("../Hashcodes");
 const {Arrays} = require("../util/Arrays");
 
-module.exports.TextHighlights = class {
+module.exports.TextHighlightRecords = class {
 
     /**
      * Create a TextHighlight by specifying all required rows.

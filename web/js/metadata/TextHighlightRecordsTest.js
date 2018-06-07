@@ -1,7 +1,7 @@
 var assert = require('assert');
 
 const {TextHighlight} = require("./TextHighlight");
-const {TextHighlights} = require("./TextHighlights");
+const {TextHighlightRecords} = require("./TextHighlightRecords");
 const {assertJSON} = require("../test/Assertions");
 const tk = require('timekeeper');
 
@@ -20,7 +20,7 @@ describe('TextHighlights', function() {
             let text = "hello world";
 
             // create a basic TextHighlight object..
-            let textHighlightRecord = TextHighlights.create(rects, textSelections, text);
+            let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
 
             let expected = {
                 "id": "12pNUv1Y9S3RjFsgcRBrQuba849iB3xecQLb9tmKv4Ve5mG412j",
