@@ -1,10 +1,9 @@
-const PageRedrawHandler = require("../../PageRedrawHandler").PageRedrawHandler;
+const {TextHighlightRecords} = require("../../metadata/TextHighlightRecords");
+const {PageRedrawHandler} = require("../../PageRedrawHandler");
 const {Elements} = require("../../utils");
 const {TextHighlightRows} = require("./TextHighlightRows");
-const {TextHighlight} = require("../../metadata/TextHighlight");
 const {PDFRenderer} = require("../../PDFRenderer");
 const {Rects} = require("../../Rects");
-const {Hashcodes} = require("../../Hashcodes");
 
 class TextHighlightRenderer {
 
@@ -25,10 +24,7 @@ class TextHighlightRenderer {
         let textSelections = {}; // FIXME: do this later
         let text = ""; // FIXME: do this later
 
-        let textHighlight = new TextHighlight({rects, textSelections, text});
-
-        // use the rect position of the text annotation for the ID.
-        let id = Hashcodes.create(JSON.stringify(rects));
+        let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
 
         // FIXME: this needs to be done in the VIEW and not in the controller...
         // We can fix this by listening to the highlights as they are created /
