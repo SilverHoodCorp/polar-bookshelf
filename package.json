@@ -39,11 +39,13 @@
     "webpack-serve": "^1.0.2"
   },
   "dependencies": {
+    "base58check": "^2.0.0",
     "codemirror": "^5.38.0",
     "editor.md": "^1.5.0",
     "express": "^4.16.3",
     "fontawesome": "^4.7.2",
     "jquery": "^3.3.1",
+    "keccak": "^1.4.0",
     "micromodal": "^0.3.2",
     "requirejs": "^2.3.5",
     "rx-collection": "^0.1.0",
