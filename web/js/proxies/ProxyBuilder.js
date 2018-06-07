@@ -45,7 +45,15 @@ class ProxyBuilder {
 
     static _traceObject(path, value, traceListener) {
 
-        return new Proxy(value, new TraceHandler(path, traceListener));
+        let traceHandler = new TraceHandler(path, traceListener);
+
+        value.addTraceListener = function (traceListener) {
+            traceHandler.addListener(traceListener);
+        };
+
+        let proxy = new Proxy(value, traceHandler);
+
+        return proxy;
 
     }
 

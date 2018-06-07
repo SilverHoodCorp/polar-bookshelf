@@ -10,22 +10,30 @@ module.exports.TraceHandler = class {
     // and perform some action when it changes.
 
     constructor(path, traceListener) {
+
         Preconditions.assertNotNull(path, "path");
         this.path = path;
         this.traceListener = FunctionalInterface.create("onTrace", traceListener);
 
         this.reactor = new Reactor();
-        this.reactor.registerEvent('trace');
+        this.reactor.registerEvent('onTrace');
 
     }
 
+    /**
+     * Add a listener for a specific object.
+     */
+    addListener(traceListener) {
+        this.reactor.addEventListener('onTrace', traceListener);
+    }
+
     set(target, property, value, receiver) {
-        this.reactor.dispatchEvent('trace', {path: this.path, type: MutationType.SET, target, property, value});
+        this.reactor.dispatchEvent('onTrace', {path: this.path, type: MutationType.SET, target, property, value});
         return this.traceListener.onTrace(this.path, MutationType.SET, target, property, value);
     }
 
     deleteProperty(target, property) {
-        this.reactor.dispatchEvent('trace', {path: this.path, type: MutationType.DELETE, target, property, value});
+        this.reactor.dispatchEvent('onTrace', {path: this.path, type: MutationType.DELETE, target, property, value});
         return this.traceListener.onTrace(this.path, MutationType.DELETE, target, property, undefined);
     }
 

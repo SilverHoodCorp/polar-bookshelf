@@ -191,6 +191,33 @@ describe('ProxyBuilder', function() {
         });
 
 
+
+        it("add listener to object", function () {
+
+            let myDict = {
+                "cat": "dog"
+            };
+
+            let mutations = [];
+
+            myDict = Proxies.create(myDict).deepTrace(function(path, mutationType, target, property, value) {
+                // noop
+            });
+
+            myDict.addTraceListener(function (traceEvent) {
+                //console.log("CALLBAC", traceEvent);
+            });
+
+            myDict["asdf"] = "bar";
+
+            // make a pattern of /pages/[int]/foo so that we can listen to the
+            // stream of objects and then handle the right one.
+
+            assertJSON(mutations, expected);
+
+        });
+
+
     });
 
 });
