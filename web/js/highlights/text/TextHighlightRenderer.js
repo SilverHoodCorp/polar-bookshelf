@@ -26,6 +26,9 @@ class TextHighlightRenderer {
         let textHighlight = new TextHighlight({rects, textSelections, text});
 
         // FIXME: this needs to be done in the VIEW and not in the controller...
+        // We can fix this by listening to the highlights as they are created /
+        // registered and then only updating the model in the controller and
+        // having the view repaint itself.
 
         // go through each marker and render them.
         textHighlightRows.forEach(function (textHighlightRow) {
