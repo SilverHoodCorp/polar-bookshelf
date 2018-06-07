@@ -1,3 +1,4 @@
+const {TraceListenerExecutor} = require("./TraceListenerExecutor");
 const {TraceEvent} = require("./TraceEvent");
 const {Preconditions} = require("../Preconditions");
 const {MutationType} = require("./MutationType");
@@ -6,14 +7,18 @@ const {Reactor} = require("../reactor/Reactor");
 
 module.exports.TraceHandler = class {
 
-    // FIXME: add the ability to add our own listeners to a TraceHandler... this
-    // way you can take an arbitrary object path, and register a handler for it
-    // and perform some action when it changes.
-
-    constructor(path, traceListener) {
+    /**
+     *
+     * @param path The path to this object.
+     * @param traceListener The main TraceListener to use.
+     * @param target The object that is the target of this handler.
+     */
+    constructor(path, traceListener, target) {
 
         Preconditions.assertNotNull(path, "path");
         this.path = path;
+
+        this.target = target;
 
         this.reactor = new Reactor();
         this.reactor.registerEvent('onMutation');
@@ -29,7 +34,11 @@ module.exports.TraceHandler = class {
      * Add a listener for a specific object.
      */
     addTraceListener(traceListener) {
+        // TODO: I do not think this supports adding a TraceListener object
+        // and I think we will have to clean up our support for functional
+        // interfaces here.  We're not using them consistently.
         this.reactor.addEventListener('onMutation', traceListener);
+        return new TraceListenerExecutor(traceListener, this);
     }
 
     set(target, property, value, receiver) {

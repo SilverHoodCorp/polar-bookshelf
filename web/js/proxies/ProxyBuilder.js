@@ -37,7 +37,7 @@ class ProxyBuilder {
             throw new Error("We can only trace object types.");
         }
 
-        let traceHandler = new TraceHandler(path, traceListener);
+        let traceHandler = new TraceHandler(path, traceListener, value);
 
         if(!value.__traceIdentifier) {
             Object.defineProperty(value, "__traceIdentifier", {

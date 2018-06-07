@@ -199,7 +199,7 @@ describe('ProxyBuilder', function() {
             };
 
 
-            myDict = Proxies.create(myDict).deepTrace(function(path, mutationType, target, property, value) {
+            myDict = Proxies.create(myDict).deepTrace(function(traceEvent) {
                 // noop
             });
 
@@ -223,6 +223,39 @@ describe('ProxyBuilder', function() {
                     },
                     "property": "asdf",
                     "value": "bar"
+                }
+            ];
+
+            assertJSON(mutations, expected);
+
+        });
+
+
+        it("fire initial values", function () {
+
+            let myDict = {
+                "cat": "dog"
+            };
+
+            let mutations = [];
+
+            myDict = Proxies.create(myDict).deepTrace(function(traceEvent) {
+                // noop
+            });
+
+            myDict.addTraceListener(function (traceEvent) {
+                mutations.push(traceEvent);
+            }).fireInitial();
+
+            let expected = [
+                {
+                    "path": "/",
+                    "mutationType": "INITIAL",
+                    "target": {
+                        "cat": "dog"
+                    },
+                    "property": "cat",
+                    "value": "dog"
                 }
             ];
 
