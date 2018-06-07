@@ -80,6 +80,7 @@ module.exports.WebView = class extends View {
 
     }
 
+    // FIXME: move to using PDFRenderer for this functionality.... getPageElementFromPageNum
     getPageElementByNum(num) {
 
         if(!num) {

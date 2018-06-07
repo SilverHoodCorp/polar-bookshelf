@@ -47,7 +47,7 @@ module.exports.Model = class {
 
             // I'm not sure this is the best way to resolve this as swapping in
             // the docMetaPromise without any synchronization seems like we're
-            // asking for a rae condition.
+            // asking for a race condition.
 
         }
 

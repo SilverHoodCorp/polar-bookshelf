@@ -1,6 +1,9 @@
 const {TextHighlightModel} = require("./model/TestHighlightModel");
 const {forDict} = require("../../utils.js");
 const {MutationType} = require("../../proxies/MutationType");
+const {PageRedrawHandler} = require("../../PageRedrawHandler");
+const {TextHighlightRenderer} = require("./TextHighlightRenderer");
+const {PDFRenderer} = require("../../PDFRenderer");
 
 module.exports.TextHighlightView = class {
 
@@ -29,7 +32,28 @@ module.exports.TextHighlightView = class {
     }
 
     onTextHighlight(textHighlightEvent) {
-        console.log("TextHighlightView.onTextHighlightCreated");
+
+        console.log("TextHighlightView.onTextHighlight");
+
+        let pageNum = textHighlightEvent.pageMeta.pageInfo.num;
+        let pageElement = PDFRenderer.getPageElementFromPageNum(pageNum);
+
+        // for each rect just call render on that pageElement...
+
+        forDict(textHighlightEvent.textHighlight.rects, function (id, rect) {
+
+            let callback = function() {
+                TextHighlightRenderer.render(pageElement, rect);
+            };
+
+            // draw it manually the first time.
+            callback();
+
+            // then let the redraw handler do it after this.
+            new PageRedrawHandler(pageElement).register(callback);
+
+        });
+
     }
 
 };

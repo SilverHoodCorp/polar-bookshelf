@@ -110,6 +110,7 @@ module.exports.WebController = class extends Controller {
 
     }
 
+    // FIXME: move to using PDFRenderer for this functionality.
     getCurrentPageElement() {
 
         // TODO: It is probably easier to use pdf.pageNum but I'm not sure if this
@@ -132,6 +133,7 @@ module.exports.WebController = class extends Controller {
 
     }
 
+    // TODO: refactor use Elements.calculateVisibilityForDiv
     calculateVisibilityForDiv(div) {
 
         if(div == null)
@@ -164,7 +166,6 @@ module.exports.WebController = class extends Controller {
     }
 
     getPageNum(pageElement) {
-        var pageElement = this.getCurrentPageElement();
         let dataPageNum = pageElement.getAttribute("data-page-number");
         return parseInt(dataPageNum);
     }

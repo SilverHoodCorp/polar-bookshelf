@@ -20,7 +20,7 @@ module.exports.DocMetaDescriber = class {
 
         }.bind(this));
 
-        return `PDF with ${docMeta.docInfo.nrPages} pages with ${nrTextHighlights} text highlights and ${nrPagemarks} pagemarks.`
+        return `PDF with ${docMeta.docInfo.nrPages} pages with ${nrTextHighlights} text highlights and ${nrPagemarks} pagemarks.`;
 
     }
 

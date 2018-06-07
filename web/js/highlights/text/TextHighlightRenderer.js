@@ -14,7 +14,6 @@ class TextHighlightRenderer {
 
     static create(selector) {
 
-        let textHighlightRows = TextHighlightRows.createFromSelector(selector);
 
         // FIXME: textHighlightRows has the elements that we need to get the
         // text from...
@@ -26,47 +25,55 @@ class TextHighlightRenderer {
 
         let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
 
-        // FIXME: this needs to be done in the VIEW and not in the controller...
-        // We can fix this by listening to the highlights as they are created /
-        // registered and then only updating the model in the controller and
-        // having the view repaint itself.
+        // now we just have to write this into the model I think.
 
-        // go through each marker and render them.
-        textHighlightRows.forEach(function (textHighlightRow) {
 
-            // This only needs to be done ONCE for the entire row and we just
-            // need the main element for a reference point.
 
-            if(textHighlightRow.rectElements.length > 0) {
-
-                let rectElement = textHighlightRow.rectElements[0];
-
-                let pageElement = Elements.untilRoot(rectElement.element, ".page");
-
-                if( !pageElement) {
-                    throw new Error("Unable to find pageElement");
-                }
-
-                let callback = function() {
-
-                    // We only need to call render on the first one because the row
-                    // has the rect we're using to highlight and we're only using
-                    // the element for positioning.
-                    TextHighlightRenderer.render(pageElement, textHighlightRow.rect);
-
-                };
-
-                callback();
-
-                new PageRedrawHandler(pageElement).register(callback);
-
-            }
-
-        }.bind(this));
-
-        return new TextHighlightRenderer(textHighlightRows, selector);
+        // let textHighlightRows = TextHighlightRows.createFromSelector(selector);
+        //
+        // // FIXME: this needs to be done in the VIEW and not in the controller...
+        // // We can fix this by listening to the highlights as they are created /
+        // // registered and then only updating the model in the controller and
+        // // having the view repaint itself.
+        //
+        // // go through each marker and render them.
+        // textHighlightRows.forEach(function (textHighlightRow) {
+        //
+        //     // This only needs to be done ONCE for the entire row and we just
+        //     // need the main element for a reference point.
+        //
+        //     if(textHighlightRow.rectElements.length > 0) {
+        //
+        //         let rectElement = textHighlightRow.rectElements[0];
+        //
+        //         let pageElement = Elements.untilRoot(rectElement.element, ".page");
+        //
+        //         if( !pageElement) {
+        //             throw new Error("Unable to find pageElement");
+        //         }
+        //
+        //         let callback = function() {
+        //
+        //             // We only need to call render on the first one because the row
+        //             // has the rect we're using to highlight and we're only using
+        //             // the element for positioning.
+        //             TextHighlightRenderer.render(pageElement, textHighlightRow.rect);
+        //
+        //         };
+        //
+        //         callback();
+        //
+        //         new PageRedrawHandler(pageElement).register(callback);
+        //
+        //     }
+        //
+        // }.bind(this));
+        //
+        // return new TextHighlightRenderer(textHighlightRows, selector);
 
     }
+
+    // FIXME: miggrate this to use TextHighlightView
 
     /**
      * Render a physical highlight on an element for the given rect

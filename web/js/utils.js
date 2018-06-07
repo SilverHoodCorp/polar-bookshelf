@@ -216,7 +216,38 @@ module.exports.Elements = class {
 
     }
 
-}
+    static calculateVisibilityForDiv(div) {
+
+        if(div == null)
+            throw Error("Not given a div");
+
+        let windowHeight = $(window).height(),
+            docScroll = $(document).scrollTop(),
+            divPosition = $(div).offset().top,
+            divHeight = $(div).height();
+
+        let hiddenBefore = docScroll - divPosition,
+            hiddenAfter = (divPosition + divHeight) - (docScroll + windowHeight);
+
+        if ((docScroll > divPosition + divHeight) || (divPosition > docScroll + windowHeight)) {
+            return 0;
+        } else {
+            let result = 100;
+
+            if (hiddenBefore > 0) {
+                result -= (hiddenBefore * 100) / divHeight;
+            }
+
+            if (hiddenAfter > 0) {
+                result -= (hiddenAfter * 100) / divHeight;
+            }
+
+            return result;
+        }
+
+    }
+
+};
 
 /**
  * Support the ability to calculate an offset relative to another element.
