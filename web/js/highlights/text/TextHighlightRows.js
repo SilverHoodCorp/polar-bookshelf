@@ -2,6 +2,8 @@ const {Elements, Styles, createSiblingTuples, elementOffset} = require("../../ut
 const {RectElement} = require("./RectElement");
 const {TextHighlightRow} = require("./TextHighlightRow");
 const {IntermediateRow} = require("./IntermediateRow");
+const {Rects} = require("../../Rects");
+const {PDFRenderer} = require("../../PDFRenderer");
 
 /**
  * TODO:
@@ -53,17 +55,15 @@ class TextHighlightRows {
      */
     static computeOffset(element) {
 
-        // FIXME... record if this row height is too small!!! this is where the bug is I think...
-
         // make sure we're working on the right element or our math won't be right.
         Elements.requireClass(element, "text-highlight-span");
 
         let textHighlightSpanOffset = Elements.offset(element);
 
-        var textLayerDivElement = element.parentElement;
+        let textLayerDivElement = element.parentElement;
 
-        var textLayerDivOffset = elementOffset(textLayerDivElement);
-        var rect = textLayerDivOffset;
+        let textLayerDivOffset = elementOffset(textLayerDivElement);
+        let rect = textLayerDivOffset;
 
         let scaleX = Styles.parseTransformScaleX(textLayerDivElement.style.transform);
         if(! scaleX) {
@@ -80,6 +80,12 @@ class TextHighlightRows {
 
         rect.bottom = rect.top + rect.height;
         rect.right = rect.left + rect.width;
+
+        // the result needs to factor in the current scale vs the reference
+        // scale of 1.0.  We always store / reference the highlights in a scale
+        // of 1.0 and then adjust them based on the current view.
+
+        rect = Rects.scale(rect, 1.0 / PDFRenderer.currentScale());
 
         return new RectElement(rect, element);
 
@@ -153,7 +159,7 @@ class TextHighlightRows {
             result.width = result.right - result.left;
             result.height = result.bottom - result.top;
 
-        })
+        });
 
         return result;
 

@@ -2,6 +2,8 @@ const PageRedrawHandler = require("../../PageRedrawHandler").PageRedrawHandler;
 const {Elements} = require("../../utils");
 const {TextHighlightRows} = require("./TextHighlightRows");
 const {TextHighlight} = require("../../metadata/TextHighlight");
+const {PDFRenderer} = require("../../PDFRenderer");
+const {Rects} = require("../../Rects");
 
 class TextHighlightRenderer {
 
@@ -71,6 +73,8 @@ class TextHighlightRenderer {
      */
     static render(pageElement, highlightRect) {
 
+        console.log("Rendering annotation at: ", highlightRect);
+
         let highlightElement = document.createElement("div");
 
         highlightElement.className = "text-highlight";
@@ -78,6 +82,10 @@ class TextHighlightRenderer {
         highlightElement.style.position = "absolute";
         highlightElement.style.backgroundColor = `yellow`;
         highlightElement.style.opacity = `0.5`;
+
+        let currentScale = PDFRenderer.currentScale();
+
+        highlightRect = Rects.scale(highlightRect, currentScale);
 
         highlightElement.style.left = `${highlightRect.left}px`;
         highlightElement.style.top = `${highlightRect.top}px`;
