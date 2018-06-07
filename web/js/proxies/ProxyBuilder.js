@@ -37,6 +37,12 @@ class ProxyBuilder {
             throw new Error("We can only trace object types.");
         }
 
+        if(Object.isFrozen(value)) {
+            // right now we do not handle frozen objects but might have to
+            // in the future for the initial value.
+            return value;
+        }
+
         let traceHandler = new TraceHandler(path, traceListener, value);
 
         if(!value.__traceIdentifier) {

@@ -83,9 +83,9 @@ module.exports.DocMetas = class {
             options.percentage = 100;
         }
 
-        var maxPageNum = Math.min(options.offsetPage + options.nrPages -1, docMeta.docInfo.nrPages);
+        let maxPageNum = Math.min(options.offsetPage + options.nrPages -1, docMeta.docInfo.nrPages);
 
-        for(var pageNum = options.offsetPage; pageNum <= maxPageNum; ++pageNum ) {
+        for(let pageNum = options.offsetPage; pageNum <= maxPageNum; ++pageNum ) {
 
             let pagemark = new Pagemark({
                 // TODO: this shouldn't have a hard wired date here but we don't

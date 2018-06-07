@@ -114,6 +114,38 @@ describe('Proxies', function() {
 
         });
 
+        it("test symbols used twice...", function () {
+
+            let TYPE = Object.freeze({
+                MAMMAL: new Symbol("MAMMAL"),
+                MARSUPIAL: new Symbol("MARSUPIAL")
+            });
+
+            let myDict = {
+                cat: {
+                    type: TYPE.MAMMAL
+                },
+                dog: {
+                    type: TYPE.MAMMAL
+                },
+            };
+
+
+            Proxies.create(myDict).deepTrace();
+
+            myDict = {
+                cat: {
+                    type: TYPE.MAMMAL
+                },
+                dog: {
+                    type: TYPE.MAMMAL
+                },
+            };
+
+            Proxies.create(myDict).deepTrace();
+
+        });
+
     });
 
 });
