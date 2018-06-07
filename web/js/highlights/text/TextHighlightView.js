@@ -31,8 +31,6 @@ module.exports.TextHighlightView = class {
             // trace the SET and DELETE of new text highlights.
             pageMeta.textHighlights.addTraceListener(function (path, mutationType, target, property, value) {
 
-                console.log("FIXME: value: ", value);
-
                 if(mutationType === MutationType.SET) {
                     this.onTextHighlightCreated(value);
                 } else if (mutationType === MutationType.DELETE) {
