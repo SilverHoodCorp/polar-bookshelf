@@ -1,3 +1,4 @@
+const PageRedrawHandler = require("../../PageRedrawHandler").PageRedrawHandler;
 const {Elements} = require("../../utils");
 const {TextHighlightRows} = require("./TextHighlightRows");
 const {TextHighlight} = require("../../metadata/TextHighlight");
@@ -34,10 +35,24 @@ class TextHighlightRenderer {
 
                 let rectElement = textHighlightRow.rectElements[0];
 
-                // We only need to call render on the first one because the row
-                // has the rect we're using to highlight and we're only using
-                // the element for positioning.
-                TextHighlightRenderer.render(rectElement.element, textHighlightRow.rect);
+                let pageElement = Elements.untilRoot(rectElement.element, ".page");
+
+                if( !pageElement) {
+                    throw new Error("Unable to find pageElement");
+                }
+
+                let callback = function() {
+
+                    // We only need to call render on the first one because the row
+                    // has the rect we're using to highlight and we're only using
+                    // the element for positioning.
+                    TextHighlightRenderer.render(pageElement, textHighlightRow.rect);
+
+                };
+
+                callback();
+
+                new PageRedrawHandler(pageElement).register(callback);
 
             }
 
@@ -51,31 +66,33 @@ class TextHighlightRenderer {
     /**
      * Render a physical highlight on an element for the given rect
      *
-     * @param element the <span> that was created to hold the text we are going to highlight.
+     * @param pageElement the page to hold the highlight.
      * @param highlightRect
      */
-    static render(element, highlightRect) {
+    static render(pageElement, highlightRect) {
 
         // FIXME: rework this to take just a PAGE and not have any dependency on
         // the element as we JUST need to .textLayer
 
-        Elements.requireClass(element, "text-highlight-span");
+        // Elements.requireClass(element, "text-highlight-span");
+        //
+        // // this is the overlay element we're goign to paint yellow to show
+        // // that we've highlighted the text.
+        // let highlightElement = document.createElement("div");
+        //
+        // // this is the 'div' within the textLayer holding the style information
+        // // we need to compute offset and location.
+        // let textLayerDivElement = element.parentElement;
+        //
+        // // this is the <div class='textLayer'> that holds all the <div> text
+        // let textLayerElement = textLayerDivElement.parentElement;
+        //
+        // Elements.requireClass(textLayerElement, "textLayer");
+        //
+        // // thisis the holder element which contains .canvasWrapper, .textLayer, etc.
+        // let pageElement = textLayerElement.parentElement;
 
-        // this is the overlay element we're goign to paint yellow to show
-        // that we've highlighted the text.
         let highlightElement = document.createElement("div");
-
-        // this is the 'div' within the textLayer holding the style information
-        // we need to compute offset and location.
-        let textLayerDivElement = element.parentElement;
-
-        // this is the <div class='textLayer'> that holds all the <div> text
-        let textLayerElement = textLayerDivElement.parentElement;
-
-        Elements.requireClass(textLayerElement, "textLayer");
-
-        // thisis the holder element which contains .canvasWrapper, .textLayer, etc.
-        let pageElement = textLayerElement.parentElement;
 
         highlightElement.className = "text-highlight";
 
@@ -88,7 +105,6 @@ class TextHighlightRenderer {
 
         highlightElement.style.width = `${highlightRect.width}px`;
         highlightElement.style.height = `${highlightRect.height}px`;
-
 
         // TODO: the problem with this strategy is that it inserts elements in the
         // REVERSE order they are presented visually.  This isn't a problem but

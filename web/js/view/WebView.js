@@ -416,6 +416,8 @@ class MainPagemarkRenderer extends PagemarkRenderer {
 
     __registerListener(pageElement) {
 
+        // TODO: migrate to using PageRedrawHandler
+
         pageElement.addEventListener('DOMNodeInserted', function(event) {
 
             if (event.target && event.target.className === "endOfContent") {
