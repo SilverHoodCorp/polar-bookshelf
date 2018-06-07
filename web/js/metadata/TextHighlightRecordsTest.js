@@ -3,11 +3,7 @@ var assert = require('assert');
 const {TextHighlight} = require("./TextHighlight");
 const {TextHighlightRecords} = require("./TextHighlightRecords");
 const {assertJSON} = require("../test/Assertions");
-const tk = require('timekeeper');
 
-// freeze time for testing...
-const time = new Date(1330688329321);
-tk.freeze(time);
 
 describe('TextHighlights', function() {
 

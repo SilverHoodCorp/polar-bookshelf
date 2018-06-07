@@ -85,6 +85,16 @@ class ProxyBuilder {
      */
     deepTrace(traceListener) {
 
+        if (!traceListener) {
+
+            // use a default no-op traceListener as the user probably wants to
+            // register their own per object.
+            traceListener = function () {
+                return true;
+            };
+
+        }
+
         let objectPathEntries = ObjectPaths.recurse(this.target);
 
         let root = null;

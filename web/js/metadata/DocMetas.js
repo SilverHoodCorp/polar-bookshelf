@@ -36,10 +36,10 @@ module.exports.DocMetas = class {
      */
     static createWithinInitialPagemarks(fingerprint, nrPages) {
 
-        var result = this.create(fingerprint, nrPages);
+        let result = this.create(fingerprint, nrPages);
 
         let maxPages = 3;
-        for(var pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum ) {
+        for(let pageNum = 1; pageNum <= Math.min(nrPages, maxPages); ++pageNum ) {
 
             let pagemark = new Pagemark({
                 // TODO: this shouldn't have a hard wired date here but we don't
