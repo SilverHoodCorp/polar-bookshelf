@@ -56,6 +56,8 @@ class ProxyBuilder {
 
         objectPathEntries.forEach(function (objectPathEntry) {
 
+            console.log("FIXME: hasProperty" , objectPathEntry.value.addTraceListener);
+
             console.log(`FIXME: ${objectPathEntry.path} ${objectPathEntry.key}` , typeof objectPathEntry.value);
 
             let proxy = ProxyBuilder.trace(objectPathEntry.path, objectPathEntry.value, traceListener);

@@ -36,15 +36,15 @@ class ObjectPaths {
 
         result.push(new ObjectPathEntry(path, obj, parent, parentKey));
 
-        for (let key in obj) {
+        for (let childKey in obj) {
 
-            if (obj.hasOwnProperty(key)) {
+            if (obj.hasOwnProperty(childKey)) {
 
-                let val = obj[key];
+                let childVal = obj[childKey];
 
-                if (val && typeof val === "object") {
-                    let childPath = Paths.create(path, key);
-                    ObjectPaths._recurse(childPath, val, obj, key, result);
+                if (childVal && typeof childVal === "object") {
+                    let childPath = Paths.create(path, childKey);
+                    ObjectPaths._recurse(childPath, childVal, obj, childKey, result);
                 }
 
             }
@@ -52,7 +52,6 @@ class ObjectPaths {
         }
 
     }
-
 
 }
 

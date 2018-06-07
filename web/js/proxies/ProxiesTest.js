@@ -64,6 +64,40 @@ describe('Proxies', function() {
 
         });
 
+        it("test with object.Freeze", function () {
+
+            let myDict = Object.freeze({
+                animal: "cat",
+                types: {
+                    SINGLE_COLUMN: "SINGLE_COLUMN",
+                    DOUBLE_COLUMN: "DOUBLE_COLUMN"
+                },
+            });
+
+            let myMutationListener = new MyMutationListener();
+
+            myDict = Proxies.create(myDict).forMutations(myMutationListener);
+
+            delete myDict.foo;
+
+            let expected = [
+                {
+                    "mutationType": "DELETE",
+                    "target": {
+                        "animal": "cat",
+                        "types": {
+                            "SINGLE_COLUMN": "SINGLE_COLUMN",
+                            "DOUBLE_COLUMN": "DOUBLE_COLUMN"
+                        }
+                    },
+                    "property": "foo"
+                }
+            ];
+
+            assertJSON(myMutationListener.mutations, expected);
+
+        });
+
     });
 
 });
