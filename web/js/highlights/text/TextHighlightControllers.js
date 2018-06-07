@@ -18,9 +18,9 @@ module.exports.TextHighlightControllers = class {
      */
     static createTextHighlighter() {
 
-        var sequence = 0;
+        let sequence = 0;
 
-        var textHighlighterOptions = {
+        let textHighlighterOptions = {
 
             highlightedClass: "text-highlight-span",
             color: '', // this works and the color isn't changed.
@@ -56,4 +56,4 @@ module.exports.TextHighlightControllers = class {
 
     }
 
-}
+};

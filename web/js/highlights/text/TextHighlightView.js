@@ -3,13 +3,18 @@
 module.exports.TextHighlightView = class {
 
     constructor(model) {
-        this.model = mode;
+        this.model = model;
+    }
+
+    init() {
 
         this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
 
+        return this;
+
     }
 
-    onDocumentLoaded() {
+    onDocumentLoaded(documentLoadedEvent) {
 
         console.log("TextHighlightView.onDocumentLoaded");
 
@@ -29,7 +34,6 @@ module.exports.TextHighlightView = class {
 
     onTextHighlightCreated(textHighlight) {
         console.log("TextHighlightView.onTextHighlightCreated");
-
     }
 
-}
+};

@@ -150,6 +150,47 @@ describe('ProxyBuilder', function() {
 
         });
 
+        it("as nested dictionaries", function () {
+
+            let myDict = {
+                'pages': {
+                    1: {
+                        marked: true
+                    },
+                    2: {
+                        marked: false
+                    },
+                }
+            };
+
+            let mutations = [];
+
+            myDict = Proxies.create(myDict).deepTrace(function(path, mutationType, target, property, value) {
+                mutations.push({path, mutationType, target, property, value});
+            });
+
+            myDict.pages[1].marked=false;
+
+            let expected = [
+                {
+                    "path": "/pages/1",
+                    "mutationType": "SET",
+                    "target": {
+                        "marked": true
+                    },
+                    "property": "marked",
+                    "value": false
+                }
+            ];
+
+            // make a pattern of /pages/[int]/foo so that we can listen to the
+            // stream of objects and then handle the right one.
+
+            assertJSON(mutations, expected);
+
+        });
+
+
     });
 
 });

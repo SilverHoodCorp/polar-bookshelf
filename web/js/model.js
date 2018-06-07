@@ -68,7 +68,8 @@ module.exports.Model = class {
             resolve(this.docMeta);
         }.bind(this));
 
-        this.reactor.dispatchEvent('documentLoaded', {fingerprint, nrPages, currentPageNumber});
+        let documentLoadedEvent = {fingerprint, nrPages, currentPageNumber, docMeta: this.docMeta};
+        this.reactor.dispatchEvent('documentLoaded', documentLoadedEvent);
 
         return this.docMeta;
 
