@@ -263,6 +263,41 @@ describe('ProxyBuilder', function() {
 
         });
 
+        it("delete value", function () {
+
+            let myDict = {
+                "cat": "dog"
+            };
+
+            let mutations = [];
+
+            myDict = Proxies.create(myDict).deepTrace(function(traceEvent) {
+                mutations.push(traceEvent);
+            });
+
+            delete myDict['cat'];
+
+            let expected = [
+                {
+                    "path": "/",
+                    "mutationType": "DELETE",
+                    "target": {
+                        "cat": "dog"
+                    },
+                    "property": "cat",
+                    "value": undefined
+                }
+            ];
+
+            console.log(mutations[0])
+
+            assert.equal( mutations[0].value === undefined, true);
+            assert.equal( "value" in mutations[0], true);
+
+            assertJSON(mutations, expected);
+
+        });
+
 
     });
 

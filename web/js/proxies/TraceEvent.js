@@ -18,6 +18,7 @@ module.exports.TraceEvent = class  {
         this.target = target;
         this.property = property;
         this.value = value;
+
     }
 
 };
