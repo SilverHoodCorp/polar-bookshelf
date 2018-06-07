@@ -88,8 +88,8 @@ describe('Proxies', function() {
 
             let mutations = [];
 
-            myDict = Proxies.create(myDict).deepTrace(function (path, mutationType, target, property, value) {
-                mutations.push({path, mutationType, target, property, value});
+            myDict = Proxies.create(myDict).deepTrace(function (traceEvent) {
+                mutations.push(traceEvent);
             });
 
             delete myDict.foo;

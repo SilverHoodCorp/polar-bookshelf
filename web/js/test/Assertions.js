@@ -17,7 +17,7 @@ module.exports.assertJSON = function(actual,expected) {
         console.log(actual);
     }
 
-    expect(expected).not.differentFrom(actual);
+    expect(actual).not.differentFrom(expected);
 
 };
 

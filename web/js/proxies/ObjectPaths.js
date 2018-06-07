@@ -34,6 +34,10 @@ class ObjectPaths {
 
     static _recurse(path, obj, parent, parentKey, result) {
 
+        if(typeof obj !== "object") {
+            throw new Error("We can only recurse on object types.");
+        }
+
         result.push(new ObjectPathEntry(path, obj, parent, parentKey));
 
         for (let childKey in obj) {

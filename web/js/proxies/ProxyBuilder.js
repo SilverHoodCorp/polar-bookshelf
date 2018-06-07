@@ -33,6 +33,10 @@ class ProxyBuilder {
 
     static trace(path, value, traceListener) {
 
+        if(typeof value !== "object") {
+            throw new Error("We can only trace object types.");
+        }
+
         let traceHandler = new TraceHandler(path, traceListener);
 
         if(!value.__traceIdentifier) {

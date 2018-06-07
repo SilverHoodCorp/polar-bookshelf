@@ -9,9 +9,9 @@ class MyTraceListener {
         this.mutations = [];
     }
 
-    onTrace(path, mutationType, target, property, value) {
+    onMutation(traceEvent) {
         // in practice we would write this to a journaled log file.
-        this.mutations.push({path, mutationType, target, property, value});
+        this.mutations.push(traceEvent);
         return true;
     }
 
@@ -128,8 +128,8 @@ describe('ProxyBuilder', function() {
 
             let mutations = [];
 
-            myDict = Proxies.create(myDict).deepTrace(function(path, mutationType, target, property, value) {
-                mutations.push({path, mutationType, target, property, value});
+            myDict = Proxies.create(myDict).deepTrace(function(traceEvent) {
+                mutations.push(traceEvent);
             });
 
             myDict.foo = 'frog';
@@ -165,8 +165,8 @@ describe('ProxyBuilder', function() {
 
             let mutations = [];
 
-            myDict = Proxies.create(myDict).deepTrace(function(path, mutationType, target, property, value) {
-                mutations.push({path, mutationType, target, property, value});
+            myDict = Proxies.create(myDict).deepTrace(function(traceEvent) {
+                mutations.push(traceEvent);
             });
 
             myDict.pages[1].marked=false;
@@ -217,7 +217,7 @@ describe('ProxyBuilder', function() {
             let expected = [
                 {
                     "path": "/",
-                    "type": "SET",
+                    "mutationType": "SET",
                     "target": {
                         "cat": "dog"
                     },

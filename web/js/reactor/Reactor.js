@@ -18,6 +18,10 @@ module.exports.Reactor = class {
     }
 
     addEventListener(eventName, callback){
+        if(typeof callback !== "function") {
+            throw new Error("Callback is not a function: " + typeof callback);
+        }
+
         this.events[eventName].registerCallback(callback);
     }
 

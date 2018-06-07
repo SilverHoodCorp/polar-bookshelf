@@ -11,7 +11,7 @@ describe('Paths', function() {
 
             let obj = {};
 
-            let objectPaths = ObjectPaths.recurse(obj)
+            let objectPaths = ObjectPaths.recurse(obj);
 
             let expected = [
                 {
@@ -32,7 +32,7 @@ describe('Paths', function() {
                 "cat": "dog"
             };
 
-            let objectPaths = ObjectPaths.recurse(obj)
+            let objectPaths = ObjectPaths.recurse(obj);
 
             let expected = [
                 {

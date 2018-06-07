@@ -1,3 +1,4 @@
+const {TraceEvent} = require("./TraceEvent");
 const {Preconditions} = require("../Preconditions");
 const {MutationType} = require("./MutationType");
 const {FunctionalInterface} = require("../util/FunctionalInterface");
@@ -13,10 +14,14 @@ module.exports.TraceHandler = class {
 
         Preconditions.assertNotNull(path, "path");
         this.path = path;
-        this.traceListener = FunctionalInterface.create("onTrace", traceListener);
 
         this.reactor = new Reactor();
-        this.reactor.registerEvent('onTrace');
+        this.reactor.registerEvent('onMutation');
+
+        traceListener = FunctionalInterface.create("onMutation", traceListener);
+        this.addTraceListener(function(traceEvent) {
+            traceListener.onMutation(traceEvent);
+        });
 
     }
 
@@ -24,17 +29,15 @@ module.exports.TraceHandler = class {
      * Add a listener for a specific object.
      */
     addTraceListener(traceListener) {
-        this.reactor.addEventListener('onTrace', traceListener);
+        this.reactor.addEventListener('onMutation', traceListener);
     }
 
     set(target, property, value, receiver) {
-        this.reactor.dispatchEvent('onTrace', {path: this.path, type: MutationType.SET, target, property, value});
-        return this.traceListener.onTrace(this.path, MutationType.SET, target, property, value);
+        this.reactor.dispatchEvent('onMutation', new TraceEvent(this.path, MutationType.SET, target, property, value));
     }
 
     deleteProperty(target, property) {
-        this.reactor.dispatchEvent('onTrace', {path: this.path, type: MutationType.DELETE, target, property, undefined});
-        return this.traceListener.onTrace(this.path, MutationType.DELETE, target, property, undefined);
+        this.reactor.dispatchEvent('onMutation', new TraceEvent(this.path, MutationType.DELETE, target, property, undefined));
     }
 
 };
