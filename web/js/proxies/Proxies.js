@@ -11,22 +11,6 @@ const {ProxyBuilder} = require("./ProxyBuilder");
 
 module.exports.Proxies = class {
 
-    // FIXME:
-    //
-    // now I need a way to replace full object graphs with proxies so I can replace / setup mutation listeners on objects.
-    //
-    // I'm going to need to have ___path defined which we ignore in JSON serializers.
-
-    // FIXME: it should be possible to listen to a specific property not just
-    // all the properties...
-    //
-    // maybe soemthing like
-    //
-    // createDictListener().forProperty("asdf")
-    //
-    // also .asMutations()
-    // asListener(onSet,onDelete)
-
     /**
      * Create a listener for the dictionary and call onSet and onDelete when
      * the dictionary has had keys set or deleted.

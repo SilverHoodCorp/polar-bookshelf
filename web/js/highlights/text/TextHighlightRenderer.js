@@ -71,27 +71,6 @@ class TextHighlightRenderer {
      */
     static render(pageElement, highlightRect) {
 
-        // FIXME: rework this to take just a PAGE and not have any dependency on
-        // the element as we JUST need to .textLayer
-
-        // Elements.requireClass(element, "text-highlight-span");
-        //
-        // // this is the overlay element we're goign to paint yellow to show
-        // // that we've highlighted the text.
-        // let highlightElement = document.createElement("div");
-        //
-        // // this is the 'div' within the textLayer holding the style information
-        // // we need to compute offset and location.
-        // let textLayerDivElement = element.parentElement;
-        //
-        // // this is the <div class='textLayer'> that holds all the <div> text
-        // let textLayerElement = textLayerDivElement.parentElement;
-        //
-        // Elements.requireClass(textLayerElement, "textLayer");
-        //
-        // // thisis the holder element which contains .canvasWrapper, .textLayer, etc.
-        // let pageElement = textLayerElement.parentElement;
-
         let highlightElement = document.createElement("div");
 
         highlightElement.className = "text-highlight";
