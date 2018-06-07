@@ -18,6 +18,8 @@ module.exports.TextHighlightModel = class {
 
                 callback(event);
 
+                return true;
+
             }.bind(this)).fireInitial();
 
         }.bind(this));

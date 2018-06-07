@@ -31,7 +31,7 @@ module.exports.Annotation = class extends SerializedObject {
         super.setup();
 
         if(!this.lastUpdated && this.created) {
-            this.lastUpdated = this.created.duplicate();
+            this.lastUpdated = this.created;
         }
 
     }

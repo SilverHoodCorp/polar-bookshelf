@@ -33,7 +33,7 @@ module.exports.AnnotationWithNote = class extends Annotation {
         super.setup();
 
         if(!this.note) {
-            this.note = new Note({text: "", created: this.created.duplicate()});
+            this.note = new Note({text: "", created: this.created});
         }
 
     }

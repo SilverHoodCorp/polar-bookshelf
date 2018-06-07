@@ -88,13 +88,17 @@ Install dependencies (Node.js, npm etc) -
 Install NodeJS and npm for your platform.
 ```
 
-To run:
+### To run:
 
 ```
 $ git clone https://github.com/burtonator/polar-bookshelf
 $ cd Electron-PDF-Viewer
 $ npm install && npm start
 ```
+
+### Run with advanced logging:
+
+./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging .
 
 Screenshot
 ----------------
