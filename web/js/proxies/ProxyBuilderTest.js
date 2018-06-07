@@ -78,6 +78,77 @@ describe('ProxyBuilder', function() {
 
         });
 
+        it("mutation of all fields", function () {
+
+            let myDict = {
+                foo: 'bar',
+                cat: {
+                    name: "leo"
+                }
+            };
+
+            let myTraceListener = new MyTraceListener();
+
+            myDict = Proxies.create(myDict).deepTrace(myTraceListener);
+
+            myDict.foo="cat";
+            myDict.cat.name = "monster";
+
+            let expected = [
+                {
+                    "path": "/",
+                    "mutationType": "SET",
+                    "target": {
+                        "foo": "bar",
+                        "cat": {
+                            "name": "leo"
+                        }
+                    },
+                    "property": "foo",
+                    "value": "cat"
+                },
+                {
+                    "path": "/cat",
+                    "mutationType": "SET",
+                    "target": {
+                        "name": "leo"
+                    },
+                    "property": "name",
+                    "value": "monster"
+                }
+            ];
+
+            assertJSON(myTraceListener.mutations, expected);
+
+        });
+
+        it("as function", function () {
+
+            let myDict = {'foo': 'bar'};
+
+            let mutations = [];
+
+            myDict = Proxies.create(myDict).deepTrace(function(path, mutationType, target, property, value) {
+                mutations.push({path, mutationType, target, property, value});
+            });
+
+            myDict.foo = 'frog';
+
+            let expected = [
+                {
+                    "path": "/",
+                    "mutationType": "SET",
+                    "target": {
+                        "foo": "bar"
+                    },
+                    "property": "foo",
+                    "value": "frog"
+                }
+            ];
+
+            assertJSON(mutations, expected);
+
+        });
 
     });
 

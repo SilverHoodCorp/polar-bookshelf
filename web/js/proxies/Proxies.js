@@ -21,7 +21,7 @@ module.exports.Proxies = class {
     static create(target) {
 
         if(typeof target !== "object") {
-            throw new Error("Only works on objects");
+            throw new Error("Only works on objects: " + typeof target);
         }
 
         //return new Proxy(target, new ProxyHandler(onSet, onDelete));

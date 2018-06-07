@@ -30,5 +30,4 @@ module.exports.TextHighlightController = class {
         document.addEventListener("keyup", this.keyBindingListener.bind(this));
     }
 
-
 };

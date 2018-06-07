@@ -49,6 +49,12 @@ class ProxyBuilder {
 
     }
 
+    /**
+     * Deeply trace the given object and call back on the traceListener every time
+     * we notice a mutation.  The trace listener receives the following arguments:
+     *
+     *
+     */
     deepTrace(traceListener) {
 
         let objectPaths = ObjectPaths.recurse(this.target);

@@ -1,5 +1,6 @@
 const {Preconditions} = require("../Preconditions");
 const {MutationType} = require("./MutationType");
+const {FunctionalInterface} = require("../util/FunctionalInterface");
 
 module.exports.TraceHandler = class {
 
@@ -10,7 +11,8 @@ module.exports.TraceHandler = class {
     constructor(path, traceListener) {
         Preconditions.assertNotNull(path, "path");
         this.path = path;
-        this.traceListener = traceListener;
+        this.traceListener = FunctionalInterface.create("onTrace", traceListener);
+
     }
 
     set(target, property, value, receiver) {

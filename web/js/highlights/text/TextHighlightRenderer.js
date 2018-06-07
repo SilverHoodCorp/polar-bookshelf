@@ -17,13 +17,14 @@ class TextHighlightRenderer {
 
         let textHighlightRows = TextHighlightRows.createFromSelector(selector);
 
+        // FIXME: textHighlightRows has the elements that we need to get the
+        // text from...
+
         let rects = textHighlightRows.map(current => current.rect);
 
         let textSelections = {}; // FIXME: do this later
         let text = ""; // FIXME: do this later
 
-        // FIXME: before we can position it, we need to figure out how to
-        // reliably paint it on the screen... and how to anchor it.
         let textHighlight = new TextHighlight({rects, textSelections, text});
 
         // use the rect position of the text annotation for the ID.

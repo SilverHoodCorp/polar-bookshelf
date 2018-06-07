@@ -1,4 +1,5 @@
 
+const {Proxies} = require("./proxies/Proxies");
 const {Pagemark} = require("./metadata/Pagemark");
 const {PagemarkType} = require("./metadata/PagemarkType");
 const {DocMeta} = require("./metadata/DocMeta");
@@ -36,6 +37,7 @@ module.exports.Model = class {
         this.docMeta = await this.docMetaPromise;
 
         if(this.docMeta == null) {
+
             // this is a new document...
             //this.docMeta = DocMeta.createWithinInitialPagemarks(fingerprint, nrPages);
             this.docMeta = DocMetas.create(fingerprint, nrPages);
@@ -45,11 +47,26 @@ module.exports.Model = class {
             // the docMetaPromise without any synchronization seems like we're
             // asking for a rae condition.
 
-            this.docMetaPromise = new Promise(function (resolve, reject) {
-                resolve(this.docMeta);
-            }.bind(this));
-
         }
+
+        this.docMeta = Proxies.create(this.docMeta).deepTrace(function () {
+
+            // right now we just sync the datastore on mutation.  We do not
+            // attempt to use a journal yet.
+
+            console.log("sync of persistence layer via deep trace... ");
+            this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
+
+            return true;
+
+        }.bind(this));
+
+        this.docMetaPromise = new Promise(function (resolve, reject) {
+            // always provide this promise for the metadata.  For NEW documents
+            // we have to provide the promise but we ALSO have to provide it
+            // to swap out the docMeta with the right version.
+            resolve(this.docMeta);
+        }.bind(this));
 
         this.reactor.dispatchEvent('documentLoaded', {fingerprint, nrPages, currentPageNumber});
 
@@ -105,7 +122,7 @@ module.exports.Model = class {
 
         // TODO: consider only marking the page read once the persistenceLayer has
         // been written or some sort of UI update that the data is persisted.
-        this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, docMeta);
+        //this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, docMeta);
 
     }
 
@@ -124,7 +141,7 @@ module.exports.Model = class {
 
         // TODO: consider only marking the page read once the persistenceLayer has
         // been written or some sort of UI update that the data is persisted.
-        this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
+        //this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
 
     }
 

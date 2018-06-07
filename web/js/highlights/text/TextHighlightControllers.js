@@ -42,9 +42,6 @@ module.exports.TextHighlightControllers = class {
                     highlightElement.className = highlightElement.className + " " + highlightClazz;
                 });
 
-                // FIXME: use the highlightElements to get the text of the nodes
-                // then compute a hashcode to determine the ID of the highlight.
-
                 TextHighlightRenderer.create("." + highlightClazz);
 
             },
