@@ -37,7 +37,7 @@ module.exports.TextHighlightView = class {
                     this.onTextHighlightDeleted(value);
                 }
 
-            }.bind(this));
+            }.bind(this)).fireInitial();
 
         }.bind(this));
 

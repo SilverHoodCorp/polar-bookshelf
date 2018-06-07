@@ -1,12 +1,15 @@
 const {SerializedObject} = require("./SerializedObject.js");
+const {Preconditions} = require("../Preconditions");
+const {Annotation} = require("./Annotation");
 
-module.exports.BaseHighlight = class extends SerializedObject {
+module.exports.BaseHighlight = class extends Annotation {
 
     constructor(val) {
         super(val);
 
         /**
          * The rectangles where we need to place content for this highlights.
+         *
          * @type {{}}
          */
         this.rects = {};
@@ -23,4 +26,11 @@ module.exports.BaseHighlight = class extends SerializedObject {
 
     }
 
-}
+    validate() {
+        super.validate();
+
+        Preconditions.assertNotNull(this.rects, "rects");
+        Preconditions.assertNotInstanceOf(this.rects, "rects", Array);
+    };
+
+};

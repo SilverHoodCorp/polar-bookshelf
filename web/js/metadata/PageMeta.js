@@ -39,6 +39,8 @@ module.exports.PageMeta = class extends SerializedObject {
     }
 
     validate() {
+        super.validate();
+
         this.validateMembers([
             {name: 'pageInfo', instance: PageInfo}
         ]);

@@ -1,5 +1,6 @@
 var assert = require('assert');
 
+const {TextHighlight} = require("../../metadata/TextHighlight");
 const {DocMeta} = require("../../metadata/DocMeta");
 const {DocMetas} = require("../../metadata/DocMetas");
 const {assertJSON} = require("../../test/Assertions");
@@ -21,6 +22,14 @@ describe('TextHighlightView', function() {
 
             let docMeta = DocMetas.createWithinInitialPagemarks(fingerprint, 14);
             DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 4, percentage: 50})
+
+            // create some initial highlights.
+
+            let pageMeta = docMeta.getPageMeta(1);
+
+            // now create a TextHighlight for this page.
+
+            new TextHighlight()
 
             docMeta = Proxies.create(docMeta).deepTrace(function () {
                 return true;

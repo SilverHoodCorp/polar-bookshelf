@@ -28,6 +28,7 @@ module.exports.Annotation = class extends SerializedObject {
     }
 
     setup() {
+        super.setup();
 
         if(!this.lastUpdated && this.created) {
             this.lastUpdated = this.created.duplicate();
@@ -36,6 +37,8 @@ module.exports.Annotation = class extends SerializedObject {
     }
 
     validate() {
+
+        super.validate();
 
         if(!this.created) {
             throw new Error("Created is required");
