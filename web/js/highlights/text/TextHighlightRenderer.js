@@ -4,6 +4,7 @@ const {TextHighlightRows} = require("./TextHighlightRows");
 const {TextHighlight} = require("../../metadata/TextHighlight");
 const {PDFRenderer} = require("../../PDFRenderer");
 const {Rects} = require("../../Rects");
+const {Hashcodes} = require("../../Hashcodes");
 
 class TextHighlightRenderer {
 
@@ -24,6 +25,9 @@ class TextHighlightRenderer {
         // FIXME: before we can position it, we need to figure out how to
         // reliably paint it on the screen... and how to anchor it.
         let textHighlight = new TextHighlight({rects, textSelections, text});
+
+        // use the rect position of the text annotation for the ID.
+        let id = Hashcodes.create(JSON.stringify(rects));
 
         // FIXME: this needs to be done in the VIEW and not in the controller...
         // We can fix this by listening to the highlights as they are created /
@@ -66,7 +70,6 @@ class TextHighlightRenderer {
         return new TextHighlightRenderer(textHighlightRows, selector);
 
     }
-
 
     /**
      * Render a physical highlight on an element for the given rect
