@@ -1,6 +1,7 @@
 const {Preconditions} = require("../Preconditions");
 const {MutationType} = require("./MutationType");
 const {FunctionalInterface} = require("../util/FunctionalInterface");
+const {Reactor} = require("../reactor/Reactor");
 
 module.exports.TraceHandler = class {
 
@@ -13,13 +14,18 @@ module.exports.TraceHandler = class {
         this.path = path;
         this.traceListener = FunctionalInterface.create("onTrace", traceListener);
 
+        this.reactor = new Reactor();
+        this.reactor.registerEvent('trace');
+
     }
 
     set(target, property, value, receiver) {
+        this.reactor.dispatchEvent('trace', {path: this.path, type: MutationType.SET, target, property, value});
         return this.traceListener.onTrace(this.path, MutationType.SET, target, property, value);
     }
 
     deleteProperty(target, property) {
+        this.reactor.dispatchEvent('trace', {path: this.path, type: MutationType.DELETE, target, property, value});
         return this.traceListener.onTrace(this.path, MutationType.DELETE, target, property, undefined);
     }
 

@@ -15,10 +15,12 @@ describe('Paths', function() {
 
             let expected = [
                 {
+                    "parent": null,
+                    "parentKey": null,
                     "path": "/",
                     "value": {}
                 }
-            ]
+            ];
 
             assertJSON(objectPaths, expected);
 
@@ -34,6 +36,8 @@ describe('Paths', function() {
 
             let expected = [
                 {
+                    "parent": null,
+                    "parentKey": null,
                     "path": "/",
                     "value": {
                         "cat": "dog"
