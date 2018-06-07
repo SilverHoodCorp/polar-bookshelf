@@ -26,34 +26,19 @@ class ProxyBuilder {
         return new Proxy(this.target, new MutationHandler(mutationListener));
     }
 
-    /**
-     *
-     */
-    trace(traceListener, options) {
-
-        if(!options) {
-            options = {};
-        }
-
-        if(!options.path) {
-            options.path = "/";
-        }
-
-        return new Proxy(this.target, new TraceHandler(options.path, traceListener));
-
-    }
-
-    static _traceObject(path, value, traceListener) {
+    static trace(path, value, traceListener) {
 
         let traceHandler = new TraceHandler(path, traceListener);
 
-        value.addTraceListener = function (traceListener) {
-            traceHandler.addListener(traceListener);
-        };
+        Object.defineProperty(value, "addTraceListener", {
+            value: function (traceListener) {
+                traceHandler.addListener(traceListener);
+            },
+            enumerable: false,
+            writable: false
+        });
 
-        let proxy = new Proxy(value, traceHandler);
-
-        return proxy;
+        return new Proxy(value, traceHandler);
 
     }
 
@@ -65,13 +50,15 @@ class ProxyBuilder {
      */
     deepTrace(traceListener) {
 
-        let objectPaths = ObjectPaths.recurse(this.target);
+        let objectPathEntries = ObjectPaths.recurse(this.target);
 
         let root = null;
 
-        objectPaths.forEach(function (objectPathEntry) {
+        objectPathEntries.forEach(function (objectPathEntry) {
 
-            let proxy = ProxyBuilder._traceObject(objectPathEntry.path, objectPathEntry.value, traceListener);
+            console.log(`FIXME: ${objectPathEntry.path} ${objectPathEntry.key}` , typeof objectPathEntry.value);
+
+            let proxy = ProxyBuilder.trace(objectPathEntry.path, objectPathEntry.value, traceListener);
 
             // replace the object key in the parent with a new object that is
             // traced.

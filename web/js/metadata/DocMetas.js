@@ -4,6 +4,7 @@ const {DocInfo} = require("./DocInfo");
 const {PageInfo} = require("./PageInfo");
 const {PageMeta} = require("./PageMeta");
 const {PagemarkType} = require("./PagemarkType");
+const {ISODateTime} = require("./ISODateTime");
 
 module.exports.DocMetas = class {
 
@@ -43,7 +44,7 @@ module.exports.DocMetas = class {
             let pagemark = new Pagemark({
                 // TODO: this shouldn't have a hard wired date here but we don't
                 // have a dependency injector yet.
-                created: new Date(),
+                created: new ISODateTime(new Date()),
                 type: PagemarkType.SINGLE_COLUMN,
                 percentage: 100,
                 column: 0
@@ -89,7 +90,7 @@ module.exports.DocMetas = class {
             let pagemark = new Pagemark({
                 // TODO: this shouldn't have a hard wired date here but we don't
                 // have a dependency injector yet.
-                created: new Date(),
+                created: new ISODateTime(new Date()),
                 type: PagemarkType.SINGLE_COLUMN,
                 percentage: options.percentage,
                 column: 0

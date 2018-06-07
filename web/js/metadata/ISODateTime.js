@@ -4,33 +4,33 @@
  */
 module.exports.ISODateTime = class {
 
-    constructor(value) {
+    constructor(val) {
 
         /**
          * The Date object representing this time.
          */
-        this.date = null;
+        this.value = null;
 
-        if (typeof value === "string") {
-            this.date = Date.parse(value);
-        } else if(value instanceof Date) {
-            this.date = value;
+        if (typeof val === "string") {
+            this.value = val;
+        } else if(val instanceof Date) {
+            this.value = val.toISOString();
         } else {
-            throw new Error("Invalid type: " + typeof value);
+            throw new Error("Invalid type: " + typeof val);
         }
 
     }
 
     toDate() {
-        return this.date;
+        return Date.parse(this.value);
     }
 
     toJSON() {
-        return this.date.toISOString();
+        return this.value;
     }
 
     toString() {
-        return this.date.toISOString();
+        return this.value;
     }
 
 };

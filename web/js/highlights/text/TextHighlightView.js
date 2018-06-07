@@ -1,4 +1,5 @@
-
+const {forDict} = require("../../utils.js");
+const {MutationType} = require("../../proxies/MutationType");
 
 module.exports.TextHighlightView = class {
 
@@ -15,6 +16,32 @@ module.exports.TextHighlightView = class {
     }
 
     onDocumentLoaded(documentLoadedEvent) {
+
+        //console.log(JSON.stringify(documentLoadedEvent.docMeta, null, "  "));
+
+        forDict(documentLoadedEvent.docMeta.pageMetas, function (key, pageMeta) {
+
+            console.log("=============== " + key)
+            console.log(JSON.stringify(pageMeta, null, "  "));
+
+            if(!pageMeta.textHighlights) {
+                throw new Error("No textHighlights field");
+            }
+
+            // trace the SET and DELETE of new text highlights.
+            pageMeta.textHighlights.addTraceListener(function (path, mutationType, target, property, value) {
+
+                console.log("FIXME: value: ", value);
+
+                if(mutationType === MutationType.SET) {
+                    this.onTextHighlightCreated(value);
+                } else if (mutationType === MutationType.DELETE) {
+                    this.onTextHighlightDeleted(value);
+                }
+
+            }.bind(this));
+
+        }.bind(this));
 
         console.log("TextHighlightView.onDocumentLoaded");
 
@@ -33,6 +60,10 @@ module.exports.TextHighlightView = class {
     }
 
     onTextHighlightCreated(textHighlight) {
+        console.log("TextHighlightView.onTextHighlightCreated");
+    }
+
+    onTextHighlightDeleted(textHighlight) {
         console.log("TextHighlightView.onTextHighlightCreated");
     }
 

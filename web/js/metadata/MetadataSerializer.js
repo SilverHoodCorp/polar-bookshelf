@@ -19,8 +19,6 @@ module.exports.MetadataSerializer = class {
     static serialize(object, spacing) {
         //return JSON.stringify(object, MetadataSerializer.replacer, "");
 
-        // FIXME: if this is a SerializedObject, call validate() before we return it
-
         if (!spacing) {
             spacing = "";
         }
