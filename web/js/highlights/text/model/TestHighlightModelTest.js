@@ -1,13 +1,9 @@
 var assert = require('assert');
 
 const {TextHighlightModel} = require("./TestHighlightModel");
-const {TextHighlightTracer} = require("./TestHighlightTracer");
-const {TextHighlight} = require("../../../metadata/TextHighlight");
-const {DocMeta} = require("../../../metadata/DocMeta");
 const {DocMetas} = require("../../../metadata/DocMetas");
 const {TextHighlightRecords} = require("../../../metadata/TextHighlightRecords");
 const {assertJSON} = require("../../../test/Assertions");
-const {TextHighlightView} = require("../TextHighlightView");
 const {Proxies} = require("../../../proxies/Proxies");
 
 require("../../../test/TestingTime").freeze();
@@ -15,9 +11,6 @@ require("../../../test/TestingTime").freeze();
 describe('TextHighlightModel', function() {
 
     // https://stackoverflow.com/questions/8024149/is-it-possible-to-get-the-non-enumerable-inherited-property-names-of-an-object
-    //
-    // FIXME: teh bug is that : getOwnProperty returns addTraceListener..
-    // I want to hide this to maybe add it to the Object prototype...
 
     describe('Listen for new highlights', function() {
 
