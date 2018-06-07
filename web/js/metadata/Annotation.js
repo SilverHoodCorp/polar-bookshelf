@@ -30,7 +30,7 @@ module.exports.Annotation = class extends SerializedObject {
     setup() {
 
         if(!this.lastUpdated && this.created) {
-            this.lastUpdated = this.created;
+            this.lastUpdated = this.created.duplicate();
         }
 
     }

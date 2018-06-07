@@ -2,7 +2,7 @@
  *
  * Basic ISO8601 date and time format.
  */
-module.exports.ISODateTime = class {
+class ISODateTime {
 
     constructor(val) {
 
@@ -33,4 +33,13 @@ module.exports.ISODateTime = class {
         return this.value;
     }
 
-};
+    /**
+     * Create a duplicate version of this object.
+     */
+    duplicate() {
+        return new ISODateTime(this.value);
+    }
+
+}
+
+module.exports.ISODateTime = ISODateTime;

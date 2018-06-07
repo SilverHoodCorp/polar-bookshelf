@@ -5,6 +5,11 @@ const {TraceHandler} = require("./TraceHandler");
 const {MutationHandler} = require("./MutationHandler");
 const {ObjectPaths} = require("./ObjectPaths");
 
+/**
+ * A sequence identifier generator so that we can assign objects a unique value.
+ */
+var sequence = 0;
+
 class ProxyBuilder {
 
     constructor(target) {
@@ -30,13 +35,39 @@ class ProxyBuilder {
 
         let traceHandler = new TraceHandler(path, traceListener);
 
-        Object.defineProperty(value, "addTraceListener", {
-            value: function (traceListener) {
-                traceHandler.addListener(traceListener);
-            },
-            enumerable: false,
-            writable: false
-        });
+        if(!value.__traceIdentifier) {
+            Object.defineProperty(value, "__traceIdentifier", {
+                value: sequence++,
+                enumerable: false,
+                writable: false
+            });
+            }
+
+        if(!value.__traceListener) {
+
+            // keep the traceListener registers with the object so that I can
+            // verify that the object we're working with is actually being used
+            // with the same trace and not being re-traced by something else.
+
+            Object.defineProperty(value, "__traceListener", {
+                value: traceListener,
+                enumerable: false,
+                writable: false
+            });
+
+        }
+
+        if(value.__traceListener && value.__traceListener !== traceListener) {
+            throw new Error("Value being traced already by another trace listener.");
+        }
+
+        if(!value.addTraceListener) {
+            Object.defineProperty(value, "addTraceListener", {
+                value: traceHandler.addTraceListener.bind(traceHandler),
+                enumerable: false,
+                writable: false
+            });
+        }
 
         return new Proxy(value, traceHandler);
 
@@ -55,10 +86,6 @@ class ProxyBuilder {
         let root = null;
 
         objectPathEntries.forEach(function (objectPathEntry) {
-
-            console.log("FIXME: hasProperty" , objectPathEntry.value.addTraceListener);
-
-            console.log(`FIXME: ${objectPathEntry.path} ${objectPathEntry.key}` , typeof objectPathEntry.value);
 
             let proxy = ProxyBuilder.trace(objectPathEntry.path, objectPathEntry.value, traceListener);
 

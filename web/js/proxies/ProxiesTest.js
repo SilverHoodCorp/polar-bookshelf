@@ -2,6 +2,7 @@ var assert = require('assert');
 
 const {Proxies} = require("./Proxies");
 const {assertJSON} = require("../test/Assertions");
+const {Symbol} = require("../metadata/Symbol");
 
 class MyMutationListener {
 
@@ -64,37 +65,52 @@ describe('Proxies', function() {
 
         });
 
+
+    });
+
+    describe('deepTrace', function() {
+
         it("test with object.Freeze", function () {
 
-            let myDict = Object.freeze({
-                animal: "cat",
-                types: {
-                    SINGLE_COLUMN: "SINGLE_COLUMN",
-                    DOUBLE_COLUMN: "DOUBLE_COLUMN"
-                },
+            let TYPE = Object.freeze({
+                MAMMAL: new Symbol("MAMMAL"),
+                MARSUPIAL: new Symbol("MARSUPIAL")
             });
 
-            let myMutationListener = new MyMutationListener();
+            let myDict = {
+                cat: {
+                    type: TYPE.MAMMAL
+                },
+                dog: {
+                    type: TYPE.MAMMAL
+                },
+            };
 
-            myDict = Proxies.create(myDict).forMutations(myMutationListener);
+            let mutations = [];
+
+            myDict = Proxies.create(myDict).deepTrace(function (path, mutationType, target, property, value) {
+                mutations.push({path, mutationType, target, property, value});
+            });
 
             delete myDict.foo;
 
             let expected = [
                 {
+                    "path": "/",
                     "mutationType": "DELETE",
                     "target": {
-                        "animal": "cat",
-                        "types": {
-                            "SINGLE_COLUMN": "SINGLE_COLUMN",
-                            "DOUBLE_COLUMN": "DOUBLE_COLUMN"
+                        "cat": {
+                            "type": "MAMMAL"
+                        },
+                        "dog": {
+                            "type": "MAMMAL"
                         }
                     },
                     "property": "foo"
                 }
             ];
 
-            assertJSON(myMutationListener.mutations, expected);
+            assertJSON(mutations, expected);
 
         });
 

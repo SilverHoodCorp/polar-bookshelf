@@ -23,7 +23,7 @@ module.exports.TraceHandler = class {
     /**
      * Add a listener for a specific object.
      */
-    addListener(traceListener) {
+    addTraceListener(traceListener) {
         this.reactor.addEventListener('onTrace', traceListener);
     }
 
@@ -33,7 +33,7 @@ module.exports.TraceHandler = class {
     }
 
     deleteProperty(target, property) {
-        this.reactor.dispatchEvent('onTrace', {path: this.path, type: MutationType.DELETE, target, property, value});
+        this.reactor.dispatchEvent('onTrace', {path: this.path, type: MutationType.DELETE, target, property, undefined});
         return this.traceListener.onTrace(this.path, MutationType.DELETE, target, property, undefined);
     }
 
