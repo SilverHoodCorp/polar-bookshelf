@@ -61,7 +61,6 @@ class TextHighlightView {
 
         }
 
-
     }
 
     static render(pageElement, highlightRect) {
