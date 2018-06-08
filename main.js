@@ -16,16 +16,16 @@ const {DiskDatastore} = require("./web/js/datastore/DiskDatastore")
 const webserver = require("./node/webserver");
 
 let mainWindow, splashwindow;
-var contextMenu = null;
-var filepath = null;
-var quitapp, URL;
+let contextMenu = null;
+let filepath = null;
+let quitapp, URL;
 
 // share the disk datastore with the remote.
 global.diskDatastore = new DiskDatastore();
 
 function sleep(millis) {
-    var date = new Date();
-    var curDate = null;
+    let date = new Date();
+    let curDate = null;
     do { curDate = new Date(); }
     while (curDate - date < millis);
 }
@@ -68,10 +68,11 @@ webserverDaemon.start();
 //const DEFAULT_URL = `http://localhost:${WEBSERVER_PORT}/default.html`;
 const DEFAULT_URL = 'file://' + __dirname + '/default.html';
 
-let enableConsoleLogging = process.argv.includes("--enable-console-logging");
+let enableConsoleLogging = false;
 
-if(enableConsoleLogging) {
+if (process.argv.includes("--enable-console-logging")) {
     console.log("Console logging enabled.");
+    enableConsoleLogging = true;
 }
 
 if (process.argv.includes("--enable-remote-debugging")) {
@@ -109,20 +110,7 @@ const template = [{
                                 if (path.constructor === Array)
                                     path = path[0];
 
-                                // FIXME: cmaps are disabled when loading from file URLs so I need to look into this problem...
-                                mainWindow.loadURL('file://' + __dirname + '/pdfviewer/web/viewer.html?file=' + encodeURIComponent(path), options);
-                                //mainWindow.loadURL(`http://localhost:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=` + encodeURIComponent(path), options);
-
-                                if(enableConsoleLogging) {
-                                    mainWindow.webContents.on("console-message", consoleListener);
-                                }
-
-                                mainWindow.webContents.on('did-finish-load', function() {
-                                    console.log("Finished loading. Now injecting customizations.");
-                                    //injectCustomizations(mainWindow.webContents);
-                                    console.log("Toggling dev tools...");
-                                    mainWindow.toggleDevTools();
-                                });
+                                loadPDF(path);
 
                             }
                         });
@@ -263,6 +251,30 @@ app.on('activate', function() {
     // dock icon is clicked and there are no other windows open.
     if (mainWindow === null) { createWindow(); }
 });
+
+/**
+ * Load a PDF file when given a full URL.  May be file, http, or https URL.
+ *
+ * @param url
+ */
+function loadPDF(path) {
+
+    // FIXME: cmaps are disabled when loading from file URLs so I need to look into this problem...
+    mainWindow.loadURL('file://' + __dirname + '/pdfviewer/web/viewer.html?file=' + encodeURIComponent(path), options);
+    //mainWindow.loadURL(`http://localhost:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=` + encodeURIComponent(path), options);
+
+    if(enableConsoleLogging) {
+        mainWindow.webContents.on("console-message", consoleListener);
+    }
+
+    mainWindow.webContents.on('did-finish-load', function() {
+        console.log("Finished loading. Now injecting customizations.");
+        //injectCustomizations(mainWindow.webContents);
+        console.log("Toggling dev tools...");
+        mainWindow.toggleDevTools();
+    });
+
+}
 
 /**
  * Listen to messages generated in the console so that we can log them to the
