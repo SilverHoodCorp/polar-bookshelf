@@ -1,5 +1,6 @@
 const $ = require('jquery');
 const {Optional} = require("./Optional");
+const {Preconditions} = require("./Preconditions");
 
 module.exports.injectScript = function(src,type) {
 
@@ -58,13 +59,8 @@ module.exports.Delegator = class {
 
 module.exports.forDict = function(dict, callback) {
 
-    if(!dict) {
-        throw new Error("dict required");
-    }
-
-    if(!callback) {
-        throw new Error("callback required");
-    }
+    Preconditions.assertNotNull(dict, "dict");
+    Preconditions.assertNotNull(callback, "callback");
 
     Object.keys(dict).forEach(function (key) {
         let value = dict[key];

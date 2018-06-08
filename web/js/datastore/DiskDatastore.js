@@ -81,8 +81,6 @@ module.exports.DiskDatastore = class extends Datastore {
 
         Preconditions.assertTypeof(data, "data", "string");
 
-        console.log("FIXME: got raw JSON data: ", data);
-
         console.log("Performing sync of content into disk datastore.");
 
         let docDir = this.dataDir + "/" + fingerprint;

@@ -2,6 +2,8 @@ var assert = require('assert');
 
 const {DocMeta} = require("./DocMeta");
 const {DocMetas} = require("./DocMetas");
+const {PageMeta} = require("./PageMeta");
+
 const {MetadataSerializer} = require("./MetadataSerializer");
 const {assertJSON} = require("../test/Assertions");
 
@@ -18,12 +20,26 @@ describe('DocMetas', function() {
 
             let json = MetadataSerializer.serialize(docMeta, "  ");
 
-            let expected = MetadataSerializer.deserialize(new DocMeta(), json);
+            let actual = MetadataSerializer.deserialize(new DocMeta(), json);
 
-            assertJSON(docMeta, expected);
+            assertJSON(docMeta, actual);
+
+            assert.equal(actual.pageMetas[1] instanceof PageMeta, true);
+
 
         });
 
+        it("Test with default values for serialized data", function () {
+
+            let json = "{}";
+
+            let actual = MetadataSerializer.deserialize(new PageMeta(), json);
+
+            assert.equal(actual instanceof PageMeta, true);
+
+            //assertJSON(actual, expected);
+
+        });
 
     });
 

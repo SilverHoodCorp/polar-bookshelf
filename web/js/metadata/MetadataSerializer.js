@@ -1,15 +1,34 @@
 const {ISODateTime} = require("./ISODateTime");
+const {SerializedObject} = require("./SerializedObject");
 
 
 /**
  * All JSON must go through the metadata serializer so we can handle proper
  * serialization but also object validation once they are deserialized.
  */
-module.exports.MetadataSerializer = class {
+class MetadataSerializer {
 
     static replacer(key, value) {
-        if(value instanceof ISODateTime) {
-            return value.toJSON();
+
+        console.log("FIXME4: here");
+
+        if(value instanceof SerializedObject) {
+            value.setup();
+            value.validate();
+        }
+
+        return value;
+
+    }
+
+    static reviver(key, value) {
+
+        console.log(`FIXME1: here ${key} ${value}`);
+
+        if(value instanceof SerializedObject) {
+            console.log("FIXME21: here");
+            value.setup();
+            value.validate();
         }
 
         return value;
@@ -38,9 +57,12 @@ module.exports.MetadataSerializer = class {
             throw new Error("No data given!")
         }
 
-        let parsed = JSON.parse(data);
+        let parsed = JSON.parse(data, MetadataSerializer.reviver);
         Object.assign(obj, parsed);
         return obj;
+
     }
 
 };
+
+module.exports.MetadataSerializer = MetadataSerializer;

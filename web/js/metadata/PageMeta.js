@@ -38,12 +38,37 @@ module.exports.PageMeta = class extends SerializedObject {
 
     }
 
+    setup() {
+
+        super.setup();
+
+        if (!this.pagemarks) {
+            // this could happen when serializing from old file formats
+            this.pagemarks = {};
+        }
+
+        if (!this.textHighlights) {
+            // this could happen when serializing from old file formats
+            this.textHighlights = {};
+        }
+
+        if (!this.areaHighlights) {
+            // this could happen when serializing from old file formats
+            this.areaHighlights = {};
+        }
+
+    }
+
     validate() {
+
         super.validate();
+
+        console.log("FIXME");
 
         this.validateMembers([
             {name: 'pageInfo', instance: PageInfo}
         ]);
+
     }
 
 }

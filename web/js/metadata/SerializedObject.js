@@ -18,11 +18,9 @@ module.exports.SerializedObject = class {
         }
 
         if(typeof val === "object") {
-
             Object.assign(this, val);
             this.setup();
             this.validate();
-
         }
 
     }
@@ -35,6 +33,7 @@ module.exports.SerializedObject = class {
 
     }
 
+    // FIXME: migrate to Preconditions I think or use ajv.
     validateMemberExists(name) {
 
         if(!this[name]) {
@@ -49,7 +48,7 @@ module.exports.SerializedObject = class {
      * These are instance types compared via instanceof
      *
      * @param name The name of the member.
-     * @param instanceType The instance type we expect
+     * @param instance The instance type we expect
      */
     validateMemberInstanceOf(name, instance) {
 
@@ -66,7 +65,7 @@ module.exports.SerializedObject = class {
      * The types in this case are primitive types compared with typeof
      *
      * @param name The name of the member.
-     * @param instanceType The instance type we expect
+     * @param type The instance type we expect
      */
     validateMemberTypeOf(name, type) {
 
@@ -85,15 +84,11 @@ module.exports.SerializedObject = class {
         } else if(member.type) {
             this.validateMemberTypeOf(member.name, member.type);
         } else {
-            throw new Error("Unable to handle member: ", member);
+            throw new Error("Unable to handle member: " + member);
         }
     }
 
     validateMembers(members) {
-
-        // TODO: needs testing.
-
-        var caller = this;
 
         members.forEach(this.validateMember.bind(this));
 

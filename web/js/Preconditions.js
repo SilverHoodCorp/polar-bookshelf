@@ -2,8 +2,12 @@ module.exports.Preconditions = class {
 
     static assertNotNull(value, name) {
 
-        if (!value) {
-            throw new Error(`Precondition (argument) for '${name}' false or undefined.`)
+        if (value === null) {
+            throw new Error(`Precondition (argument) for '${name}' null.`)
+        }
+
+        if (value === undefined) {
+            throw new Error(`Precondition (argument) for '${name}' undefined.`)
         }
 
         return value;
