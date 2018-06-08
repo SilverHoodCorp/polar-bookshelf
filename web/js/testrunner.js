@@ -2,7 +2,7 @@
 var chai = require("chai");
 var chaiDiff = require("chai-diff");
 
-const {TextHighlightRows} = require("./highlights/text/TextHighlightRows.js");
+const {TextHighlightRows} = require("./highlights/text/controller/TextHighlightRows.js");
 
 const {View} = require("./view/View");
 const {WebView} = require("./view/WebView");

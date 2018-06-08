@@ -1,7 +1,6 @@
 const $ = require('jquery');
 
-const TextHighlightControllers = require("../highlights/text/TextHighlightControllers").TextHighlightControllers;
-
+const {TextHighlightController} = require("../highlights/text/controller/TextHighlightController");
 const {PagemarkCoverageEventListener} = require("../PagemarkCoverageEventListener.js");
 const {KeyEvents} = require("../KeyEvents.js");
 const {Preconditions} = require("../Preconditions.js");
@@ -76,8 +75,8 @@ module.exports.WebController = class extends Controller {
     }
 
     traceEventOnPage(event, eventName) {
-        var pageElement = event.target.parentElement;
-        var pageNum = this.getPageNum(pageElement);
+        let pageElement = event.target.parentElement;
+        let pageNum = this.getPageNum(pageElement);
 
         console.log(`Found event ${eventName} on page number ${pageNum}`);
 
@@ -97,10 +96,10 @@ module.exports.WebController = class extends Controller {
             let newDocumentFingerprint = window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
             let nrPages = window.PDFViewerApplication.pagesCount;
 
-            var pages = document.querySelectorAll("#viewer .page");
+            let pages = document.querySelectorAll("#viewer .page");
 
-            // fIXME:: I need to find the current selected page
-            var currentPageNumber = window.PDFViewerApplication.pdfViewer.currentPageNumber;
+            // FIXME:: I need to find the current selected page
+            let currentPageNumber = window.PDFViewerApplication.pdfViewer.currentPageNumber;
 
             if (pages.length === nrPages) {
                 this.onNewDocumentFingerprint(newDocumentFingerprint, nrPages, currentPageNumber);
@@ -246,7 +245,7 @@ module.exports.WebController = class extends Controller {
 
         console.log("Key bindings registered");
 
-        TextHighlightControllers.create().listenForKeyBindings();
+        new TextHighlightController().listenForKeyBindings();
 
         new PagemarkCoverageEventListener(this).startListening();
 

@@ -1,9 +1,8 @@
-const {TextHighlightModel} = require("./model/TestHighlightModel");
-const {forDict} = require("../../utils.js");
-const {MutationType} = require("../../proxies/MutationType");
-const {PageRedrawHandler} = require("../../PageRedrawHandler");
-const {TextHighlightRenderer} = require("./TextHighlightRenderer");
-const {PDFRenderer} = require("../../PDFRenderer");
+const {TextHighlightModel} = require("../model/TestHighlightModel");
+const {forDict} = require("../../../utils.js");
+const {PageRedrawHandler} = require("../../../PageRedrawHandler");
+const {TextHighlightRenderer} = require("../controller/TextHighlightRenderer");
+const {PDFRenderer} = require("../../../PDFRenderer");
 
 module.exports.TextHighlightView = class {
 

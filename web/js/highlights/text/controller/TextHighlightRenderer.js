@@ -1,9 +1,9 @@
-const {TextHighlightRecords} = require("../../metadata/TextHighlightRecords");
-const {PageRedrawHandler} = require("../../PageRedrawHandler");
-const {Elements} = require("../../utils");
+const {TextHighlightRecords} = require("../../../metadata/TextHighlightRecords");
+const {PageRedrawHandler} = require("../../../PageRedrawHandler");
+const {Elements} = require("../../../utils");
 const {TextHighlightRows} = require("./TextHighlightRows");
-const {PDFRenderer} = require("../../PDFRenderer");
-const {Rects} = require("../../Rects");
+const {PDFRenderer} = require("../../../PDFRenderer");
+const {Rects} = require("../../../Rects");
 
 class TextHighlightRenderer {
 

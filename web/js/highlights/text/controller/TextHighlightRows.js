@@ -1,9 +1,9 @@
-const {Elements, Styles, createSiblingTuples, elementOffset} = require("../../utils.js");
+const {Elements, Styles, createSiblingTuples, elementOffset} = require("../../../utils.js");
 const {RectElement} = require("./RectElement");
 const {TextHighlightRow} = require("./TextHighlightRow");
 const {IntermediateRow} = require("./IntermediateRow");
-const {Rects} = require("../../Rects");
-const {PDFRenderer} = require("../../PDFRenderer");
+const {Rects} = require("../../../Rects");
+const {PDFRenderer} = require("../../../PDFRenderer");
 
 /**
  * TODO:

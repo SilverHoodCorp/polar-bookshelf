@@ -20,6 +20,8 @@ module.exports.Annotation = class extends SerializedObject {
          */
         this.lastUpdated = null;
 
+        // FIXME: add support for notes, comments,
+
         // TODO: add tags for annotations. This might be overkill but it might
         // be a good way to manage some of these types.
 

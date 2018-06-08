@@ -1,16 +1,37 @@
-const {TextHighlightController} = require("./TextHighlightController");
 const {TextHighlightRenderer} = require("./TextHighlightRenderer");
+const {TextHighlighterFactory} = require("./TextHighlighterFactory");
 
-require("../../../../lib/TextHighlighter.js");
+// FIXME: make a view and controller package so that each class its roles isolated
 
-const TextHighlighter = global.TextHighlighter;
+class TextHighlightController {
 
-module.exports.TextHighlightControllers = class {
+    constructor() {
+        this.textHighlighter = TextHighlightController.createTextHighlighter();
+    }
 
-    static create() {
+    keyBindingListener(event) {
 
-        return new TextHighlightController(this.createTextHighlighter());
+        if (event.ctrlKey && event.altKey) {
 
+            const tCode = 84;
+
+            switch (event.which) {
+
+                case tCode:
+                    this.textHighlighter.doHighlight();
+                    break;
+
+                default:
+                    break;
+
+            }
+
+        }
+
+    }
+
+    listenForKeyBindings() {
+        document.addEventListener("keyup", this.keyBindingListener.bind(this));
     }
 
     /**
@@ -42,6 +63,11 @@ module.exports.TextHighlightControllers = class {
                     highlightElement.className = highlightElement.className + " " + highlightClazz;
                 });
 
+                // FIXME: this should NOT call a renderer but should instead
+                // just create TextHighlight annotation and write to the model.
+                //
+                // then the model should just update the view.
+
                 TextHighlightRenderer.create("." + highlightClazz);
 
             },
@@ -52,8 +78,11 @@ module.exports.TextHighlightControllers = class {
 
         };
 
-        return new TextHighlighter(document.body, textHighlighterOptions);
+        TextHighlighterFactory.newInstance(document.body, textHighlighterOptions);
 
     }
 
-};
+
+}
+
+module.exports.TextHighlightController = TextHighlightController;
