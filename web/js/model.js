@@ -7,6 +7,7 @@ const {DocMetas} = require("./metadata/DocMetas");
 const {DocMetaDescriber} = require("./metadata/DocMetaDescriber");
 const {Reactor} = require("./reactor/Reactor");
 const {Event} = require("./reactor/Event");
+const {forDict} = require("./utils");
 
 module.exports.Model = class {
 
@@ -23,7 +24,6 @@ module.exports.Model = class {
         // The currently loaded document.
         this.docMetaPromise = null;
 
-        // FIXME: this.docMeta should go away in favor of docMetaPromise
         this.docMeta = null;
 
     }
@@ -101,10 +101,13 @@ module.exports.Model = class {
 
         // FIXME: determine the type and the column
 
-        // FIXME: just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by default.
-
         let pagemark = new Pagemark({
             created: this.clock.getDate(),
+
+            // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
+            // default for now until we add multiple column types and handle
+            // them properly.
+
             type: PagemarkType.SINGLE_COLUMN,
             percentage: options.percentage,
             column: 0
@@ -120,13 +123,6 @@ module.exports.Model = class {
         // TODO: this can be done with a mutation listener in the future
         this.reactor.dispatchEvent('createPagemark', {pageNum, pagemark});
 
-        //console.log("Performing sync of content into disk persistenceLayer.");
-        console.log("FIXME: DocMeta NOW described as: " + DocMetaDescriber.describe(this.docMeta));
-
-        // TODO: consider only marking the page read once the persistenceLayer has
-        // been written or some sort of UI update that the data is persisted.
-        //this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, docMeta);
-
     }
 
     erasePagemark(pageNum) {
@@ -139,17 +135,8 @@ module.exports.Model = class {
 
         pageMeta.pagemarks = {};
 
-        console.log("FIXME pageMeta is now: ", this.docMeta.getPageMeta(pageNum));
-
         // FIXME: this can be done with a mutation listener...
         this.reactor.dispatchEvent('erasePagemark', {pageNum});
-
-        //console.log("Performing sync of content into disk persistenceLayer.");
-        console.log("FIXME: DocMeta NOW described as: " + DocMetaDescriber.describe(this.docMeta));
-
-        // TODO: consider only marking the page read once the persistenceLayer has
-        // been written or some sort of UI update that the data is persisted.
-        //this.persistenceLayer.sync(this.docMeta.docInfo.fingerprint, this.docMeta);
 
     }
 

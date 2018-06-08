@@ -37,10 +37,11 @@ describe('ProxyBuilder', function() {
                     "path": "/",
                     "mutationType": "SET",
                     "target": {
-                        "foo": "bar"
+                        "foo": "frog"
                     },
                     "property": "foo",
-                    "value": "frog"
+                    "value": "frog",
+                    "previousValue": "bar"
                 }
             ];
 
@@ -68,10 +69,11 @@ describe('ProxyBuilder', function() {
                     "path": "/cat",
                     "mutationType": "SET",
                     "target": {
-                        "name": "leo"
+                        "name": "monster"
                     },
                     "property": "name",
-                    "value": "monster"
+                    "value": "monster",
+                    "previousValue": "leo"
                 }
             ];
 
@@ -100,22 +102,24 @@ describe('ProxyBuilder', function() {
                     "path": "/",
                     "mutationType": "SET",
                     "target": {
-                        "foo": "bar",
+                        "foo": "cat",
                         "cat": {
                             "name": "leo"
                         }
                     },
                     "property": "foo",
-                    "value": "cat"
+                    "value": "cat",
+                    "previousValue": "bar"
                 },
                 {
                     "path": "/cat",
                     "mutationType": "SET",
                     "target": {
-                        "name": "leo"
+                        "name": "monster"
                     },
                     "property": "name",
-                    "value": "monster"
+                    "value": "monster",
+                    "previousValue": "leo"
                 }
             ];
 
@@ -140,10 +144,11 @@ describe('ProxyBuilder', function() {
                     "path": "/",
                     "mutationType": "SET",
                     "target": {
-                        "foo": "bar"
+                        "foo": "frog"
                     },
                     "property": "foo",
-                    "value": "frog"
+                    "value": "frog",
+                    "previousValue": "bar"
                 }
             ];
 
@@ -177,10 +182,11 @@ describe('ProxyBuilder', function() {
                     "path": "/pages/1",
                     "mutationType": "SET",
                     "target": {
-                        "marked": true
+                        "marked": false
                     },
                     "property": "marked",
-                    "value": false
+                    "value": false,
+                    "previousValue": true
                 }
             ];
 
@@ -220,7 +226,8 @@ describe('ProxyBuilder', function() {
                     "path": "/",
                     "mutationType": "SET",
                     "target": {
-                        "cat": "dog"
+                        "cat": "dog",
+                        "asdf": "bar"
                     },
                     "property": "asdf",
                     "value": "bar"
@@ -282,15 +289,11 @@ describe('ProxyBuilder', function() {
                 {
                     "path": "/",
                     "mutationType": "DELETE",
-                    "target": {
-                        "cat": "dog"
-                    },
+                    "target": {},
                     "property": "cat",
-                    "value": undefined
+                    "previousValue": "dog"
                 }
             ];
-
-            console.log(mutations[0])
 
             assert.equal( mutations[0].value === undefined, true);
             assert.equal( "value" in mutations[0], true);

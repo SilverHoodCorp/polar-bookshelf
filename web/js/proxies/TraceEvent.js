@@ -10,15 +10,16 @@ module.exports.TraceEvent = class  {
      * @param target The object being mutated.
      * @param property The name of the field in the object.
      * @param value The new value of the field or undefined if it's a delete operation.
+     * @param previousValue The previous value of the field before the operation.
      * @return True if the mutation should continue.
      */
-    constructor(path, mutationType, target, property, value) {
+    constructor(path, mutationType, target, property, value, previousValue) {
         this.path = path;
         this.mutationType = mutationType;
         this.target = target;
         this.property = property;
         this.value = value;
-
+        this.previousValue = previousValue;
     }
 
 };

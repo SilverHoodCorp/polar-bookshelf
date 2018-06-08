@@ -8,6 +8,13 @@
 
 # Release
 
+- the pagemarks need to come back from reload by using
+
+- I need a way to get end to end testing done so that I'm not constantly
+  tripping over the same bugs.  For example, opening up existing files from disk,
+  closing them, making sure the content is persisted and comes back after reload,
+  etc.
+
 - file associations working for *.pdf with elecron-builder
 
 - screenshot and video of the app

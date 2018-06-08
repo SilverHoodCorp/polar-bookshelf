@@ -14,7 +14,9 @@ module.exports.assertJSON = function(actual,expected) {
     expected = toJSON(expected);
 
     if ( actual !== expected) {
+        console.log("BEGIN ACTUAL ==========");
         console.log(actual);
+        console.log("END ACTUAL   ==========");
     }
 
     expect(actual).not.differentFrom(expected);
