@@ -11,8 +11,6 @@ const {Launcher} = require("./Launcher");
 
 async function persistenceLayerFactory() {
 
-    console.log("Launching in dev mode.");
-
     let datastore = new MemoryDatastore();
     let persistenceLayer = new PersistenceLayer(datastore);
 

@@ -1,31 +1,19 @@
-const {WebController} = require("../controller/WebController.js");
-const {WebView} = require("../view/WebView.js");
 
-const {SystemClock} = require("../time/SystemClock.js");
 const {PersistenceLayer} = require("../datastore/PersistenceLayer.js");
-const {Model} = require("../model.js");
 const {Launcher} = require("./Launcher");
 
-async function launchProd(launcher) {
+async function persistenceLayerFactory() {
 
-    console.log("Launching in prod mode.");
     const remote = require('electron').remote;
 
     console.log("Accessing datastore...");
     let datastore = remote.getGlobal("diskDatastore" );
     console.log("Accessing datastore...done");
 
-    let persistenceLayer = new PersistenceLayer(datastore);
-    let clock = new SystemClock();
-    let model = new Model(persistenceLayer, clock);
-    let controller = new WebController(model);
-    let view = new WebView(model);
-    view.init();
-
-    console.log("Starting ...");
-
-    await launcher.start(persistenceLayer, controller, "prod");
+    return new PersistenceLayer(datastore);
 
 }
 
-new Launcher(launchProd).launch();
+new Launcher(persistenceLayerFactory).launch().then(function () {
+    console.log("App now loaded.");
+});
