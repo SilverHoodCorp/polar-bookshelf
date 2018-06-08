@@ -233,11 +233,13 @@ app.on('ready', function() {
         { type: 'separator' },
         { label: 'Exit', type: 'radio', role: 'close' },
     ]);
+
     //for OS-X
-    if (app.dock) {
-        app.dock.setIcon(app_icon);
-        app.dock.setMenu(contextMenu);
-    }
+    //if (app.dock) {
+    //    app.dock.setIcon(app_icon);
+    //    app.dock.setMenu(contextMenu);
+    //}
+
     Menu.setApplicationMenu(menu);
     const appIcon = new Tray(app_icon);
     appIcon.setToolTip('Polar Bookshelf');
