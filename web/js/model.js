@@ -133,6 +133,8 @@ module.exports.Model = class {
 
         let pageMeta = this.docMeta.getPageMeta(pageNum);
 
+        // FIXME: this is actually wrong because I need to delete the RIGHT
+        // pagemark. NOT just delete all of them.
         pageMeta.pagemarks = {};
 
         // FIXME: this can be done with a mutation listener...

@@ -228,10 +228,6 @@ app.on('ready', function() {
 
     // FIXME: remove the splash screen support. It just slows us down.
 
-    splashwindow = new BrowserWindow({ width: 600, height: 400, center: true, resizable: false, movable: false, alwaysOnTop: true, skipTaskbar: true, frame: false });
-    splashwindow.loadURL('file://' + __dirname + '/splash.html');
-
-    //splashwindow.loadURL(`http://localhost:${WEBSERVER_PORT}/splash.html`);
     contextMenu = Menu.buildFromTemplate([
         { label: 'Minimize', type: 'radio', role: 'minimize' },
         { type: 'separator' },
@@ -244,7 +240,7 @@ app.on('ready', function() {
     }
     Menu.setApplicationMenu(menu);
     const appIcon = new Tray(app_icon);
-    appIcon.setToolTip('PDF Viewer');
+    appIcon.setToolTip('Polar Bookshelf');
     appIcon.setContextMenu(contextMenu);
 
     createWindow();
@@ -280,7 +276,6 @@ function loadPDF(path) {
 
     mainWindow.webContents.on('did-finish-load', function() {
         console.log("Finished loading. Now injecting customizations.");
-        //injectCustomizations(mainWindow.webContents);
         console.log("Toggling dev tools...");
         mainWindow.toggleDevTools();
     });
@@ -306,24 +301,6 @@ function loadPDF(path) {
 function consoleListener(event, level, message, line, sourceId) {
 
     console.log(`level=${level} ${sourceId}:${line}: ${message}`);
-
-}
-
-function injectScript(webContents, src) {
-    webContents.executeJavaScript(`var script = document.createElement('script'); script.setAttribute('src', '${src}'); document.head.appendChild(script);`)
-}
-
-/**
- * Inject our customization around PDFs including custom CSS and custom scripts.
- */
-function injectCustomizations(webContents) {
-
-    // inject our customizations manually so that we can just depend on the
-    // stock pdf.js viewer.html application.
-
-    // for now, inject one script, which in the browser context, injects
-    // the rest of the scripts.
-    injectScript(webContents, '/web/js/inject.js');
 
 }
 
@@ -364,8 +341,6 @@ function createWindow() {
     }
 
     mainWindow.once('ready-to-show', () => {
-        splashwindow.close();
-        splashwindow = null;
         mainWindow.maximize();
         mainWindow.show();
     });

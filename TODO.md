@@ -8,6 +8,8 @@
 
 # Release
 
+- pagemarks don't seem to always persist on disk..
+
 - make sure the most recent state of the pagemarks are written to disk
 
 - I need a way to get end to end testing done so that I'm not constantly
