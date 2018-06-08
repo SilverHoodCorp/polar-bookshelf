@@ -38,20 +38,25 @@ class ProxyBuilder {
         }
 
         if(Object.isFrozen(value)) {
-            // right now we do not handle frozen objects but might have to
-            // in the future for the initial value.
+            // Do not handle frozen objects but might have to in the future for
+            // the initial value.
             return value;
         }
 
         let traceHandler = new TraceHandler(path, traceListener, value);
 
         if(!value.__traceIdentifier) {
+
+            // the __traceIdentifier is a unique key for the object which we use
+            // to identify which one is being traced.  This way we essentially
+            // have a pointer we can use to work with the object directly.
+
             Object.defineProperty(value, "__traceIdentifier", {
                 value: sequence++,
                 enumerable: false,
                 writable: false
             });
-            }
+        }
 
         if(!value.__traceListener) {
 

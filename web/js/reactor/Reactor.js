@@ -7,6 +7,9 @@ module.exports.Reactor = class {
     }
 
     registerEvent(eventName){
+        if(!eventName) {
+            throw new Error("No eventName");
+        }
         let event = new Event(eventName);
         this.events[eventName] = event;
     }
@@ -23,6 +26,10 @@ module.exports.Reactor = class {
         }
 
         this.events[eventName].registerCallback(callback);
+    }
+
+    getEventListeners(eventName){
+        this.events[eventName].getCallbacks();
     }
 
 };

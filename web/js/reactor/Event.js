@@ -14,4 +14,8 @@ module.exports.Event = class {
         this.callbacks.push(callback);
     }
 
+    getCallbacks() {
+        return this.callbacks;
+    }
+
 };

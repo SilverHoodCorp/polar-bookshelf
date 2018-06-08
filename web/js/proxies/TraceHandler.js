@@ -5,6 +5,8 @@ const {MutationType} = require("./MutationType");
 const {FunctionalInterface} = require("../util/FunctionalInterface");
 const {Reactor} = require("../reactor/Reactor");
 
+const EVENT_NAME = "onMutation";
+
 module.exports.TraceHandler = class {
 
     /**
@@ -21,9 +23,9 @@ module.exports.TraceHandler = class {
         this.target = target;
 
         this.reactor = new Reactor();
-        this.reactor.registerEvent('onMutation');
+        this.reactor.registerEvent(EVENT_NAME);
 
-        traceListener = FunctionalInterface.create("onMutation", traceListener);
+        traceListener = FunctionalInterface.create(EVENT_NAME, traceListener);
         this.addTraceListener(function(traceEvent) {
             traceListener.onMutation(traceEvent);
         });
@@ -37,8 +39,12 @@ module.exports.TraceHandler = class {
         // TODO: I do not think this supports adding a TraceListener object
         // and I think we will have to clean up our support for functional
         // interfaces here.  We're not using them consistently.
-        this.reactor.addEventListener('onMutation', traceListener);
+        this.reactor.addEventListener(EVENT_NAME, traceListener);
         return new TraceListenerExecutor(traceListener, this);
+    }
+
+    getTraceListeners() {
+        return this.reactor.getEventListeners()
     }
 
     set(target, property, value, receiver) {
@@ -46,7 +52,7 @@ module.exports.TraceHandler = class {
         let previousValue = target[property];
 
         let result = Reflect.set(...arguments);
-        this.reactor.dispatchEvent('onMutation', new TraceEvent(this.path, MutationType.SET, target, property, value, previousValue));
+        this.reactor.dispatchEvent(EVENT_NAME, new TraceEvent(this.path, MutationType.SET, target, property, value, previousValue));
         return result;
     }
 
@@ -54,7 +60,7 @@ module.exports.TraceHandler = class {
         let previousValue = target[property];
 
         let result = Reflect.deleteProperty(...arguments);
-        this.reactor.dispatchEvent('onMutation', new TraceEvent(this.path, MutationType.DELETE, target, property, undefined, previousValue));
+        this.reactor.dispatchEvent(EVENT_NAME, new TraceEvent(this.path, MutationType.DELETE, target, property, undefined, previousValue));
         return result;
     }
 

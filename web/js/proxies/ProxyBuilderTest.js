@@ -20,7 +20,46 @@ class MyTraceListener {
 
 describe('ProxyBuilder', function() {
 
-    describe('tracing', function() {
+    describe('deepTrace', function() {
+
+        // if we have a shared object reference, make sure we receive two events
+        // for it, one at each path.
+        it("shared object reference", function () {
+
+            let address = {
+                street: "101 Fake Street",
+                city: "San Francisco",
+                state: "California"
+            };
+
+            let myDict = {
+                alice: {
+                    address
+                },
+                bob: {
+                    address
+                }
+            };
+
+            let myTraceListener = new MyTraceListener();
+
+            myDict = Proxies.create(myDict).deepTrace(myTraceListener);
+
+            myDict.alice.address.city = "Oakland";
+
+            assert.equal(myDict.alice.address.city, "Oakland");
+            assert.equal(myDict.bob.address.city, "Oakland");
+
+            // FIXME: this is broken.. we change the value in two places but only
+            // fire one event listener.
+
+            let expected = [
+
+            ];
+
+            assertJSON(myTraceListener.mutations, expected);
+
+        });
 
         it("deep tracing", function () {
 
