@@ -9,4 +9,4 @@ module.exports.TextHighlightRow = class  {
         this.rectElements = rectElements;
     }
 
-}
+};

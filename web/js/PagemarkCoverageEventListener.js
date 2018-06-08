@@ -10,6 +10,12 @@ module.exports.PagemarkCoverageEventListener = class {
         this.keyActivated = false;
     }
 
+    start() {
+        document.addEventListener("keyup", this.keyListener.bind(this));
+        document.addEventListener("keydown", this.keyListener.bind(this));
+        document.addEventListener("click", this.mouseListener.bind(this));
+    }
+
     /**
      * Track that we've selected 'e' on the keyboard,
      */
@@ -26,7 +32,6 @@ module.exports.PagemarkCoverageEventListener = class {
             console.log("FIXME: active now");
             this.keyActivated = true;
         } else {
-
             console.log("FIXME: INactive now");
             this.keyActivated = false;
         }
@@ -97,12 +102,6 @@ module.exports.PagemarkCoverageEventListener = class {
             console.log("Mouse click was outside of page.")
         }
 
-    }
-
-    startListening() {
-        document.addEventListener("keyup", this.keyListener.bind(this));
-        document.addEventListener("keydown", this.keyListener.bind(this));
-        document.addEventListener("click", this.mouseListener.bind(this));
     }
 
 };

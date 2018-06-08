@@ -1,3 +1,4 @@
+const $ = require('jquery');
 const {Optional} = require("./Optional");
 
 module.exports.injectScript = function(src,type) {
@@ -266,12 +267,12 @@ module.exports.OffsetCalculator = class {
 
             // FIXME: log the full offsets of EACH element...
 
-            offset.left += this._toInt(element.offsetLeft)
-            offset.top += this._toInt(element.offsetTop)
+            offset.left += this._toInt(element.offsetLeft);
+            offset.top += this._toInt(element.offsetTop);
             // offset.width += OffsetCalculator._toInt(element.offsetWidth)
             // offset.height += OffsetCalculator._toInt(element.offsetHeight)
-            offset.width = this._toInt(element.offsetWidth)
-            offset.height = this._toInt(element.offsetHeight)
+            offset.width = this._toInt(element.offsetWidth);
+            offset.height = this._toInt(element.offsetHeight);
 
             if(element === rootElement)
                 break;

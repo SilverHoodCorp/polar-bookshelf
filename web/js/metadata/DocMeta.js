@@ -3,6 +3,7 @@ const {DocInfo} = require("./DocInfo");
 const {PageMeta} = require("./PageMeta");
 const {PageInfo} = require("./PageInfo");
 const {SerializedObject} = require("./SerializedObject.js");
+const {Preconditions} = require("../Preconditions.js");
 
 /**
  * Root metadata for a document including page metadata, and metadata for
@@ -37,6 +38,8 @@ module.exports.DocMeta = class extends SerializedObject {
     }
 
     getPageMeta(num) {
+
+        num = Preconditions.assertNotNull(num, "num");
 
         let pageMeta = this.pageMetas[num];
 

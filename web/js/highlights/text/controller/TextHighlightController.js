@@ -1,12 +1,24 @@
+const {TextHighlightRecords} = require("../../../metadata/TextHighlightRecords");
 const {TextHighlightRenderer} = require("./TextHighlightRenderer");
 const {TextHighlighterFactory} = require("./TextHighlighterFactory");
-
-// FIXME: make a view and controller package so that each class its roles isolated
+const {TextHighlightRows} = require("./TextHighlightRows");
+const {PDFRenderer} = require("../../../PDFRenderer");
+const {Preconditions} = require("../../../Preconditions");
 
 class TextHighlightController {
 
-    constructor() {
-        this.textHighlighter = TextHighlightController.createTextHighlighter();
+    constructor(model) {
+        this.model = Preconditions.assertNotNull(model, "model");
+        this.textHighlighter = this.createTextHighlighter();
+
+        if(!this.textHighlighter) {
+            throw new Error("No textHighlighter");
+        }
+
+    }
+
+    start() {
+        document.addEventListener("keyup", this.keyBindingListener.bind(this));
     }
 
     keyBindingListener(event) {
@@ -30,16 +42,14 @@ class TextHighlightController {
 
     }
 
-    listenForKeyBindings() {
-        document.addEventListener("keyup", this.keyBindingListener.bind(this));
-    }
-
     /**
      * Set text highlighting in the current document with the highlighter.
      */
-    static createTextHighlighter() {
+    createTextHighlighter() {
 
         let sequence = 0;
+
+        let controller = this;
 
         let textHighlighterOptions = {
 
@@ -50,7 +60,8 @@ class TextHighlightController {
             onBeforeHighlight: function (range) {
                 //console.log("onBeforeHighlight range: ", range);
                 return true;
-            },
+            }.bind(this),
+
             onAfterHighlight: function (range, highlightElements) {
                 // console.log("onAfterHighlight range: ", range);
                 // console.log("onAfterHighlight hlts: ", highlightElements);
@@ -63,14 +74,9 @@ class TextHighlightController {
                     highlightElement.className = highlightElement.className + " " + highlightClazz;
                 });
 
-                // FIXME: this should NOT call a renderer but should instead
-                // just create TextHighlight annotation and write to the model.
-                //
-                // then the model should just update the view.
+                controller.onTextHighlightCreated("." + highlightClazz)
 
-                TextHighlightRenderer.create("." + highlightClazz);
-
-            },
+            }.bind(this),
 
             onRemoveHighlight: function (hlt) {
                 // console.log("onRemoveHighlight hlt: ", hlt);
@@ -78,10 +84,38 @@ class TextHighlightController {
 
         };
 
-        TextHighlighterFactory.newInstance(document.body, textHighlighterOptions);
+        return TextHighlighterFactory.newInstance(document.body, textHighlighterOptions);
 
     }
 
+    /**
+     * Called by the controller when we have a new highlight created so that
+     * we can update the model.
+     */
+    onTextHighlightCreated(selector) {
+
+        console.log("TextHighlightController.onTextHighlightCreated");
+
+        let textHighlightRows = TextHighlightRows.createFromSelector(selector);
+
+        let rects = textHighlightRows.map(current => current.rect);
+
+        let textSelections = {}; // FIXME: do this later
+        let text = ""; // FIXME: do this later
+
+        let textHighlightRecord = TextHighlightRecords.create(rects, textSelections, text);
+
+        // now update the mode based on the current page metadata
+
+        let currentPageMeta = PDFRenderer.getCurrentPageMeta();
+
+        let pageMeta = this.model.docMeta.getPageMeta(currentPageMeta.pageNum);
+
+        pageMeta.textHighlights[textHighlightRecord.id] = textHighlightRecord.value;
+
+        console.log("Added text highlight to model");
+
+    }
 
 }
 

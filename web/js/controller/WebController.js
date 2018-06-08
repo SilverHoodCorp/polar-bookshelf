@@ -212,7 +212,8 @@ module.exports.WebController = class extends Controller {
                     break;
 
                 case mCode:
-                    // FIME this is no longer used here.
+                    // FIXME this is no longer used here and has migrated to
+                    // PagemarkCoverageEventListener
                     this.keyBindingPagemarkUpToMouse(event);
                     break;
 
@@ -245,9 +246,9 @@ module.exports.WebController = class extends Controller {
 
         console.log("Key bindings registered");
 
-        new TextHighlightController().listenForKeyBindings();
+        new TextHighlightController(this.model).start();
 
-        new PagemarkCoverageEventListener(this).startListening();
+        new PagemarkCoverageEventListener(this).start();
 
     }
 

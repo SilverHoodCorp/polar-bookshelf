@@ -1,7 +1,5 @@
 const {forDict} = require("../../../utils.js");
 
-// FIXME: this should become ModelListener
-
 module.exports.TextHighlightModel = class {
 
     registerListener(docMeta, callback) {

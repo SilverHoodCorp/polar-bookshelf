@@ -5,6 +5,8 @@ const {TextHighlightRows} = require("./TextHighlightRows");
 const {PDFRenderer} = require("../../../PDFRenderer");
 const {Rects} = require("../../../Rects");
 
+// FIXME: remove this whole class.
+
 class TextHighlightRenderer {
 
     constructor(textHighlightRows, selector) {
@@ -13,7 +15,6 @@ class TextHighlightRenderer {
     }
 
     static create(selector) {
-
 
         // FIXME: textHighlightRows has the elements that we need to get the
         // text from...
@@ -27,6 +28,7 @@ class TextHighlightRenderer {
 
         // now we just have to write this into the model I think.
 
+        // FIXME: clean this up.. remove this ..
 
 
         // let textHighlightRows = TextHighlightRows.createFromSelector(selector);

@@ -198,20 +198,3 @@ module.exports.Model = class {
     }
 
 }
-
-// TODO: move this to a util library
-
-
-// TODO: move this to a util library
-
-// TODO: move this to a util library
-
-/**
- * Given an integer, compute the first N pages..
- */
-function computeRangeBuffer(initial, offset, min, max) {
-    var start = Math.max(min, initial - offset);
-    var end = Math.min(max, initial + offset);
-    return {start, end};
-}
-

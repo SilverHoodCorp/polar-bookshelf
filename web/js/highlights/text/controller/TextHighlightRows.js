@@ -35,14 +35,9 @@ class TextHighlightRows {
             throw new Error("No elements");
         }
 
-        var rectElements = elements.map(current => this.computeOffset(current));
+        let rectElements = elements.map(current => this.computeOffset(current));
 
-        let textHighlightRows = TextHighlightRows.computeContiguousRects(rectElements);
-
-        // FIXME: now this is returning TextHighlightRows not TextHighlightRows...
-        // so refactor this to TextHighlightRows.
-
-        return textHighlightRows;
+        return TextHighlightRows.computeContiguousRects(rectElements);
 
     }
 

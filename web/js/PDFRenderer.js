@@ -6,7 +6,7 @@ const {Elements} = require("./utils");
  *
  * @type {PDFRenderer}
  */
-module.exports.PDFRenderer = class {
+class PDFRenderer {
 
     static currentScale() {
         return window.PDFViewerApplication.pdfViewer._currentScale;
@@ -61,5 +61,18 @@ module.exports.PDFRenderer = class {
 
     }
 
+    /**
+     * Get all the metadata about the current page.
+     */
+    static getCurrentPageMeta() {
+
+        let pageElement = PDFRenderer.getCurrentPageElement();
+        let pageNum = PDFRenderer.getPageNumFromPageElement(pageElement);
+
+        return { pageElement, pageNum }
+
+    }
 
 };
+
+module.exports.PDFRenderer = PDFRenderer;
