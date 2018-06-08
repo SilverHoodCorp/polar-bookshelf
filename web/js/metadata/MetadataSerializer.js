@@ -57,7 +57,7 @@ class MetadataSerializer {
             throw new Error("No data given!")
         }
 
-        let parsed = JSON.parse(data, MetadataSerializer.reviver);
+        let parsed = JSON.parse(data);
         Object.assign(obj, parsed);
         return obj;
 

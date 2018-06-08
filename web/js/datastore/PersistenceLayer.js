@@ -2,6 +2,7 @@
 const {Datastore} = require("./Datastore.js");
 const {MetadataSerializer} = require("../metadata/MetadataSerializer");
 const {DocMeta} = require("../metadata/DocMeta");
+const {DocMetas} = require("../metadata/DocMetas");
 const {DocMetaDescriber} = require("../metadata/DocMetaDescriber");
 
 const fs = require("fs");
@@ -39,7 +40,7 @@ module.exports.PersistenceLayer = class {
         if(!data)
             return null;
 
-        return MetadataSerializer.deserialize(new DocMeta(), data);
+        return DocMetas.deserialize(new DocMeta(), data);
     }
 
     /**
@@ -49,7 +50,7 @@ module.exports.PersistenceLayer = class {
         // NOTE that we always write the state with JSON pretty printing.
         // Otherwise tools like git diff , etc will be impossible to deal with
         // in practice.
-        let data = MetadataSerializer.serialize(docMeta, "  ");
+        let data = DocMetas.serialize(docMeta, "  ");
         await this.datastore.sync(fingerprint, data);
     }
 

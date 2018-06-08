@@ -5,6 +5,8 @@ const {PageInfo} = require("./PageInfo");
 const {PageMeta} = require("./PageMeta");
 const {PagemarkType} = require("./PagemarkType");
 const {ISODateTime} = require("./ISODateTime");
+const {MetadataSerializer} = require("./MetadataSerializer");
+const {forDict} = require("../utils");
 
 module.exports.DocMetas = class {
 
@@ -105,4 +107,32 @@ module.exports.DocMetas = class {
 
     }
 
+    static serialize(docMeta, spacing) {
+        return MetadataSerializer.serialize(docMeta, spacing);
+    }
+
+    static deserialize(data) {
+
+        let result = MetadataSerializer.deserialize(new DocMeta(), data);
+
+        // validate the JSON data and set defaults. In the future we should migrate
+        // to using something like AJV to provide these defaults.
+
+        forDict(result.pageMetas, function (key, pageMeta) {
+
+            if(!pageMeta.textHighlights) {
+                console.warn("No textHighlights.  Assigning default.");
+                pageMeta.textHighlights = {};
+            }
+
+            if(!pageMeta.areaHighlights) {
+                console.warn("No areaHighlights.  Assigning default.")
+                pageMeta.areaHighlights = {};
+            }
+
+        } );
+
+        return result;
+
+    }
 }

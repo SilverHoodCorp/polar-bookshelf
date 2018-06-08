@@ -33,9 +33,10 @@ describe('DocMetas', function() {
 
             let json = "{}";
 
-            let actual = MetadataSerializer.deserialize(new PageMeta(), json);
+            let docMeta = DocMetas.deserialize(json);
 
-            assert.equal(actual instanceof PageMeta, true);
+            assert.equal(docMeta instanceof DocMeta, true);
+            //assert.equal(docMeta.pageMetas[0]., true);
 
             //assertJSON(actual, expected);
 
