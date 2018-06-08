@@ -1,12 +1,12 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.0.0-beta1",
+  "version": "1.0.0-beta2",
   "description": "A PDF bookshelf for incremental reading",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dist-linux": "electron-builder --linux deb tar.gz snap --publish always",
-    "dist-macos": "electron-builder --macos",
+    "dist-linux": "electron-builder --config=electron-builder.yml --linux deb tar.gz snap --publish always",
+    "dist-macos": "electron-builder --config=electron-builder.yml --macos dmg --publish always",
     "test": "./node_modules/.bin/mocha --recursive \"web/js/**/*Test.js\"",
     "webpack": "npx webpack --config=webpack-chrome.config.js && npx webpack --config=webpack-injector.config.js && npx webpack --config=webpack-electron.config.js"
   },
