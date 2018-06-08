@@ -18,7 +18,8 @@ module.exports.TraceListenerExecutor = class {
      */
     fireInitial() {
 
-        // FIXME: this should not be onMutation because teh initial value isn't a mutation.
+        // REFACTOR: this should not be onMutation because the initial value is
+        // not a mutation.
 
         let path = this.traceHandler.path;
         let target = this.traceHandler.target;

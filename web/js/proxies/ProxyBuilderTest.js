@@ -20,6 +20,144 @@ class MyTraceListener {
 
 describe('ProxyBuilder', function() {
 
+    describe('traceListeners', function() {
+
+        // unfortunately , there are 4 types we have to test
+        //
+        // the default (function or object)
+        // additional (function or object).
+
+        it("default as object", function () {
+
+            let myDict = {
+                cat: "leo"
+            };
+
+            let myTraceListener = new MyTraceListener();
+
+            myDict = Proxies.create(myDict).deepTrace(myTraceListener);
+
+            myDict.cat = "monster";
+
+            let expected = [
+                {
+                    "path": "/",
+                    "mutationType": "SET",
+                    "target": {
+                        "cat": "monster"
+                    },
+                    "property": "cat",
+                    "value": "monster",
+                    "previousValue": "leo"
+                }
+            ];
+
+            assertJSON(myTraceListener.mutations, expected);
+
+        })
+
+        it("default as function", function () {
+
+            let myDict = {
+                cat: "leo"
+            };
+
+            let mutations = [];
+            myDict = Proxies.create(myDict).deepTrace(function (traceEvent) {
+                mutations.push(Objects.duplicate(traceEvent));
+            });
+
+            myDict.cat = "monster";
+
+            let expected = [
+                {
+                    "path": "/",
+                    "mutationType": "SET",
+                    "target": {
+                        "cat": "monster"
+                    },
+                    "property": "cat",
+                    "value": "monster",
+                    "previousValue": "leo"
+                }
+            ];
+
+            assertJSON(mutations, expected);
+
+        })
+
+
+        it("addListener as object", function () {
+
+            let myDict = {
+                cat: "leo"
+            };
+
+            let myTraceListener = new MyTraceListener();
+
+            myDict = Proxies.create(myDict).deepTrace(function () {
+
+            });
+
+            myDict.addTraceListener(myTraceListener);
+
+            myDict.cat = "monster";
+
+            let expected = [
+                {
+                    "path": "/",
+                    "mutationType": "SET",
+                    "target": {
+                        "cat": "monster"
+                    },
+                    "property": "cat",
+                    "value": "monster",
+                    "previousValue": "leo"
+                }
+            ];
+
+            assertJSON(myTraceListener.mutations, expected);
+
+        })
+
+        it("addListener as function", function () {
+
+            let myDict = {
+                cat: "leo"
+            };
+
+            myDict = Proxies.create(myDict).deepTrace(function () {
+
+            });
+
+            let mutations = [];
+
+            myDict.addTraceListener(function (traceEvent) {
+                mutations.push(Objects.duplicate(traceEvent));
+            });
+
+            myDict.cat = "monster";
+
+            let expected = [
+                {
+                    "path": "/",
+                    "mutationType": "SET",
+                    "target": {
+                        "cat": "monster"
+                    },
+                    "property": "cat",
+                    "value": "monster",
+                    "previousValue": "leo"
+                }
+            ];
+
+            assertJSON(mutations, expected);
+
+        })
+
+
+    });
+
     describe('deepTrace', function() {
 
         // if we have a shared object reference, make sure we receive two events

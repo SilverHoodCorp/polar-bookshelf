@@ -72,11 +72,9 @@ class ProxyBuilder {
 
         }
 
-        if(value.__traceListener && value.__traceListener !== traceListener) {
-            throw new Error("Value being traced already by another trace listener.");
-        }
-
-        if(!value.addTraceListener) {
+        if(value.addTraceListener) {
+            value.addTraceListener(traceListener);
+        } else {
             Object.defineProperty(value, "addTraceListener", {
                 value: traceHandler.addTraceListener.bind(traceHandler),
                 enumerable: false,

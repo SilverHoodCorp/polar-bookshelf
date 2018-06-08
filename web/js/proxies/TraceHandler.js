@@ -24,11 +24,7 @@ module.exports.TraceHandler = class {
 
         this.reactor = new Reactor();
         this.reactor.registerEvent(EVENT_NAME);
-
-        traceListener = FunctionalInterface.create(EVENT_NAME, traceListener);
-        this.addTraceListener(function(traceEvent) {
-            traceListener.onMutation(traceEvent);
-        });
+        this.addTraceListener(traceListener);
 
     }
 
@@ -36,11 +32,15 @@ module.exports.TraceHandler = class {
      * Add a listener for a specific object.
      */
     addTraceListener(traceListener) {
-        // TODO: I do not think this supports adding a TraceListener object
-        // and I think we will have to clean up our support for functional
-        // interfaces here.  We're not using them consistently.
-        this.reactor.addEventListener(EVENT_NAME, traceListener);
+
+        traceListener = FunctionalInterface.create(EVENT_NAME, traceListener);
+
+        this.reactor.addEventListener(EVENT_NAME, function(traceEvent) {
+            traceListener.onMutation(traceEvent);
+        });
+
         return new TraceListenerExecutor(traceListener, this);
+
     }
 
     getTraceListeners() {
