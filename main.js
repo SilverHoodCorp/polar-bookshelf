@@ -212,18 +212,25 @@ const template = [{
         ]
     },
 ];
-var menu = Menu.buildFromTemplate(template);
-var shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
+
+let menu = Menu.buildFromTemplate(template);
+let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
     // Someone tried to run a second instance, we should focus our window.
     if (mainWindow) {
         if (mainWindow.isMinimized()) mainWindow.restore();
         mainWindow.focus();
     }
 });
+
 if (shouldQuit) { app.quit(); return; }
+
 app.on('ready', function() {
+
+    // FIXME: remove the splash screen support. It just slows us down.
+
     splashwindow = new BrowserWindow({ width: 600, height: 400, center: true, resizable: false, movable: false, alwaysOnTop: true, skipTaskbar: true, frame: false });
     splashwindow.loadURL('file://' + __dirname + '/splash.html');
+
     //splashwindow.loadURL(`http://localhost:${WEBSERVER_PORT}/splash.html`);
     contextMenu = Menu.buildFromTemplate([
         { label: 'Minimize', type: 'radio', role: 'minimize' },
@@ -239,13 +246,17 @@ app.on('ready', function() {
     const appIcon = new Tray(app_icon);
     appIcon.setToolTip('PDF Viewer');
     appIcon.setContextMenu(contextMenu);
-    //splash screen for 3 seconds
-    setTimeout(createWindow, 3000);
+
+    createWindow();
+    //setTimeout(createWindow, 1);
+
 });
+
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
     if (process.platform !== 'darwin') { app.quit(); }
 });
+
 app.on('activate', function() {
     // On OS X it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
@@ -342,7 +353,16 @@ function createWindow() {
         e.preventDefault();
         shell.openExternal(url);
     });
-    mainWindow.loadURL(DEFAULT_URL, options);
+
+    // if there is a PDF file to open, load that, otherwise, load the default URL.
+
+    let lastArg = process.argv[process.argv.length - 1];
+    if(lastArg && lastArg.endsWith(".pdf")) {
+        loadPDF(lastArg);
+    } else {
+        mainWindow.loadURL(DEFAULT_URL, options);
+    }
+
     mainWindow.once('ready-to-show', () => {
         splashwindow.close();
         splashwindow = null;
