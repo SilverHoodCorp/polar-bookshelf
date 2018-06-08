@@ -28,26 +28,39 @@ class TextHighlightView {
 
     onTextHighlight(textHighlightEvent) {
 
-        console.log("TextHighlightView.onTextHighlight");
+        // FIXME we need to look at the value and if it's undefined then
+        // we know it's deleted and that we need to remove the renderer
+        // and remove the element
 
-        let pageNum = textHighlightEvent.pageMeta.pageInfo.num;
-        let pageElement = PDFRenderer.getPageElementFromPageNum(pageNum);
+        if(textHighlightEvent.textHighlight) {
 
-        // for each rect just call render on that pageElement...
+            console.log("TextHighlightView.onTextHighlight");
 
-        forDict(textHighlightEvent.textHighlight.rects, function (id, rect) {
+            let pageNum = textHighlightEvent.pageMeta.pageInfo.num;
+            let pageElement = PDFRenderer.getPageElementFromPageNum(pageNum);
 
-            let callback = function() {
-                TextHighlightView.render(pageElement, rect);
-            };
+            // for each rect just call render on that pageElement...
 
-            // draw it manually the first time.
-            callback();
+            forDict(textHighlightEvent.textHighlight.rects, function (id, rect) {
 
-            // then let the redraw handler do it after this.
-            new PageRedrawHandler(pageElement).register(callback);
+                let callback = function() {
+                    TextHighlightView.render(pageElement, rect);
+                };
 
-        });
+                // draw it manually the first time.
+                callback();
+
+                // then let the redraw handler do it after this.
+                new PageRedrawHandler(pageElement).register(callback);
+
+            });
+
+        } else {
+
+            // it was deleted
+
+        }
+
 
     }
 

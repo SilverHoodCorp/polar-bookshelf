@@ -12,6 +12,7 @@ module.exports.TextHighlightModel = class {
                     docMeta,
                     pageMeta,
                     textHighlight: traceEvent.value,
+                    previousTextHighlight: traceEvent.previousValue,
                     mutationType: traceEvent.mutationType,
                     traceEvent
                 };
