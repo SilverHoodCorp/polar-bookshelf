@@ -73,6 +73,7 @@ class ProxyBuilder {
         }
 
         if(value.addTraceListener) {
+            console.log("FIXMME: adding at path " + path);
             value.addTraceListener(traceListener);
         } else {
             Object.defineProperty(value, "addTraceListener", {
