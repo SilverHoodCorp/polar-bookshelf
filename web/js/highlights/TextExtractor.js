@@ -34,9 +34,7 @@ class TextExtractor {
             // creating a binary tree where we sort the tree based on the four points
             // of the box.
 
-            for(let idx = 0; idx < textElements.length; ++idx) {
-
-                let textElement = textElements[idx];
+            textElements.forEach(function(textElement) {
 
                 let elementRect = toElementRect(textElement);
                 let elementBox = rectToBox(elementRect);
@@ -45,7 +43,7 @@ class TextExtractor {
                     result.push(textElement.outerText);
                 }
 
-            }
+            });
 
         });
 
