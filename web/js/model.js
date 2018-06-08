@@ -120,8 +120,8 @@ module.exports.Model = class {
         // TODO: this can be done with a mutation listener in the future
         this.reactor.dispatchEvent('createPagemark', {pageNum, pagemark});
 
-        console.log("Performing sync of content into disk persistenceLayer.");
-        console.log("DocMeta described as: " + DocMetaDescriber.describe(docMeta));
+        //console.log("Performing sync of content into disk persistenceLayer.");
+        console.log("FIXME: DocMeta NOW described as: " + DocMetaDescriber.describe(this.docMeta));
 
         // TODO: consider only marking the page read once the persistenceLayer has
         // been written or some sort of UI update that the data is persisted.
@@ -139,8 +139,13 @@ module.exports.Model = class {
 
         pageMeta.pagemarks = {};
 
+        console.log("FIXME pageMeta is now: ", this.docMeta.getPageMeta(pageNum));
+
         // FIXME: this can be done with a mutation listener...
         this.reactor.dispatchEvent('erasePagemark', {pageNum});
+
+        //console.log("Performing sync of content into disk persistenceLayer.");
+        console.log("FIXME: DocMeta NOW described as: " + DocMetaDescriber.describe(this.docMeta));
 
         // TODO: consider only marking the page read once the persistenceLayer has
         // been written or some sort of UI update that the data is persisted.

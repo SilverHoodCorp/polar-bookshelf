@@ -53,10 +53,10 @@ module.exports.WebController = class extends Controller {
 
             let newDocumentFingerprint = window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint;
             let nrPages = window.PDFViewerApplication.pagesCount;
-            var currentPageNumber = window.PDFViewerApplication.pdfViewer.currentPageNumber;
+            let currentPageNumber = window.PDFViewerApplication.pdfViewer.currentPageNumber;
 
-            var pageElement = event.target.parentElement;
-            var pageNum = this.getPageNum(pageElement);
+            let pageElement = event.target.parentElement;
+            let pageNum = this.getPageNum(pageElement);
 
             this.onNewDocumentFingerprint(newDocumentFingerprint, nrPages, currentPageNumber);
 
@@ -138,12 +138,12 @@ module.exports.WebController = class extends Controller {
         if(div == null)
             throw Error("Not given a div");
 
-        var windowHeight = $(window).height(),
+        let windowHeight = $(window).height(),
             docScroll = $(document).scrollTop(),
             divPosition = $(div).offset().top,
             divHeight = $(div).height();
 
-        var hiddenBefore = docScroll - divPosition,
+        let hiddenBefore = docScroll - divPosition,
             hiddenAfter = (divPosition + divHeight) - (docScroll + windowHeight);
 
         if ((docScroll > divPosition + divHeight) || (divPosition > docScroll + windowHeight)) {
@@ -174,8 +174,8 @@ module.exports.WebController = class extends Controller {
 
         console.log("Marking entire page as read.");
 
-        var pageElement = this.getCurrentPageElement();
-        var pageNum = this.getPageNum(pageElement);
+        let pageElement = this.getCurrentPageElement();
+        let pageNum = this.getPageNum(pageElement);
 
         this.erasePagemarks(pageNum);
         this.createPagemark(pageNum);

@@ -116,7 +116,8 @@ module.exports.DocMetas = class {
         let result = MetadataSerializer.deserialize(new DocMeta(), data);
 
         // validate the JSON data and set defaults. In the future we should migrate
-        // to using something like AJV to provide these defaults.
+        // to using something like AJV to provide these defaults and also perform
+        // type assertion.
 
         forDict(result.pageMetas, function (key, pageMeta) {
 
@@ -126,7 +127,7 @@ module.exports.DocMetas = class {
             }
 
             if(!pageMeta.areaHighlights) {
-                console.warn("No areaHighlights.  Assigning default.")
+                console.warn("No areaHighlights.  Assigning default.");
                 pageMeta.areaHighlights = {};
             }
 

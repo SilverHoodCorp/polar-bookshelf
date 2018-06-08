@@ -102,10 +102,9 @@ module.exports.WebView = class extends View {
     }
 
     onCreatePagemark(pagemarkEvent) {
+        console.log("WebView.onCreatePagemark");
 
         console.log("Creating pagemark on page: " + pagemarkEvent.pageNum);
-
-        //this.createPagemark(this.getPageElementByNum(pageEvent.num));
 
         this.pagemarkRenderer.create(pagemarkEvent.pageNum, pagemarkEvent.pagemark);
         this.updateProgress();
@@ -113,10 +112,7 @@ module.exports.WebView = class extends View {
     }
 
     onErasePagemark(pagemarkEvent) {
-        console.log("Erasing pagemark");
-
-        //let pageElement = this.getPageElementByNum(pageEvent.num);
-        //this.erasePagemarks(pageElement);
+        console.log("WebView.onErasePagemark");
 
         this.pagemarkRenderer.erase(pagemarkEvent.pageNum);
         this.updateProgress();

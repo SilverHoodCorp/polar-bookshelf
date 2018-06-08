@@ -1,8 +1,19 @@
+
+const tk = require('timekeeper');
+const time = new Date(1330688329321);
+
+class TestingTime {
+
+    static freeze() {
+
+        // freeze time for testing...
+        tk.freeze(time);
+    }
+
+}
+
+module.exports.TestingTime = TestingTime;
+
 module.exports.freeze = function() {
-
-    // freeze time for testing...
-    const tk = require('timekeeper');
-    const time = new Date(1330688329321);
-    tk.freeze(time);
-
+    TestingTime.freeze();
 };
