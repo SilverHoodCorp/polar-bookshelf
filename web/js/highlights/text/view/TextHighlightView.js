@@ -1,21 +1,17 @@
 const {TextHighlightModel} = require("../model/TestHighlightModel");
 const {forDict} = require("../../../utils.js");
 const {PageRedrawHandler} = require("../../../PageRedrawHandler");
-const {TextHighlightRenderer} = require("../controller/TextHighlightRenderer");
 const {PDFRenderer} = require("../../../PDFRenderer");
+const {Rects} = require("../../../Rects");
 
-module.exports.TextHighlightView = class {
+class TextHighlightView {
 
     constructor(model) {
         this.model = model;
     }
 
-    init() {
-
+    start() {
         this.model.registerListenerForDocumentLoaded(this.onDocumentLoaded.bind(this));
-
-        return this;
-
     }
 
     onDocumentLoaded(documentLoadedEvent) {
@@ -86,3 +82,5 @@ module.exports.TextHighlightView = class {
     }
 
 };
+
+module.exports.TextHighlightView = TextHighlightView;

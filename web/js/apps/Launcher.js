@@ -21,7 +21,7 @@ module.exports.Launcher = class {
 
         await persistenceLayer.init();
 
-        controller.startListeners();
+        controller.start();
         console.log("Controller started in mode: " + mode);
 
     }

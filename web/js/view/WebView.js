@@ -14,7 +14,7 @@ module.exports.WebView = class extends View {
 
     }
 
-    init() {
+    start() {
 
         this.model.registerListenerForCreatePagemark(this.onCreatePagemark.bind(this));
         this.model.registerListenerForErasePagemark(this.onErasePagemark.bind(this));

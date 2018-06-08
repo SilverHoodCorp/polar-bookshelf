@@ -26,7 +26,7 @@ module.exports.WebController = class extends Controller {
 
     }
 
-    startListeners() {
+    start() {
         this.listenForDocumentLoad();
         this.listenForKeyBindings();
 

@@ -12,6 +12,7 @@ const {MemoryDatastore} = require("../datastore/MemoryDatastore.js");
 const {Model} = require("../model.js");
 const {Electron} = require("../Electron");
 const {Launcher} = require("./Launcher");
+const {TextHighlightView} = require("../highlights/text/view/TextHighlightView");
 
 async function launchDev(launcher) {
 
@@ -32,7 +33,8 @@ async function launchDev(launcher) {
     DocMetas.addPagemarks(docMeta, {nrPages: 1, offsetPage: 4, percentage: 50})
     await persistenceLayer.sync(fingerprint, docMeta);
 
-    view.init();
+    view.start();
+    new TextHighlightView(model).start();
 
     await launcher.start(datastore, controller, "dev");
 
