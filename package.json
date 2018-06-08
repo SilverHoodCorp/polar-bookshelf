@@ -5,6 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "dist-linux": "electron-builder --linux deb tar.gz snap --publish always",
+    "dist-macos": "electron-builder --macos",
     "test": "./node_modules/.bin/mocha --recursive \"web/js/**/*Test.js\"",
     "webpack": "npx webpack --config=webpack-chrome.config.js && npx webpack --config=webpack-injector.config.js && npx webpack --config=webpack-electron.config.js"
   },
@@ -29,6 +31,12 @@
       "name": "Kevin Burton"
     }
   ],
+  "build": {
+    "appId": "io.inputneuron/polar",
+    "mac": {
+      "category": "Books"
+    }
+  },
   "license": "MIT",
   "devDependencies": {
     "chai": "^4.1.2",

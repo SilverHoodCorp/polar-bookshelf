@@ -1,0 +1,21 @@
+productName: Polar Bookshelf
+electronVersion: 2.0.2
+appId: io.inputneuron/polar
+compression: store
+npmRebuild: false
+mac:
+  category: Reference
+  icon: icon.ico
+  fileAssociations:
+    - ext: "pdf"
+      role: "Viewer"
+linux:
+  synopsis: Polar Bookshelf PDF reader
+  description: Polar Bookshelf PDF reader
+  category: Reference
+  icon: icon.ico
+  fileAssociations:
+    - ext: "pdf"
+
+directories:
+  output: dist
