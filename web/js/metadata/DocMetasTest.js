@@ -24,9 +24,6 @@ describe('DocMetas', function() {
 
             assertJSON(docMeta, actual);
 
-            assert.equal(actual.pageMetas[1] instanceof PageMeta, true);
-
-
         });
 
         it("Test with default values for serialized data", function () {
@@ -36,9 +33,6 @@ describe('DocMetas', function() {
             let docMeta = DocMetas.deserialize(json);
 
             assert.equal(docMeta instanceof DocMeta, true);
-            //assert.equal(docMeta.pageMetas[0]., true);
-
-            //assertJSON(actual, expected);
 
         });
 

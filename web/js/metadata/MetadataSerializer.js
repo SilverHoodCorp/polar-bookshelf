@@ -10,8 +10,6 @@ class MetadataSerializer {
 
     static replacer(key, value) {
 
-        console.log("FIXME4: here");
-
         if(value instanceof SerializedObject) {
             value.setup();
             value.validate();
@@ -23,10 +21,7 @@ class MetadataSerializer {
 
     static reviver(key, value) {
 
-        console.log(`FIXME1: here ${key} ${value}`);
-
         if(value instanceof SerializedObject) {
-            console.log("FIXME21: here");
             value.setup();
             value.validate();
         }

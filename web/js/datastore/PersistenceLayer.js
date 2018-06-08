@@ -40,7 +40,7 @@ module.exports.PersistenceLayer = class {
         if(!data)
             return null;
 
-        return DocMetas.deserialize(new DocMeta(), data);
+        return DocMetas.deserialize(data);
     }
 
     /**

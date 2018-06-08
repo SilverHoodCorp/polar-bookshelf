@@ -29,10 +29,8 @@ module.exports.PagemarkCoverageEventListener = class {
 
         // on MacOS t needs to be Alt + Meta. Control is already bound.
         if (KeyEvents.isKeyMetaActive(event)) {
-            console.log("FIXME: active now");
             this.keyActivated = true;
         } else {
-            console.log("FIXME: INactive now");
             this.keyActivated = false;
         }
 

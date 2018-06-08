@@ -5,8 +5,6 @@ module.exports.DocMetaDescriber = class {
 
     static describe(docMeta) {
 
-        console.log("FIXME", docMeta);
-
         let nrPagemarks = 0;
         let nrTextHighlights = 0;
 

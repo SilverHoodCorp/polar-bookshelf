@@ -4,14 +4,10 @@
 
 function createHighlight() {
 
-    // FIXME use all the lighlights
-
-    var highlightElement = document.createElement("div");
+    let highlightElement = document.createElement("div");
     highlightElement.style.zIndex = 0;
 
-    var boundingClientRect = window.getSelection().getRangeAt(0).getBoundingClientRect();
-
-    console.log("FIXME: ", boundingClientRect);
+    let boundingClientRect = window.getSelection().getRangeAt(0).getBoundingClientRect();
 
     highlightElement.style.position = "absolute";
     highlightElement.style.left = `${boundingClientRect.left}px`;

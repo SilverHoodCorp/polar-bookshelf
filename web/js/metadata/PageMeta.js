@@ -63,8 +63,6 @@ module.exports.PageMeta = class extends SerializedObject {
 
         super.validate();
 
-        console.log("FIXME");
-
         this.validateMembers([
             {name: 'pageInfo', instance: PageInfo}
         ]);
