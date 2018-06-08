@@ -324,11 +324,5 @@ module.exports.Styles = class {
 
 }
 
-module.exports.Objects = class {
-
-    static duplicate(obj) {
-          return JSON.parse(JSON.stringify(obj));
-    }
-
-}
-
+// @Deprecated. Use util/Objects instead.
+module.exports.Objects = require("./util/Objects.js").Objects;

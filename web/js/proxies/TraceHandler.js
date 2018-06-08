@@ -29,13 +29,25 @@ module.exports.TraceHandler = class {
     }
 
     /**
-     * Add a listener for a specific object.
+     * Add a listener to a specific object. By default we return all events but
+     * you can also narrow it down to a specific property by specifying a given
+     * property to monitor.
      */
-    addTraceListener(traceListener) {
+    addTraceListener(traceListener, options) {
+
+        if (!options) {
+            options = {};
+        }
+
+        let eventName = EVENT_NAME;
+
+        if(options.property) {
+            eventName = `${eventName}:${options.property}`;
+        }
 
         traceListener = FunctionalInterface.create(EVENT_NAME, traceListener);
 
-        this.reactor.addEventListener(EVENT_NAME, function(traceEvent) {
+        this.reactor.addEventListener(eventName, function(traceEvent) {
             traceListener.onMutation(traceEvent);
         });
 

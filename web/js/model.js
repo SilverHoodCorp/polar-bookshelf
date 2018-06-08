@@ -8,6 +8,7 @@ const {DocMetaDescriber} = require("./metadata/DocMetaDescriber");
 const {Reactor} = require("./reactor/Reactor");
 const {Event} = require("./reactor/Event");
 const {forDict} = require("./utils");
+const {Objects} = require("./util/Objects");
 
 module.exports.Model = class {
 
@@ -135,7 +136,7 @@ module.exports.Model = class {
 
         // FIXME: this is actually wrong because I need to delete the RIGHT
         // pagemark. NOT just delete all of them.
-        pageMeta.pagemarks = {};
+        Objects.clear(pageMeta.pagemarks);
 
         // FIXME: this can be done with a mutation listener...
         this.reactor.dispatchEvent('erasePagemark', {pageNum});

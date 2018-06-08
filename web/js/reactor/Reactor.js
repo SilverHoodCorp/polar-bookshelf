@@ -10,6 +10,13 @@ module.exports.Reactor = class {
         if(!eventName) {
             throw new Error("No eventName");
         }
+
+        if(this.events[eventName]) {
+            // already registered so don't double register which would kill
+            // the existing listeners.
+            return;
+        }
+
         let event = new Event(eventName);
         this.events[eventName] = event;
     }
