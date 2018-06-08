@@ -1,7 +1,8 @@
 
 /**
- * Like a mutation listener, but we also include a 'path' to the object that represents the target that is being
- * mutated.  This way we proxy deep objects, replacing their objects with proxies if necessary.
+ * Like a mutation listener, but we also include a 'path' to the object that
+ * represents the target that is being mutated.  This way we proxy deep objects,
+ * replacing their objects with proxies if necessary.
  *
  * @constructor
  */

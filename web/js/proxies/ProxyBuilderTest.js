@@ -1,5 +1,6 @@
 var assert = require('assert');
 
+const {Objects} = require("../utils");
 const {Proxies} = require("./Proxies");
 const {assertJSON} = require("../test/Assertions");
 
@@ -11,7 +12,7 @@ class MyTraceListener {
 
     onMutation(traceEvent) {
         // in practice we would write this to a journaled log file.
-        this.mutations.push(traceEvent);
+        this.mutations.push(Objects.duplicate(traceEvent));
         return true;
     }
 
@@ -129,7 +130,7 @@ describe('ProxyBuilder', function() {
             let mutations = [];
 
             myDict = Proxies.create(myDict).deepTrace(function(traceEvent) {
-                mutations.push(traceEvent);
+                mutations.push(Objects.duplicate(traceEvent));
             });
 
             myDict.foo = 'frog';
@@ -166,7 +167,7 @@ describe('ProxyBuilder', function() {
             let mutations = [];
 
             myDict = Proxies.create(myDict).deepTrace(function(traceEvent) {
-                mutations.push(traceEvent);
+                mutations.push(Objects.duplicate(traceEvent));
             });
 
             myDict.pages[1].marked=false;
@@ -206,7 +207,7 @@ describe('ProxyBuilder', function() {
             let mutations = [];
 
             myDict.addTraceListener(function (traceEvent) {
-                mutations.push(traceEvent);
+                mutations.push(Objects.duplicate(traceEvent));
             });
 
             myDict["asdf"] = "bar";
@@ -298,6 +299,51 @@ describe('ProxyBuilder', function() {
 
         });
 
+        it("make sure value actually replaced", function () {
+
+            let myDict = {
+                "cat": "leo"
+            };
+
+            myDict = Proxies.create(myDict).deepTrace(function(traceEvent) {
+                return true;
+            });
+
+            myDict['cat']="monster";
+
+            assert.equal( myDict['cat'], "monster");
+
+        });
+
+    });
+
+    describe('mutations', function() {
+
+        it("deep tracing", function () {
+
+            let myDict = {
+                "cat": "leo"
+            };
+
+            class MutationListener {
+
+                onMutation(mutationType, target, property, value) {
+                    return true;
+                }
+
+            }
+
+            myDict = Proxies.create(myDict).forMutations(new MutationListener());
+
+            myDict['cat']="monster";
+
+            assert.equal( myDict['cat'], "monster");
+
+            delete myDict['cat'];
+
+            assert.equal( 'cat' in myDict, false);
+
+        });
 
     });
 

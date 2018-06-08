@@ -42,11 +42,13 @@ module.exports.TraceHandler = class {
     }
 
     set(target, property, value, receiver) {
+        //target.property = value;
         this.reactor.dispatchEvent('onMutation', new TraceEvent(this.path, MutationType.SET, target, property, value));
-        return true;
+        return Reflect.set(...arguments);
     }
 
     deleteProperty(target, property) {
+        //Reflect.deleteProperty(...arguments);
         this.reactor.dispatchEvent('onMutation', new TraceEvent(this.path, MutationType.DELETE, target, property, undefined));
         return true;
     }

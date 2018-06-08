@@ -1,5 +1,6 @@
 var assert = require('assert');
 
+const {Objects} = require("../utils");
 const {Proxies} = require("./Proxies");
 const {assertJSON} = require("../test/Assertions");
 const {Symbol} = require("../metadata/Symbol");
@@ -12,7 +13,7 @@ class MyMutationListener {
 
     onMutation(mutationType, target, property, value) {
         // in practice we would write this to a journaled log file.
-        this.mutations.push({mutationType, target, property, value});
+        this.mutations.push(Objects.duplicate({mutationType, target, property, value}));
         return true;
     }
 
@@ -22,7 +23,7 @@ describe('Proxies', function() {
 
     describe('listenForEvents', function() {
 
-        it("test set", function () {
+        it("test set of new key", function () {
             let myDict = {'foo': 'bar'};
 
             let myMutationListener = new MyMutationListener();
@@ -31,16 +32,18 @@ describe('Proxies', function() {
 
             myDict.animal = 'frog';
 
-            assertJSON(myMutationListener.mutations, [
+            let expected = [
                 {
                     "mutationType": "SET",
                     "target": {
-                        "foo": "bar"
+                        "foo": "bar",
+                        "animal": "frog"
                     },
                     "property": "animal",
                     "value": "frog"
                 }
-            ]);
+            ];
+            assertJSON(myMutationListener.mutations, expected);
 
         });
 
@@ -56,9 +59,7 @@ describe('Proxies', function() {
             assertJSON(myMutationListener.mutations, [
                 {
                     "mutationType": "DELETE",
-                    "target": {
-                        "foo": "bar"
-                    },
+                    "target": {},
                     "property": "foo"
                 }
             ]);

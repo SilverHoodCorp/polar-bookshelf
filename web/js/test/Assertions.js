@@ -27,6 +27,16 @@ function toJSON(obj) {
         return obj;
     }
 
+    // if(obj instanceof Array) {
+    //     if( obj.length >= 1 ) {
+    //         if ((typeof obj[0]) === "string") {
+    //             return obj;
+    //         }
+    //     }
+    // }
+
+    // also accept an array of strings.
+
     return JSON.stringify(obj, null, "  ");
 
 }
