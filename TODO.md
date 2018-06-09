@@ -9,10 +9,8 @@
 # Release (for myself)
 
 - MacOS
-    - no .polar home directory
     - key bindings don't work
 
-- file associations working for *.pdf with elecron-builder
 
 ## Site
 
@@ -24,6 +22,9 @@
     - get links everywhere...
 
 # Beta 5
+
+- file associations working for *.pdf with elecron-builder.
+- Not critical right now.
 
 - Ability to disable PDF links as they would impact our ability to annotate but
   maybe they have to click the annotation button (highlight, highlight region)

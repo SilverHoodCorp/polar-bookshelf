@@ -53,8 +53,6 @@ module.exports.PagemarkCoverageEventListener = class {
     // https://stackoverflow.com/questions/3234256/find-mouse-position-relative-to-element
     onActivated(event) {
 
-        // FIXME: we're closer now.. but we have to factor in some sort of static offet.
-
         let pageElement = Elements.untilRoot(event.target, ".page");
 
         if(! pageElement) {
