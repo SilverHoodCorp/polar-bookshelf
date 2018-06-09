@@ -1,5 +1,6 @@
-<img src="https://github.com/burtonator/polar-bookshelf/blob/master/icon.ico" width="128" align="right">Polar Bookshelf
-==========
+<img src="https://github.com/burtonator/polar-bookshelf/blob/master/icon.ico" width="128" align="right">
+
+# Polar Bookshelf
 
 Polar Bookshelf is a PDF manager created using [Electron
 framework](https://electron.atom.io) and
