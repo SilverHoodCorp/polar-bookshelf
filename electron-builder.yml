@@ -5,18 +5,24 @@ compression: store
 npmRebuild: false
 mac:
   category: Reference
-  icon: icon.png
+  icon: icon-512x512.png
   target: dmg
   fileAssociations:
     - ext: "pdf"
       role: "Viewer"
+
 linux:
   synopsis: Polar Bookshelf PDF reader
   description: Polar Bookshelf PDF reader
   category: Reference
-  icon: icon.png
+  icon: icon-512x512.png
   fileAssociations:
     - ext: "pdf"
+
+#windows:
+#  icon: icon-512x512.png
+#  fileAssociations:
+#    - ext: "pdf"
 
 directories:
   output: dist

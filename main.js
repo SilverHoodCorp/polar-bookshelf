@@ -241,6 +241,8 @@ app.on('ready', function() {
     }
 
     Menu.setApplicationMenu(menu);
+
+    // NOTE: removing the next three lines removes the colors in the toolbar.
     //const appIcon = new Tray(app_icon);
     //appIcon.setToolTip('Polar Bookshelf');
     //appIcon.setContextMenu(contextMenu);
