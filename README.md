@@ -12,7 +12,7 @@ allow suspend and resume of reading for weeks and months in the future until
 you're ready to resume, without losing your place.  This works even if you
 jump around in a book (which is often in technical or research work).
 
-<img src="https://github.com/burtonator/polar-bookshelf/blob/master/screenshot.png" width="1200">
+<img src="https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/screenshot.png" width="1200">
 
 # Roadmap
 
