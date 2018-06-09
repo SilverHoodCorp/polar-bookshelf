@@ -149,7 +149,7 @@ module.exports.WebController = class extends Controller {
         if ((docScroll > divPosition + divHeight) || (divPosition > docScroll + windowHeight)) {
             return 0;
         } else {
-            var result = 100;
+            let result = 100;
 
             if (hiddenBefore > 0) {
                 result -= (hiddenBefore * 100) / divHeight;
@@ -164,6 +164,7 @@ module.exports.WebController = class extends Controller {
 
     }
 
+    // TODO/REFACTOR migrate this to use PDFRenderer
     getPageNum(pageElement) {
         let dataPageNum = pageElement.getAttribute("data-page-number");
         return parseInt(dataPageNum);
@@ -188,7 +189,7 @@ module.exports.WebController = class extends Controller {
 
     keyBindingErasePagemark(event) {
         console.log("Erasing pagemark.");
-        var pageElement = this.getCurrentPageElement();
+        let pageElement = this.getCurrentPageElement();
         let pageNum = this.getPageNum(pageElement);
         this.erasePagemark(pageNum);
     }
