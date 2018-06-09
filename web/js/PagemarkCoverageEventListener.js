@@ -1,7 +1,9 @@
 const $ = require('jquery');
 
-const {Delegator, Styles, Elements, OffsetCalculator} = require("./utils.js");
+const {Elements, OffsetCalculator} = require("./utils.js");
 const {KeyEvents} = require("./KeyEvents.js");
+
+const BORDER_PADDING = 9;
 
 module.exports.PagemarkCoverageEventListener = class {
 
@@ -27,12 +29,7 @@ module.exports.PagemarkCoverageEventListener = class {
             throw new Error("no event");
         }
 
-        // on MacOS t needs to be Alt + Meta. Control is already bound.
-        if (KeyEvents.isKeyMetaActive(event)) {
-            this.keyActivated = true;
-        } else {
-            this.keyActivated = false;
-        }
+        this.keyActivated = KeyEvents.isKeyMetaActive(event);
 
     }
 
@@ -60,7 +57,7 @@ module.exports.PagemarkCoverageEventListener = class {
             return;
         }
 
-        var textLayerElement = pageElement.querySelector(".textLayer");
+        let textLayerElement = pageElement.querySelector(".textLayer");
 
         if(!textLayerElement) {
             console.error("No text layer");
@@ -71,8 +68,8 @@ module.exports.PagemarkCoverageEventListener = class {
 
         let pageOffset = OffsetCalculator.calculate(textLayerElement, viewport.parentElement);
 
-        // FIXME: this is lame.. this is for the border.
-        pageOffset.top += 9;
+        // this is lame.. this is for the border padding.  I don't like hard coding it.
+        pageOffset.top += BORDER_PADDING;
 
         // manually adjust the offsets with correct jquery data.
         pageOffset.height = $(textLayerElement).height();

@@ -18,7 +18,7 @@ class TextHighlightController {
     }
 
     start() {
-        document.addEventListener("keyup", this.keyBindingListener.bind(this));
+        document.addEventListener("keydown", this.keyBindingListener.bind(this));
     }
 
     keyBindingListener(event) {
@@ -26,7 +26,7 @@ class TextHighlightController {
         if (KeyEvents.isKeyMetaActive(event)) {
 
             const tCode = 84;
-
+            
             switch (event.which) {
 
                 case tCode:
