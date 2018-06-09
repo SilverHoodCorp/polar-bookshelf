@@ -15,6 +15,8 @@ jump around in a book (which is often in technical or research work).
 
 <img src="https://raw.githubusercontent.com/burtonator/polar-bookshelf/master/screenshot.png" width="1200">
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/OT3qLhMK6Zk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 # Roadmap
 
 The long term goal is to implement the following functionality:
