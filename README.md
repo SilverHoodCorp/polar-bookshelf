@@ -1,4 +1,4 @@
-<img src="https://github.com/burtonator/polar-bookshelf/blob/master/icon.ico" width="80">&nbsp;&nbsp;Polar Bookshelf
+<img src="https://github.com/burtonator/polar-bookshelf/blob/master/icon.ico" width="80" align="right">Polar Bookshelf
 ==========
 
 Polar Bookshelf is a PDF manager created using [Electron
