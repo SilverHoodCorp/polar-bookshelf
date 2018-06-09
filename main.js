@@ -1,6 +1,8 @@
 const electron = require('electron');
 const fspath = require('path');
 const url = require('url');
+const {DiskDatastore} = require("./web/js/datastore/DiskDatastore");
+
 const app = electron.app;
 const shell = electron.shell;
 const Menu = electron.Menu;
@@ -12,7 +14,6 @@ const BrowserWindow = electron.BrowserWindow;
 const nativeImage = require('electron').nativeImage;
 const options = { extraHeaders: 'pragma: no-cache\n' }
 const app_icon = nativeImage.createFromPath(fspath.join(__dirname, 'icon.ico'));
-const {DiskDatastore} = require("./web/js/datastore/DiskDatastore")
 const webserver = require("./node/webserver");
 
 let mainWindow, splashwindow;
@@ -37,6 +38,7 @@ const BROWSER_WINDOW_OPTIONS = {
     width: 800,
     height: 600,
     show: false,
+    // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
     icon: app_icon,
     webPreferences: {
         // TODO:
@@ -235,17 +237,17 @@ app.on('ready', function() {
     ]);
 
     //for OS-X
-    //if (app.dock) {
-    //    app.dock.setIcon(app_icon);
-    //    app.dock.setMenu(contextMenu);
-    //}
+    if (app.dock) {
+       app.dock.setIcon(app_icon);
+       app.dock.setMenu(contextMenu);
+    }
 
     Menu.setApplicationMenu(menu);
 
     // NOTE: removing the next three lines removes the colors in the toolbar.
-    //const appIcon = new Tray(app_icon);
-    //appIcon.setToolTip('Polar Bookshelf');
-    //appIcon.setContextMenu(contextMenu);
+    const appIcon = new Tray(app_icon);
+    appIcon.setToolTip('Polar Bookshelf');
+    appIcon.setContextMenu(contextMenu);
 
     createWindow();
     //setTimeout(createWindow, 1);

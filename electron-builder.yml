@@ -3,9 +3,14 @@ electronVersion: 2.0.2
 appId: io.inputneuron/polar
 compression: store
 npmRebuild: false
+directories:
+  output: dist
+  buildResources: build
+  app: .
+
 mac:
   category: Reference
-  icon: icon-512x512.png
+  icon: ./icon-512x512.png
   target: dmg
   fileAssociations:
     - ext: "pdf"
@@ -15,14 +20,26 @@ linux:
   synopsis: Polar Bookshelf PDF reader
   description: Polar Bookshelf PDF reader
   category: Reference
+
+  # https://www.electron.build/icons
+
+  # https://github.com/electron-userland/electron-builder/issues/2577
+  #
+  # this documents the image width issues.
+
+  # https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#icon
+  #
+  # Linux: this option is not required, as the dock/window list icon is set via
+  # the icon option in the BrowserWindow constructor. Please note that you need
+  # to use a PNG, and not the OS X or Windows icon formats, in order for it to
+  # show up in the dock/window list. Setting the icon in the file manager is not
+  # currently supported.
+  icon: ./512.png
+  fileAssociations:
+    - ext: "pdf"
+
+win:
   icon: icon-512x512.png
   fileAssociations:
     - ext: "pdf"
 
-#windows:
-#  icon: icon-512x512.png
-#  fileAssociations:
-#    - ext: "pdf"
-
-directories:
-  output: dist

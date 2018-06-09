@@ -8,10 +8,6 @@
 
 # Release (for myself)
 
-- MacOS
-    - key bindings don't work
-
-
 ## Site
 
 - screenshot and video of the app
@@ -19,18 +15,19 @@
 - Screenshots with pagemarks.
 
 - Blog / post about it.
-    - get links everywhere...
 
-# Beta 5
+# Beta 7
+
+- get the icons to work on ubuntu
 
 - file associations working for *.pdf with elecron-builder.
-- Not critical right now.
+    - Not critical right now.
 
 - Ability to disable PDF links as they would impact our ability to annotate but
   maybe they have to click the annotation button (highlight, highlight region)
   so that the links are then disabled.
 
-- basic transaction logs...
+- basic logging of renderer console data (errors) to the node console.
 
 
 # v1.0
