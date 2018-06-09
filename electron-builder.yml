@@ -21,6 +21,8 @@ linux:
   description: Polar Bookshelf PDF reader
   category: Reference
 
+  # FIXME: nopw the problem must be that the installed icon is teh ELECTRON icon...
+
   # https://www.electron.build/icons
 
   # https://github.com/electron-userland/electron-builder/issues/2577
@@ -34,7 +36,7 @@ linux:
   # to use a PNG, and not the OS X or Windows icon formats, in order for it to
   # show up in the dock/window list. Setting the icon in the file manager is not
   # currently supported.
-  icon: ./512.png
+  icon: ./icons/512.png
   fileAssociations:
     - ext: "pdf"
 

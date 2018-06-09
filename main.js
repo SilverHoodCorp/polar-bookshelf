@@ -13,8 +13,7 @@ const crashReporter = electron.crashReporter;
 const BrowserWindow = electron.BrowserWindow;
 const nativeImage = require('electron').nativeImage;
 const options = { extraHeaders: 'pragma: no-cache\n' }
-const app_icon = nativeImage.createFromPath(fspath.join(__dirname, 'icon.ico'));
-const {DiskDatastore} = require("./web/js/datastore/DiskDatastore")
+const app_icon = nativeImage.createFromPath(fspath.join(__dirname, 'icon.png'));
 const webserver = require("./node/webserver");
 
 let mainWindow, splashwindow;
