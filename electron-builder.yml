@@ -10,7 +10,7 @@ directories:
 
 mac:
   category: Reference
-  icon: ./icon-512x512.png
+  icon: ./icons/icon.icns
   target: dmg
   fileAssociations:
     - ext: "pdf"
@@ -21,22 +21,10 @@ linux:
   description: Polar Bookshelf PDF reader
   category: Reference
 
-  # FIXME: nopw the problem must be that the installed icon is teh ELECTRON icon...
+  # WARNING: 'icon' is NOT supported well or at all on Linux. the only way to
+  # get them to work is to define them under 'mac' and use the icon.icns file
+  # to specify the icons.
 
-  # https://www.electron.build/icons
-
-  # https://github.com/electron-userland/electron-builder/issues/2577
-  #
-  # this documents the image width issues.
-
-  # https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#icon
-  #
-  # Linux: this option is not required, as the dock/window list icon is set via
-  # the icon option in the BrowserWindow constructor. Please note that you need
-  # to use a PNG, and not the OS X or Windows icon formats, in order for it to
-  # show up in the dock/window list. Setting the icon in the file manager is not
-  # currently supported.
-  icon: ./icons/512.png
   fileAssociations:
     - ext: "pdf"
 
