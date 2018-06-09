@@ -1,10 +1,12 @@
 const {SerializedObject} = require("./SerializedObject");
+const {TextType} = require("./TextType");
 
 class Text extends SerializedObject {
 
     constructor(val) {
 
         super(val);
+
         /**
          * The actual body of this text.
          *
@@ -14,7 +16,7 @@ class Text extends SerializedObject {
 
         /**
          * The type of this text.  Defaults to MARKDOWN.
-         * @type {number}
+         * @type {Symbol}
          */
         this.type = TextType.MARKDOWN;
 
@@ -23,3 +25,5 @@ class Text extends SerializedObject {
     }
 
 }
+
+module.exports.Text = Text;

@@ -74,11 +74,6 @@ describe('DocMetas', function() {
                                 "type": "SINGLE_COLUMN",
                                 "percentage": 100,
                                 "column": 0,
-                                "note": {
-                                    "text": "",
-                                    "created": "2012-03-02T11:38:49.321Z",
-                                    "author": null
-                                },
                                 "notes": {}
                             }
                         },
@@ -96,11 +91,6 @@ describe('DocMetas', function() {
                                 "type": "SINGLE_COLUMN",
                                 "percentage": 100,
                                 "column": 0,
-                                "note": {
-                                    "text": "",
-                                    "created": "2012-03-02T11:38:49.321Z",
-                                    "author": null
-                                },
                                 "notes": {}
                             }
                         },

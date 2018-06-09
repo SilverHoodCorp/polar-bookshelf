@@ -1,4 +1,4 @@
-var assert = require('assert');
+const assert = require('assert');
 
 const {Objects} = require("../utils");
 const {Proxies} = require("./Proxies");

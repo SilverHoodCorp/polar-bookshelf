@@ -14,10 +14,6 @@ module.exports.BaseHighlight = class extends AnnotationWithNote {
          */
         this.rects = {};
 
-        // this.linesOfText = {};
-        //
-        // this.text
-
         /**
          * Optional thumbnail for this highlight.
          * @type {null}

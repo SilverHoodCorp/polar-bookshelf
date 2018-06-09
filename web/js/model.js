@@ -4,6 +4,7 @@ const {Pagemark} = require("./metadata/Pagemark");
 const {PagemarkType} = require("./metadata/PagemarkType");
 const {DocMeta} = require("./metadata/DocMeta");
 const {DocMetas} = require("./metadata/DocMetas");
+const {ISODateTime} = require("./metadata/ISODateTime");
 const {DocMetaDescriber} = require("./metadata/DocMetaDescriber");
 const {Reactor} = require("./reactor/Reactor");
 const {Event} = require("./reactor/Event");
@@ -102,8 +103,11 @@ module.exports.Model = class {
 
         // FIXME: determine the type and the column
 
+        // FIXME: move this to Pagemarks.create() so e can put the date in the
+        // right place and require all pagemarks to have dates and that they
+        // use ISODateTime
         let pagemark = new Pagemark({
-            created: this.clock.getDate(),
+            created: new ISODateTime(this.clock.getDate()),
 
             // just set docMeta pageMarkType = PagemarkType.SINGLE_COLUMN by
             // default for now until we add multiple column types and handle

@@ -10,11 +10,11 @@ module.exports.Note = class extends SerializedObject {
         super(val);
 
         /**
-         * The text of this note.
+         * The content of this note.
          *
          * @type {Text}
          */
-        this.text = null;
+        this.content = null;
 
         /**
          * @type ISODateTime
@@ -33,8 +33,8 @@ module.exports.Note = class extends SerializedObject {
 
     setup() {
 
-        if(!this.text) {
-            this.text = "";
+        if(!this.content) {
+            this.content = "";
         }
 
     }
@@ -47,4 +47,4 @@ module.exports.Note = class extends SerializedObject {
 
     }
 
-}
+};

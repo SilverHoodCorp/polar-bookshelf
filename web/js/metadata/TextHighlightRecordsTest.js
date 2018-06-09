@@ -37,6 +37,7 @@ describe('TextHighlights', function() {
                         "0": "hello world"
                     },
                     "text": "hello world",
+                    "notes": {},
                     "thumbnail": null
                 }
             };

@@ -53,12 +53,18 @@
     "base58check": "^2.0.0",
     "codemirror": "^5.38.0",
     "editor.md": "^1.5.0",
+    "editor.md.webpack": "^1.5.0",
     "express": "^4.16.3",
     "file-exists-promise": "^1.0.2",
+    "flowchart": "^1.2.0",
     "fontawesome": "^4.7.2",
     "jquery": "^3.3.1",
     "keccak": "^1.4.0",
+    "markdown-plus": "^2.5.2",
+    "marked": "^0.4.0",
     "micromodal": "^0.3.2",
+    "prettify": "^0.1.7",
+    "raphael": "^2.2.7",
     "requirejs": "^2.3.5",
     "rimraf": "^2.6.2",
     "rx-collection": "^0.1.0",
@@ -66,6 +72,7 @@
     "serve-static": "^1.13.2",
     "simplemde": "^1.11.2",
     "texthighlighter": "^1.2.4",
+    "underscore": "^1.9.1",
     "webpack": "^4.11.0"
   }
 }

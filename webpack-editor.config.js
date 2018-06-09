@@ -3,7 +3,7 @@ var path = require('path');
 module.exports = {
     mode: 'development',
     entry: {
-        chrome: './web/js/apps/chrome.js',
+        editor: './web/js/editor.js',
     },
     output: {
         path: path.resolve(__dirname, 'web/js/apps'),

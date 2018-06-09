@@ -1,5 +1,25 @@
 module.exports.Preconditions = class {
 
+    static assertInstanceOf(value, name, instance) {
+
+        if ((value instanceof instance)) {
+            throw new Error(`Precondition for instanceof '${name}' was not ${instance}.`);
+        }
+
+        return value;
+
+    }
+
+    static assertTypeOf(value, name, type) {
+
+        if (!(typeof value === type)) {
+            throw new Error(`Precondition for typeof '${name}' was not ${type}.`);
+        }
+
+        return value;
+
+    }
+
     static assertNotNull(value, name) {
 
         if (value === null) {
@@ -26,7 +46,7 @@ module.exports.Preconditions = class {
 
     static assertNotInstanceOf(value, name, instance) {
 
-        if (value instanceof instance ) {
+        if (value instanceof instance) {
             throw new Error(`Precondition for instanceof '${name}' was ${instance} but not allowed`);
         }
 

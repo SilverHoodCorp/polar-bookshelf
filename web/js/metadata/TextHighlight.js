@@ -21,9 +21,9 @@ module.exports.TextHighlight = class extends BaseHighlight {
          * The text selections converted to a text string which may or may not
          * be human readable.
          *
-         * @type {string}
+         * @type {Text}
          */
-        this.text = "";
+        this.text = null;
 
         this.init(val);
 
