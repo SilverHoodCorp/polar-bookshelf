@@ -12,6 +12,8 @@ allow suspend and resume of reading for weeks and months in the future until
 you're ready to resume, without losing your place.  This works even if you
 jump around in a book (which is often in technical or research work).
 
+<img src="https://github.com/burtonator/polar-bookshelf/blob/master/screenshot.png" width="1200">
+
 # Roadmap
 
 The long term goal is to implement the following functionality:
@@ -34,6 +36,11 @@ The long term goal is to implement the following functionality:
    deletions, and the ability to include extended metadata like the source text
    to which the flashcard was attached.
 
+ - Fully distributed. You control your notes. You can export them to Evernote,
+   Google Drive, etc but Polar keeps track of your notes for you.
+
+ - Distributed collaboration with other Polar users.
+
 # Principles
 
 We believe the following design principles are core to seeing this as a
@@ -52,7 +59,7 @@ successful project.
 We currently only support pagemarks but this is the main functionality I wanted
 implemented.
 
-The pagemarks are persisted on disk in your ```~/~.polar``` directory and when
+The pagemarks are persisted on disk in your ```~/.polar``` directory and when
 you re-open a PDF your pagemarks are restored.
 
 Additionally there is a progress bar that tracks the progress of the document
@@ -74,15 +81,11 @@ Right now usage is only via keyboard bindings (for pagemarks).
 
 # Installation
 
-<!-- Download executable jar from [Releases](https://github.com/praharshjain/Electron-PDF-Viewer/releases) -->
+Packages for MacOS and Linux are available in [Releases](https://github.com/burtonator/polar-bookshelf/releases)
 
-## Binaries
-
-We're working on binaries for all platforms.
+We're working on Windows packages as well but don't have them ready just yet.
 
 ## Build from source
-
-Install dependencies (Node.js, npm etc) -
 
 ```
 Install NodeJS and npm for your platform.
@@ -99,10 +102,6 @@ $ npm install && npm start
 ### Run with advanced logging:
 
 ./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging .
-
-Screenshot
-----------------
-<img src="https://github.com/burtonator/polar-bookshelf/blob/master/screenshot.png" width="1200">
 
 License
 ----------------
