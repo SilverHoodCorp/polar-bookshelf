@@ -1,6 +1,6 @@
 {
   "name": "polar-bookshelf",
-  "version": "1.0.0-beta2",
+  "version": "1.0.0-beta3",
   "description": "A PDF bookshelf for incremental reading",
   "main": "main.js",
   "scripts": {
