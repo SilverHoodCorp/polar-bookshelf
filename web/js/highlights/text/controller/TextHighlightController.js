@@ -1,9 +1,9 @@
 const {TextHighlightRecords} = require("../../../metadata/TextHighlightRecords");
-const {TextHighlightRenderer} = require("./TextHighlightRenderer");
 const {TextHighlighterFactory} = require("./TextHighlighterFactory");
 const {TextHighlightRows} = require("./TextHighlightRows");
 const {PDFRenderer} = require("../../../PDFRenderer");
 const {Preconditions} = require("../../../Preconditions");
+const {KeyEvents} = require("../../../KeyEvents.js");
 
 class TextHighlightController {
 
@@ -23,7 +23,7 @@ class TextHighlightController {
 
     keyBindingListener(event) {
 
-        if (event.ctrlKey && event.altKey) {
+        if (KeyEvents.isKeyMetaActive(event)) {
 
             const tCode = 84;
 

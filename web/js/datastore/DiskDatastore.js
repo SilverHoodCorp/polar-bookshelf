@@ -2,7 +2,6 @@ const {Preconditions} = require("../Preconditions");
 const {Datastore} = require("./Datastore.js");
 
 const fs = require("fs");
-const path = require("path");
 const util = require('util');
 
 class DiskDatastore extends Datastore {
