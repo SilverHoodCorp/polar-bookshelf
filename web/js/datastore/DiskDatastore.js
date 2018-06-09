@@ -2,19 +2,22 @@ const {Preconditions} = require("../Preconditions");
 const {Datastore} = require("./Datastore.js");
 
 const fs = require("fs");
-const os = require("os");
+const path = require("path");
 const util = require('util');
+const fileExists = require('file-exists-promise');
 
-/**
- * A disk based datastore with long term persistence.
- */
-module.exports.DiskDatastore = class extends Datastore {
+class DiskDatastore extends Datastore {
 
-    constructor() {
+    constructor(dataDir) {
 
         super();
 
-        this.dataDir = this.getDataDir();
+        if(dataDir) {
+            // use a configured dataDir for testing.
+            this.dataDir = dataDir;
+        } else {
+            this.dataDir = DiskDatastore.getDataDir();
+        }
 
         this.readFileAsync = util.promisify(fs.readFile);
         this.writeFileAsync = util.promisify(fs.writeFile);
@@ -23,16 +26,25 @@ module.exports.DiskDatastore = class extends Datastore {
         this.statAsync = util.promisify(fs.stat);
         this.unlinkAsync = util.promisify(fs.unlink);
         this.rmdirAsync = util.promisify(fs.rmdir);
+        //this.existsAsync = fileExists;
 
     }
 
     async init() {
 
-        let dirStat = await this.statAsync(this.dataDir);
+        let result = {
+            dataDir: this.dataDir
+        };
 
-        if ( ! dirStat.isDirectory()) {
+        if(await this.existsAsync(this.dataDir)) {
+            result.exists=true;
+        } else {
+            result.dataDirCreated = true;
             await this.mkdirAsync(this.dataDir);
         }
+
+        return result;
+
     }
 
     /**
@@ -69,9 +81,24 @@ module.exports.DiskDatastore = class extends Datastore {
     }
 
     async existsAsync(path) {
-        return await this.accessAsync(path, fs.constants.R_OK | fs.constants.W_OK)
-                  .then(() => true)
-                  .catch(() => false);
+
+        return new Promise(function(resolve,reject) {
+
+            this.statAsync(path)
+                .then(function() {
+                    resolve(true);
+                })
+                .catch(function(err) {
+                    if(err.code === 'ENOENT') {
+                        resolve(false);
+                    } else {
+                        // some other error
+                        reject(err);
+                    }
+                });
+
+        }.bind(this));
+
     }
 
     /**
@@ -104,7 +131,7 @@ module.exports.DiskDatastore = class extends Datastore {
 
     }
 
-    getUserHome() {
+    static getUserHome() {
 
         let result = process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'];
 
@@ -115,8 +142,13 @@ module.exports.DiskDatastore = class extends Datastore {
         return result;
     }
 
-    getDataDir() {
-        return this.getUserHome() + "/.polar";
+    static getDataDir() {
+        return DiskDatastore.getUserHome() + "/.polar";
     }
 
-};
+}
+
+/**
+ * A disk based datastore with long term persistence.
+ */
+module.exports.DiskDatastore = DiskDatastore;

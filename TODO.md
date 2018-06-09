@@ -6,18 +6,15 @@
 
 - checkpoint journaling so I have confidence that I am not losing data.
 
-# Release
+# Release (for myself)
 
-- pagemarks don't seem to always persist on disk..
-
-- make sure the most recent state of the pagemarks are written to disk
-
-- I need a way to get end to end testing done so that I'm not constantly
-  tripping over the same bugs.  For example, opening up existing files from disk,
-  closing them, making sure the content is persisted and comes back after reload,
-  etc.
+- MacOS
+    - no .polar home directory
+    - key bindings don't work
 
 - file associations working for *.pdf with elecron-builder
+
+## Site
 
 - screenshot and video of the app
 
@@ -26,25 +23,29 @@
 - Blog / post about it.
     - get links everywhere...
 
-- Actual packages (install on my MacOS box)
+# Beta 5
 
 - Ability to disable PDF links as they would impact our ability to annotate but
   maybe they have to click the annotation button (highlight, highlight region)
   so that the links are then disabled.
 
+- basic transaction logs...
 
-- FONTS look like complete shit compared to the official version!!!
-    - is this cmaaps?
-    - my local pdf.js build looks horrible too.
-    - this might only be on chrome, not in electron
 
-- NOW the thumbnaails look like shit too!!!
-    - this might only be on chrome, not in electron
+# v1.0
 
-# v1.1
+- I need a way to get end to end testing done so that I'm not constantly
+  tripping over the same bugs.  For example, opening up existing files from disk,
+  closing them, making sure the content is persisted and comes back after reload,
+  etc.
 
 - some sort of tab support working so I can edit muliple PDF files in the UI
 
+
+- DMG and Linux releases work but:
+    - file associations are broken
+        - they don't work on MacOS
+        - they aren't even present as an option for MacOS
 
 # Development productivity
 
