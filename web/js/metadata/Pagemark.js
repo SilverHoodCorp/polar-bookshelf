@@ -11,7 +11,7 @@ module.exports.Pagemark = class extends AnnotationWithNote {
         super(val);
 
         /**
-         * The note for this annotation.
+         * The type of pagemark.
          *
          * @type PagemarkType
          */

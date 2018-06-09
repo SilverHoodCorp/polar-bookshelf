@@ -33,3 +33,6 @@ win:
   fileAssociations:
     - ext: "pdf"
 
+# https://www.electron.build/configuration/publish
+# https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/
+publish: github

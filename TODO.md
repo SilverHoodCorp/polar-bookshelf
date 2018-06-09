@@ -8,6 +8,18 @@
 
 # Release (for myself)
 
+## Next
+
+- get the binary releases on the site
+- get text extraction working
+- get end to end tests working
+- get the transaction logs working
+
+- get basic flashcards working so that I can easily create them.  Don't focus
+  on tags or any other functionality. Just notes.
+
+    - work on this as a dedicated app for now.
+
 ## Site
 
 - screenshot and video of the app
@@ -16,9 +28,7 @@
 
 - Blog / post about it.
 
-# Beta 7
-
-- get the icons to work on ubuntu
+# Beta 9
 
 - file associations working for *.pdf with elecron-builder.
     - Not critical right now.
@@ -28,7 +38,6 @@
   so that the links are then disabled.
 
 - basic logging of renderer console data (errors) to the node console.
-
 
 # v1.0
 
