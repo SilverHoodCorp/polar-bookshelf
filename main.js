@@ -235,15 +235,15 @@ app.on('ready', function() {
     ]);
 
     //for OS-X
-    //if (app.dock) {
-    //    app.dock.setIcon(app_icon);
-    //    app.dock.setMenu(contextMenu);
-    //}
+    if (app.dock) {
+        app.dock.setIcon(app_icon);
+        app.dock.setMenu(contextMenu);
+    }
 
     Menu.setApplicationMenu(menu);
-    const appIcon = new Tray(app_icon);
-    appIcon.setToolTip('Polar Bookshelf');
-    appIcon.setContextMenu(contextMenu);
+    //const appIcon = new Tray(app_icon);
+    //appIcon.setToolTip('Polar Bookshelf');
+    //appIcon.setContextMenu(contextMenu);
 
     createWindow();
     //setTimeout(createWindow, 1);
