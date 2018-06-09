@@ -4,7 +4,6 @@ const {Datastore} = require("./Datastore.js");
 const fs = require("fs");
 const path = require("path");
 const util = require('util');
-const fileExists = require('file-exists-promise');
 
 class DiskDatastore extends Datastore {
 
