@@ -1,4 +1,4 @@
-
+const {Pagemarks} = require("../metadata/Pagemarks");
 
 class CreatePagemarksForPageRanges {
 
@@ -16,6 +16,9 @@ class CreatePagemarksForPageRanges {
 
             let pageMeta = this.docMeta.getPageMeta(pageNum);
 
+            let pagemark = Pagemarks.create();
+
+            pageMeta.pagemarks[pagemark.column] = pagemark;
 
         }
 
