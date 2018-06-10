@@ -1,4 +1,10 @@
-@import "polar-drop.css";
+/*#secondaryToolbarButtonContainer > .polar-fa-button {*/
+    /*font-size: 25px;*/
+/*}*/
+
+/*#secondaryToolbarButtonContainer > .polar-fa-button span {*/
+    /*font-size: 12px;*/
+/*}*/
 
 #polar-header {
     position: sticky;
@@ -64,6 +70,20 @@
     display: none;
 }
 
+
+#polarCreatePagemarksAcrossPages:before {
+
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    content: "\f055";
+    padding: 2px;
+    font-size: 13px;
+
+}
 
 
 
