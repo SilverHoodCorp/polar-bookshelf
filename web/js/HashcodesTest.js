@@ -15,7 +15,6 @@ describe('Hashcodes', function() {
 
         });
 
-
     });
 
 });

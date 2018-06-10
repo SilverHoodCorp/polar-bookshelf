@@ -7,7 +7,7 @@
     "start": "electron .",
     "dist-linux": "electron-builder --config=electron-builder.yml --linux deb tar.gz snap --publish always",
     "dist-macos": "electron-builder --config=electron-builder.yml --macos dmg --publish always",
-    "test": "./node_modules/.bin/mocha --recursive \"web/js/**/*Test.js\"",
+    "test": "./node_modules/.bin/mocha --exit --recursive \"web/js/**/*Test.js\"",
     "webpack": "npx webpack --config=webpack-chrome.config.js && npx webpack --config=webpack-injector.config.js && npx webpack --config=webpack-electron.config.js",
     "start-with-console": "./node_modules/.bin/electron --enable-remote-debugging --interactive --enable-console-logging ."
   },
