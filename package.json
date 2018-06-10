@@ -57,6 +57,7 @@
     "express": "^4.16.3",
     "file-exists-promise": "^1.0.2",
     "flowchart": "^1.2.0",
+    "font-awesome": "^4.7.0",
     "fontawesome": "^4.7.2",
     "jquery": "^3.3.1",
     "keccak": "^1.4.0",

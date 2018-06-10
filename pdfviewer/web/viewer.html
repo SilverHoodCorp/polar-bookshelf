@@ -32,6 +32,7 @@ See https://github.com/adobe-type-tools/cmap-resources
     <link rel="stylesheet" href="viewer.css">
 
     <!-- BEGIN polar customization -->
+    <link rel="stylesheet" href="../../node_modules/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="../../pdfviewer-custom/polar.css">
     <script src="../../web/js/apps/injector-bundle.js" ></script>
     <!-- END polar customization -->
@@ -178,6 +179,17 @@ See https://github.com/adobe-type-tools/cmap-resources
             <button id="documentProperties" class="secondaryToolbarButton documentProperties" title="Document Properties…" tabindex="68" data-l10n-id="document_properties">
               <span data-l10n-id="document_properties_label">Document Properties…</span>
             </button>
+
+            <!-- BEGIN polar customization -->
+
+            <div class="horizontalToolbarSeparator"></div>
+
+            <button id="polarCreatePagemarksAcrossPages" class="secondaryToolbarButton polarCreatePagemarkRanges fa fa-plus-circle polar-fa-button" title="Create pagemarks for pages..." tabindex="68">
+              <span>Create pagemarks for range</span>
+            </button>
+
+            <!-- END polar customization -->
+
           </div>
         </div>  <!-- secondaryToolbar -->
 
@@ -284,7 +296,9 @@ See https://github.com/adobe-type-tools/cmap-resources
 
             <!-- BEGIN polar customization -->
             <div id="polar-header">
+
               <progress id="pagemark-process" value="0.0"></progress>
+
             </div>
             <!-- END polar customization -->
 

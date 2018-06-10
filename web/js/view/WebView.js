@@ -464,14 +464,14 @@ class ThumbnailPagemarkRenderer extends PagemarkRenderer {
 
     __render(pageElement) {
 
-        var templateElement = pageElement.querySelector(".thumbnailImage");
+        let templateElement = pageElement.querySelector(".thumbnailImage");
 
         if( ! templateElement) {
             // the thumbnail tab might not be visible.
             return;
         }
 
-        var options = {zIndex: 1, templateElement, placementElement: templateElement};
+        let options = {zIndex: 1, templateElement, placementElement: templateElement};
 
         this.view.recreatePagemarksFromPagemarks(pageElement, options);
 
@@ -504,3 +504,6 @@ class CompositePagemarkRenderer extends PagemarkRenderer {
     }
 
 }
+
+
+

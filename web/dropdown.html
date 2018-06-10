@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.min.css">
+
+    <style>
+
+        .polar-dropbtn {
+            background-color: #3498DB;
+            color: white;
+            padding: 5px;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .polar-dropbtn:hover, .polar-dropbtn:focus {
+            background-color: #2980B9;
+        }
+
+        .polar-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .polar-dropdown-content {
+            display: none;
+            position: absolute;
+            top: 55px;
+            right: 5px;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            overflow: auto;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .polar-dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .polar-dropdown a:hover {background-color: #ddd}
+
+        .polar-drop-show {display:block;}
+
+    </style>
+</head>
+<body>
+
+
+<div class="polar-dropdown" style="float: right;">
+    <button onclick="myFunction()" class="polar-dropbtn fa fa-caret-down"></button>
+    <div id="myDropdown" class="polar-dropdown-content">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </div>
+</div>
+
+<script>
+
+    /* When the user clicks on the button,
+    toggle between hiding and showing the dropdown content */
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("polar-drop-show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function(event) {
+        if (!event.target.matches('.polar-dropbtn')) {
+
+            var dropdowns = document.getElementsByClassName("polar-dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+
+</script>
+
+</body>
+</html>

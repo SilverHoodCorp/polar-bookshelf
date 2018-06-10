@@ -1,15 +1,17 @@
+@import "polar-drop.css";
+
 #polar-header {
     position: sticky;
     left: 0;
     top: 0;
     color: white;
     text-align: center;
-    height: 20px;
+    height: 15px;
     background-color: rgb(71, 71, 71);
     box-shadow: inset 0 1px 1px hsla(0,0%,0%,.15), inset 0 -1px 0 hsla(0,0%,100%,.05), 0 1px 0 hsla(0,0%,0%,.15), 0 1px 1px hsla(0,0%,0%,.1);
     overflow: hidden;
     z-index: 99;
-    /* padding: 10px; */
+    padding: 10px;
 }
 
 #polar-footer {
@@ -32,13 +34,19 @@
     font-weight: bold;
 }
 
-
-
-progress {
-    width: calc(100% - 10px);
+#polar-header progress {
+    position: absolute;;
+    left: 5px;
+    width: calc(100% - 25px);
     height: 12px;
     margin-left: 5px;
     margin-right: 5px;
+}
+
+.polar-dropdown {
+    position: absolute;
+    top: 3px;
+    right: 15px;
 }
 
 #viewer {
@@ -55,3 +63,7 @@ progress {
 #openFile {
     display: none;
 }
+
+
+
+
