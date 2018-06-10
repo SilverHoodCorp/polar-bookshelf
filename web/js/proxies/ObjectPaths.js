@@ -11,7 +11,7 @@
  * @type {ObjectPathEntry}
  */
 const {ObjectPathEntry} = require("./ObjectPathEntry");
-const {Paths} = require("./Paths");
+const {Paths} = require("../util/Paths");
 
 class ObjectPaths {
 

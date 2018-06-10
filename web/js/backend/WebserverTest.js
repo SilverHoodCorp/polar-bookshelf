@@ -1,8 +1,12 @@
+const http = require('http');
 const fs = require('fs');
 const assert = require('assert');
+
 const {Webserver} = require('./Webserver');
-const {Hashcodes} = require('./Hashcodes');
-const http = require('http');
+const {FileRegistry} = require('./FileRegistry');
+const {WebserverConfig} = require('./WebserverConfig');
+const {Hashcodes} = require('../Hashcodes');
+const {assertJSON} = require("../test/Assertions");
 
 describe('Webserver', function() {
 
@@ -10,7 +14,9 @@ describe('Webserver', function() {
 
         it("basic", function () {
 
-            let webserver = new Webserver("..", 8085);
+            let webserverConfig = new WebserverConfig("..", 8085);
+
+            let webserver = new Webserver(webserverConfig);
             webserver.start();
             webserver.stop();
 
@@ -18,20 +24,28 @@ describe('Webserver', function() {
 
         it("registerFile", async function () {
 
-            let port = 8095;
+            let webserverConfig = new WebserverConfig("..", 8095);
+            let fileRegistry = new FileRegistry(webserverConfig);
+            let webserver = new Webserver(webserverConfig, fileRegistry);
 
-            let webserver = new Webserver("..", port);
             webserver.start();
             let filename = "./package.json";
-            webserver.registerFile("0x000", filename);
+            let fileMeta = fileRegistry.register("0x000", filename);
 
             let hashcode = Hashcodes.create(await read(filename));
 
-            let data = await fetch(`http://localhost:${port}/files/0x000`);
+            let expected = {
+                "key": "0x000",
+                "filename": "/home/burton/projects/polar-bookshelf/package.json",
+                "url": "http://127.0.0.1:8095/files/0x000"
+            };
 
-            assert.equal(hashcode, Hashcodes.create(data));
+            assertJSON(fileMeta, expected);
 
-            //console.log(data.toString());
+            let data = await fetch(fileMeta.url);
+
+            assertJSON(hashcode, Hashcodes.create(data));
+
             webserver.stop();
 
         });
@@ -86,6 +100,7 @@ async function fetch(url) {
                 resolve(buffer);
 
             });
+
         });
 
     });
