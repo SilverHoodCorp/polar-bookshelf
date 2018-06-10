@@ -57,19 +57,14 @@ const DEFAULT_URL = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/default.html`;
 // TODO: I think we need to wait until the webserver port is available before
 // continuing.
 
-// FIXME: if ./resources/app
+console.log("Electron app path is: " + app.getAppPath());
 
-//console.log("Resources path is: " + process.resourcesPath);
-
-const webserverConfig = new WebserverConfig(".", WEBSERVER_PORT);
+const webserverConfig = new WebserverConfig(app.getAppPath(), WEBSERVER_PORT);
 
 const fileRegistry = new FileRegistry(webserverConfig);
 
 const webserver = new Webserver(webserverConfig, fileRegistry);
 webserver.start();
-
-
-
 
 //const DEFAULT_URL = 'file://' + __dirname + '/default.html';
 
@@ -231,8 +226,6 @@ if (shouldQuit) { app.quit(); return; }
 
 app.on('ready', function() {
 
-    // FIXME: remove the splash screen support. It just slows us down.
-
     contextMenu = Menu.buildFromTemplate([
         { label: 'Minimize', type: 'radio', role: 'minimize' },
         { type: 'separator' },
@@ -279,7 +272,6 @@ function loadPDF(path) {
 
     console.log("Loading PDF via HTTP server: " + JSON.stringify(fileMeta));
 
-    // FIXME: cmaps are disabled when loading from file URLs so I need to look into this problem...
     mainWindow.loadURL(`http://${DEFAULT_HOST}:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=` + encodeURIComponent(fileMeta.url), options);
     //mainWindow.loadURL('file://' + __dirname + '/pdfviewer/web/viewer.html?file=' + encodeURIComponent(fileMeta.url), options);
 
