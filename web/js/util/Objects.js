@@ -2,6 +2,27 @@
 module.exports.Objects = class {
 
     /**
+     * Take the current object, and use given object as a set of defaults.
+     */
+    static defaults(current, def) {
+
+        let result = current;
+
+        if (!result) {
+            result = {};
+        }
+
+        for(let key in def) {
+            if(def.hasOwnProperty(key) && ! result.hasOwnProperty(key)) {
+                result[key] = def[key];
+            }
+        }
+
+        return result;
+
+    }
+
+    /**
      * Clear an array or dictionary of all its values so it is reset.
      * This modifies the object directly.
      *
