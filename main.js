@@ -18,7 +18,6 @@ const {WebserverConfig} = require("./web/js/backend/WebserverConfig");
 const {Webserver} = require("./web/js/backend/Webserver");
 const {FileRegistry} = require("./web/js/backend/FileRegistry");
 
-
 let mainWindow, splashwindow;
 let contextMenu = null;
 let filepath = null;
@@ -26,14 +25,6 @@ let quitapp, URL;
 
 // share the disk datastore with the remote.
 global.diskDatastore = new DiskDatastore();
-
-function sleep(millis) {
-    let date = new Date();
-    let curDate = null;
-    do { curDate = new Date(); }
-    while (curDate - date < millis);
-}
-
 
 const BROWSER_WINDOW_OPTIONS = {
     minWidth: 400,
@@ -59,24 +50,27 @@ const BROWSER_WINDOW_OPTIONS = {
 // because I don't want to have to keep this port open all the time.
 
 const REMOTE_DEBUGGING_PORT = '8315';
-
 const WEBSERVER_PORT = 8500;
+const DEFAULT_HOST = "127.0.0.1";
+const DEFAULT_URL = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/default.html`;
 
 // TODO: I think we need to wait until the webserver port is available before
 // continuing.
 
+// FIXME: if ./resources/app
+
+//console.log("Resources path is: " + process.resourcesPath);
+
 const webserverConfig = new WebserverConfig(".", WEBSERVER_PORT);
+
 const fileRegistry = new FileRegistry(webserverConfig);
 
 const webserver = new Webserver(webserverConfig, fileRegistry);
 webserver.start();
 
-// TODO: if the __dirname has a space in it then I think the file URL will be
-// wrong.
 
-const DEFAULT_HOST = "127.0.0.1";
 
-const DEFAULT_URL = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/default.html`;
+
 //const DEFAULT_URL = 'file://' + __dirname + '/default.html';
 
 let enableConsoleLogging = false;

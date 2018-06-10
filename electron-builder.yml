@@ -29,10 +29,13 @@ linux:
     - ext: "pdf"
 
 win:
-  icon: icon-512x512.png
+  target: nsis, portable,
+  icon: ./icons/icon-512x512.png
   fileAssociations:
     - ext: "pdf"
 
 # https://www.electron.build/configuration/publish
 # https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/
 publish: github
+
+asar: false

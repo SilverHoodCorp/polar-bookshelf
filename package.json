@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dist-linux": "electron-builder --config=electron-builder.yml --linux deb tar.gz snap --publish always",
+    "dist-linux": "electron-builder --config=electron-builder.yml --linux deb tar.gz snap --publish always --draft=false",
     "dist-macos": "electron-builder --config=electron-builder.yml --macos dmg --publish always",
     "test": "./node_modules/.bin/mocha --exit --recursive \"web/js/**/*Test.js\"",
     "webpack": "npx webpack --config=webpack-chrome.config.js && npx webpack --config=webpack-injector.config.js && npx webpack --config=webpack-electron.config.js",
