@@ -14,7 +14,10 @@ const BrowserWindow = electron.BrowserWindow;
 const nativeImage = require('electron').nativeImage;
 const options = { extraHeaders: 'pragma: no-cache\n' }
 const app_icon = nativeImage.createFromPath(fspath.join(__dirname, 'icon.png'));
-const webserver = require("./node/webserver");
+const {WebserverConfig} = require("./web/js/backend/WebserverConfig");
+const {Webserver} = require("./web/js/backend/Webserver");
+const {FileRegistry} = require("./web/js/backend/FileRegistry");
+
 
 let mainWindow, splashwindow;
 let contextMenu = null;
@@ -61,14 +64,20 @@ const WEBSERVER_PORT = 8500;
 
 // TODO: I think we need to wait until the webserver port is available before
 // continuing.
-const webserverDaemon = new webserver.WebserverDaemon(".", WEBSERVER_PORT);
-webserverDaemon.start();
+
+const webserverConfig = new WebserverConfig(".", WEBSERVER_PORT);
+const fileRegistry = new FileRegistry(webserverConfig);
+
+const webserver = new Webserver(webserverConfig, fileRegistry);
+webserver.start();
 
 // TODO: if the __dirname has a space in it then I think the file URL will be
 // wrong.
 
-//const DEFAULT_URL = `http://localhost:${WEBSERVER_PORT}/default.html`;
-const DEFAULT_URL = 'file://' + __dirname + '/default.html';
+const DEFAULT_HOST = "127.0.0.1";
+
+const DEFAULT_URL = `http://${DEFAULT_HOST}:${WEBSERVER_PORT}/default.html`;
+//const DEFAULT_URL = 'file://' + __dirname + '/default.html';
 
 let enableConsoleLogging = false;
 
@@ -80,7 +89,7 @@ if (process.argv.includes("--enable-console-logging")) {
 if (process.argv.includes("--enable-remote-debugging")) {
 
     console.log(`Remote debugging port enabled on port ${REMOTE_DEBUGGING_PORT}.`);
-    console.log(`You may connect via http://localhost:${REMOTE_DEBUGGING_PORT}`);
+    console.log(`You may connect via http://${DEFAULT_HOST}:${REMOTE_DEBUGGING_PORT}`);
 
     app.commandLine.appendSwitch('remote-debugging-port', REMOTE_DEBUGGING_PORT);
     app.commandLine.appendSwitch('host-rules', 'MAP * 127.0.0.1');
@@ -272,8 +281,15 @@ app.on('activate', function() {
  */
 function loadPDF(path) {
 
+    let fileMeta = fileRegistry.registerFile(path);
+
+    console.log("Loading PDF via HTTP server: " + JSON.stringify(fileMeta));
+
     // FIXME: cmaps are disabled when loading from file URLs so I need to look into this problem...
-    mainWindow.loadURL('file://' + __dirname + '/pdfviewer/web/viewer.html?file=' + encodeURIComponent(path), options);
+    mainWindow.loadURL(`http://${DEFAULT_HOST}:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=` + encodeURIComponent(fileMeta.url), options);
+    //mainWindow.loadURL('file://' + __dirname + '/pdfviewer/web/viewer.html?file=' + encodeURIComponent(fileMeta.url), options);
+
+    //mainWindow.loadURL('file://' + __dirname + '/pdfviewer/web/viewer.html?file=' + encodeURIComponent(path), options);
     //mainWindow.loadURL(`http://localhost:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=` + encodeURIComponent(path), options);
 
     if(enableConsoleLogging) {

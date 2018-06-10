@@ -1,5 +1,6 @@
 const path = require('path');
 const {Preconditions} = require("../Preconditions");
+const {Hashcodes} = require('../Hashcodes');
 
 class FileRegistry {
 
@@ -14,6 +15,11 @@ class FileRegistry {
          */
         this.registry = {};
 
+    }
+
+    registerFile(filename) {
+        let key = Hashcodes.create(filename);
+        return this.register(key, filename);
     }
 
     /**

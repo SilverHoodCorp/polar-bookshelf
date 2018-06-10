@@ -10,7 +10,7 @@ class Webserver {
     constructor(webserverConfig, fileRegistry) {
 
         this.webserverConfig = Preconditions.assertNotNull(webserverConfig);
-        this.fileRegistry = fileRegistry;
+        this.fileRegistry = Preconditions.assertNotNull(fileRegistry);;
 
         this.app = null;
         this.server = null;
