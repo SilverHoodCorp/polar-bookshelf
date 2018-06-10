@@ -12,7 +12,9 @@ class CreatePagemarksForPageRanges {
             options = {};
         }
 
-        for (let pageNum = options.range.end; pageNum < options.range.end; pageNum++) {
+        for (let pageNum = options.range.start; pageNum < options.range.end; pageNum++) {
+
+            console.log("Creating pagemark for page: " + pageNum);
 
             let pageMeta = this.docMeta.getPageMeta(pageNum);
 

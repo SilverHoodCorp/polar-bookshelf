@@ -8,6 +8,7 @@ const {WebserverConfig} = require('./WebserverConfig');
 const {Hashcodes} = require('../Hashcodes');
 const {assertJSON} = require("../test/Assertions");
 
+
 describe('Webserver', function() {
 
     describe('create', function() {
@@ -15,8 +16,9 @@ describe('Webserver', function() {
         it("basic", function () {
 
             let webserverConfig = new WebserverConfig("..", 8085);
+            let fileRegistry = new FileRegistry(webserverConfig);
 
-            let webserver = new Webserver(webserverConfig);
+            let webserver = new Webserver(webserverConfig, fileRegistry);
             webserver.start();
             webserver.stop();
 

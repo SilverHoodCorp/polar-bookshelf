@@ -83,10 +83,6 @@
 - keep a history of recently opened files
 
 
--  cmaps are disabled when loading from file URLs so I need to look into this
-   problem and this might cause problems with some PDFs.
-
-
 - I could use chrome headless via fork() to print my own PDFs of URLs within
   electron since I'm running in the OS as a top level project.
 
