@@ -29,8 +29,8 @@ global.diskDatastore = new DiskDatastore();
 const BROWSER_WINDOW_OPTIONS = {
     minWidth: 400,
     minHeight: 300,
-    width: 800,
-    height: 600,
+    width: 1280,
+    height: 1024,
     show: false,
     // https://electronjs.org/docs/api/browser-window#new-browserwindowoptions
     icon: app_icon,

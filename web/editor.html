@@ -6,7 +6,14 @@
 
 
         #editor {
-            height: 500px;
+            /*height: 500px;*/
+            height: 80%;
+
+        }
+
+        dialog {
+            /*width: 80%;*/
+            /*height: 80%;*/
         }
 
     </style>
@@ -18,13 +25,29 @@
 
 <body>
 
+<dialog>
+
 <div class="content">
 
-    <textarea id="editor">#this is markdown
+    <div class="modal-header">
+        <h2>Create Flashcard</h2>
+    </div>
+
+    <hr>
+
+    <textarea id="editor"># this is markdown
     </textarea>
+
+    <div class="modal-footer">
+        <button>save</button>
+    </div>
+
 </div>
 
+</dialog>
 <script>
+
+    document.querySelector("dialog").showModal();
 
 </script>
 

@@ -3,12 +3,7 @@
 // FIXME: this is not working for soem reason and I ahve NO ideawhy.. module.exports is setup properly.
 
 //const simplemde = require("simplemde");
-const {SimpleMDE} = require("../../node_modules/simplemde/src/js/simplemde.js");
-let foo = require("../../node_modules/simplemde/src/js/simplemde.js");;
-
-console.log("FIXME foo", foo);
-console.log("FIXME foo.SimpleMDE", foo.SimpleMDE);
-console.log("FIXME SimpleMDE", SimpleMDE);
+const SimpleMDE = require("../../node_modules/simplemde/src/js/simplemde.js");
 
 // require("marked");
 // require("prettify");

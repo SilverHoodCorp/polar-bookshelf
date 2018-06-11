@@ -16,14 +16,24 @@ module.exports.AnnotationWithNote = class extends Annotation {
          */
         this.notes = {};
 
+        /**
+         *
+         * @type map<string,Question>
+         */
+        this.questions = {};
+
+        /**
+         *
+         * @type map<string,Flashcard>
+         */
+        this.flashcards = {};
+
         // FIXME: the keys of these objects should be the hash of the time
         // sequenece, the user, and machine that this was generated on.
 
         // FIXME: should have comments (plural)
 
         // FIXME: should have tags (plural)
-
-        // FIXME: should have flashcards (plural) for anki usage.
 
         this.init(val);
 

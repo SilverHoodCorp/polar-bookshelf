@@ -1,3 +1,4 @@
+
 <img src="https://github.com/burtonator/polar-bookshelf/blob/master/icon.ico" width="128" align="right">
 
 # Polar Bookshelf
@@ -43,6 +44,13 @@ The long term goal is to implement the following functionality:
    Google Drive, etc but Polar keeps track of your notes for you.
 
  - Distributed collaboration with other Polar users.
+
+ - Tagging system and the ability to perform advanced functions on the tags.
+
+ - Native cloud sync.
+
+ - Management UI for all the notes you've worked on (editing, changing them,
+   adding metadata, etc).
 
 # Principles
 

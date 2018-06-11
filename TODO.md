@@ -30,6 +30,8 @@
 
 # Beta 9
 
+- clean up excessive dependencies.
+
 - file associations working for *.pdf with elecron-builder.
     - Not critical right now.
 
