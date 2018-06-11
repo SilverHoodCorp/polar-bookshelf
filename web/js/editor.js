@@ -68,10 +68,20 @@ function createModal2() {
 
 function createModal() {
 
-    let innerHTML = `<div id="mylightbox" class="polar-lightbox" style="">
+    let innerHTML = `<div id="mylightbox" class="polar-lightbox">
+
+        <div class="modal-header">
+            Create Flashcard
+        </div>
+
         <div id="editor-content">
             <textarea id="editor" autofocus># this is markdown</textarea>
         </div>
+        
+        <div class="modal-footer">
+            <button>Save</button>
+        </div>
+        
     </div>
     `;
 
