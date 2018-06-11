@@ -31,6 +31,9 @@ module.exports.Pagemark = class extends AnnotationWithNote {
          */
         this.column = null;
 
+        // TODO: support 'range' in the future which is a PagemarkRange so that
+        // we can start off reading within a smaller page.
+
         this.init(val);
 
     }

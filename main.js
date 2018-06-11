@@ -94,7 +94,15 @@ if (process.argv.includes("--enable-remote-debugging")) {
 //creating menus for menu bar
 const template = [{
         label: 'File',
-        submenu: [{
+        submenu: [
+
+            {
+                label: 'New Window',
+                accelerator: 'CmdOrCtrl+N',
+                click: cmdNewWindow
+            },
+
+            {
                 label: 'Open',
                 accelerator: 'CmdOrCtrl+O',
                 click: function(item, focusedWindow) {
@@ -110,7 +118,7 @@ const template = [{
                                 if (path.constructor === Array)
                                     path = path[0];
 
-                                loadPDF(path);
+                                loadPDF(path, focusedWindow);
 
                             }
                         });
@@ -172,7 +180,7 @@ const template = [{
             {
                 label: 'Toggle Full Screen',
                 accelerator: (function() {
-                    if (process.platform == 'darwin')
+                    if (process.platform === 'darwin')
                         return 'Ctrl+Command+F';
                     else
                         return 'F11';
@@ -197,8 +205,8 @@ const template = [{
         role: 'help',
         submenu: [{
                 label: 'About',
-                click: function() {
-                    dialog.showMessageBox(mainWindow, {
+                click: function(item, focusedWindow) {
+                    dialog.showMessageBox(focusedWindow, {
                         type: 'info',
                         buttons: ['OK'],
                         title: 'Polar Bookshelf',
@@ -215,11 +223,15 @@ const template = [{
 
 let menu = Menu.buildFromTemplate(template);
 let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
+
     // Someone tried to run a second instance, we should focus our window.
+    // I'm not sure if this is the right strategy for now.
+
     if (mainWindow) {
         if (mainWindow.isMinimized()) mainWindow.restore();
         mainWindow.focus();
     }
+
 });
 
 if (shouldQuit) { app.quit(); return; }
@@ -245,7 +257,7 @@ app.on('ready', function() {
     //appIcon.setToolTip('Polar Bookshelf');
     //appIcon.setContextMenu(contextMenu);
 
-    createWindow();
+    mainWindow = createWindow();
     //setTimeout(createWindow, 1);
 
 });
@@ -266,26 +278,22 @@ app.on('activate', function() {
  *
  * @param url
  */
-function loadPDF(path) {
+function loadPDF(path, focusedWindow) {
 
     let fileMeta = fileRegistry.registerFile(path);
 
     console.log("Loading PDF via HTTP server: " + JSON.stringify(fileMeta));
 
-    mainWindow.loadURL(`http://${DEFAULT_HOST}:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=` + encodeURIComponent(fileMeta.url), options);
-    //mainWindow.loadURL('file://' + __dirname + '/pdfviewer/web/viewer.html?file=' + encodeURIComponent(fileMeta.url), options);
-
-    //mainWindow.loadURL('file://' + __dirname + '/pdfviewer/web/viewer.html?file=' + encodeURIComponent(path), options);
-    //mainWindow.loadURL(`http://localhost:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=` + encodeURIComponent(path), options);
+    focusedWindow.loadURL(`http://${DEFAULT_HOST}:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=` + encodeURIComponent(fileMeta.url), options);
 
     if(enableConsoleLogging) {
-        mainWindow.webContents.on("console-message", consoleListener);
+        focusedWindow.webContents.on("console-message", consoleListener);
     }
 
-    mainWindow.webContents.on('did-finish-load', function() {
+    focusedWindow.webContents.on('did-finish-load', function() {
         console.log("Finished loading. Now injecting customizations.");
         console.log("Toggling dev tools...");
-        mainWindow.toggleDevTools();
+        focusedWindow.toggleDevTools();
     });
 
 }
@@ -309,32 +317,48 @@ function loadPDF(path) {
 function consoleListener(event, level, message, line, sourceId) {
 
     console.log(`level=${level} ${sourceId}:${line}: ${message}`);
+}
 
+function cmdNewWindow(item, focusedWindow) {
+    createWindow();
 }
 
 function createWindow() {
+
     // Create the browser window.
-    mainWindow = new BrowserWindow(BROWSER_WINDOW_OPTIONS);
-    mainWindow.on('close', function(e) {
+    let newWindow = new BrowserWindow(BROWSER_WINDOW_OPTIONS);
+
+    newWindow.on('close', function(e) {
         e.preventDefault();
-        mainWindow.webContents.clearHistory();
-        mainWindow.webContents.session.clearCache(function() {
-            mainWindow.destroy();
+        newWindow.webContents.clearHistory();
+        newWindow.webContents.session.clearCache(function() {
+            newWindow.destroy();
         });
     });
-    mainWindow.on('closed', function() {
-        mainWindow = null;
-        app.quit();
+
+    newWindow.on('closed', function() {
+
+        if(BrowserWindow.getAllWindows().length === 0) {
+            // determine if we need to quit:
+            console.log("No windows left. Quitting app.");
+            app.quit();
+
+        }
+
     });
-    mainWindow.webContents.on('new-window', function(e, url) {
+
+    newWindow.webContents.on('new-window', function(e, url) {
         e.preventDefault();
         shell.openExternal(url);
     });
-    mainWindow.webContents.on('devtools-opened', function(e) {
-        e.preventDefault();
-        this.closeDevTools();
+
+    // TODO: we need SANE handling of dev tools.  Having it forced on us isn't fun.
+    newWindow.webContents.on('devtools-opened', function(e) {
+       e.preventDefault();
+       this.closeDevTools();
     });
-    mainWindow.webContents.on('will-navigate', function(e, url) {
+
+    newWindow.webContents.on('will-navigate', function(e, url) {
         e.preventDefault();
         shell.openExternal(url);
     });
@@ -343,13 +367,16 @@ function createWindow() {
 
     let lastArg = process.argv[process.argv.length - 1];
     if(lastArg && lastArg.endsWith(".pdf")) {
-        loadPDF(lastArg);
+        loadPDF(lastArg, newWindow);
     } else {
-        mainWindow.loadURL(DEFAULT_URL, options);
+        newWindow.loadURL(DEFAULT_URL, options);
     }
 
-    mainWindow.once('ready-to-show', () => {
-        mainWindow.maximize();
-        mainWindow.show();
+    newWindow.once('ready-to-show', () => {
+        //newWindow.maximize();
+        newWindow.show();
     });
+
+    return newWindow;
+
 }

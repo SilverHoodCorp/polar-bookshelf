@@ -10,8 +10,10 @@
 
 ## Next
 
-- get the binary releases on the site
+- ability to right click and 'add flashcard' to an annotation...
+
 - get text extraction working
+    - I sort of need this working since
 - get end to end tests working
 - get the transaction logs working
 
@@ -19,6 +21,14 @@
   on tags or any other functionality. Just notes.
 
     - work on this as a dedicated app for now.
+
+-  webview.openDevTools();
+    - support...
+
+
+### Windows Build
+
+- https://github.com/electron-userland/electron-builder/blob/master/docs/multi-platform-build.md#docker
 
 ## Site
 
