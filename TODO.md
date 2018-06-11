@@ -10,6 +10,16 @@
 
 ## Next
 
+- recent files and 'open-file' even for mac and windows.
+
+    - https://github.com/electron/electron/blob/master/docs/tutorial/recent-documents.md
+
+    - https://github.com/electron/electron/issues/4028
+
+    - https://www.npmjs.com/package/electron-config
+
+- open in new window
+
 - ability to right click and 'add flashcard' to an annotation...
 
 - get text extraction working
