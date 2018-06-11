@@ -10,7 +10,9 @@
 
 ## Next
 
-- recent files and 'open-file' even for mac and windows.
+- 'open-file' event for mac and windows.
+
+- recent files
 
     - https://github.com/electron/electron/blob/master/docs/tutorial/recent-documents.md
 
@@ -35,6 +37,15 @@
 -  webview.openDevTools();
     - support...
 
+
+# Spectron Testing
+
+## Test for:
+
+- re-use of main app when second app attempt requested
+- loading PDF file from command line:
+    - with no app running
+    - with existing app running
 
 ### Windows Build
 

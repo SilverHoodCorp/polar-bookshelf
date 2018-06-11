@@ -1,3 +1,11 @@
+# 1.0.0-beta9
+
+- reworked command line handling so that PDFs that are opened from the command
+  line are opened in a new window.
+
+- new "Open in New Window" menu option so that we can work with multiple PDF
+  files.
+
 # 1.0.0-beta8
 
 - New windows were always maximized which was difficult to work with.
