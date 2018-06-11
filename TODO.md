@@ -10,6 +10,9 @@
 
 ## Next
 
+- Don't open developer tools by default when in development mode but instead
+  ALWAYS handle it via a menu action.  Even for regular users.
+
 - 'open-file' event for mac and windows.
 
 - recent files
@@ -19,8 +22,6 @@
     - https://github.com/electron/electron/issues/4028
 
     - https://www.npmjs.com/package/electron-config
-
-- open in new window
 
 - ability to right click and 'add flashcard' to an annotation...
 
