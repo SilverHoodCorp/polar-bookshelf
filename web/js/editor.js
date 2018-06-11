@@ -37,7 +37,7 @@ function createElementHTML(innerHTML) {
 
 }
 
-function createModal() {
+function createModal2() {
 
     let innerHTML = `<div id="mylightbox" class="polar-lightbox" style="">
         <div id="editor-content">
@@ -66,20 +66,20 @@ function createModal() {
 
 };
 
-function createModal2() {
+function createModal() {
 
-    let innerHTML = `<div id="mylightbox" class="polar-lightbox" style="display:none">
+    let innerHTML = `<div id="mylightbox" class="polar-lightbox" style="">
         <div id="editor-content">
             <textarea id="editor" autofocus># this is markdown</textarea>
         </div>
     </div>
     `;
 
-    let element = createElementHTML(innerHTML);
+    let lightbox = createElementHTML(innerHTML);
 
-    $.featherlight($(element).show());
+    $.featherlight($(lightbox).show());
 
-    let editor = document.getElementById("editor-content");
+    let editor = document.querySelector("#editor");
 
     if (! editor)
         throw new Error("No editor element");
@@ -89,8 +89,6 @@ function createModal2() {
     // TODO: why no spell checker?
     let simplemde = new SimpleMDE({ editor, spellChecker: false });
     simplemde.value();
-
-    editor.focus();
 
 }
 
