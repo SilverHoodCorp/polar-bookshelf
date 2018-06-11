@@ -1,4 +1,7 @@
-//const $ = require('jquery');
+const $ = require('jquery')
+jQuery = $;
+//const bootstrap = require('bootstrap');
+const featherlight = require('featherlight');
 
 // FIXME: this is not working for soem reason and I ahve NO ideawhy.. module.exports is setup properly.
 
@@ -25,16 +28,77 @@ const SimpleMDE = require("../../node_modules/simplemde/src/js/simplemde.js");
 //     editormd        : "../editormd.amd" // Using Editor.md amd version for Require.js
 
 
-function doLoad() {
+function createElementHTML(innerHTML) {
 
-    console.log("FIXME: SimpleMDE: ", SimpleMDE);
+    let div = document.createElement("div");
+    div.innerHTML = innerHTML;
 
-    let element = document.getElementById("editor");
-    if (! element)
+    return div;
+
+}
+
+function createModal() {
+
+    let innerHTML = `<div id="mylightbox" class="polar-lightbox" style="">
+        <div id="editor-content">
+            <textarea id="editor" autofocus># this is markdown</textarea>
+        </div>
+    </div>
+    `;
+
+    let element = createElementHTML(innerHTML);
+
+    $(element).show();
+    document.body.appendChild(element);
+
+    let editor = document.getElementById("editor");
+
+    if (! editor)
         throw new Error("No editor element");
 
-    let simplemde = new SimpleMDE({ element, spellChecker: false });
+    console.log("Setting up simplemde");
+
+    // TODO: why no spell checker?
+    let simplemde = new SimpleMDE({ editor, spellChecker: false });
     simplemde.value();
+
+    editor.focus();
+
+};
+
+function createModal2() {
+
+    let innerHTML = `<div id="mylightbox" class="polar-lightbox" style="display:none">
+        <div id="editor-content">
+            <textarea id="editor" autofocus># this is markdown</textarea>
+        </div>
+    </div>
+    `;
+
+    let element = createElementHTML(innerHTML);
+
+    $.featherlight($(element).show());
+
+    let editor = document.getElementById("editor-content");
+
+    if (! editor)
+        throw new Error("No editor element");
+
+    console.log("Setting up simplemde");
+
+    // TODO: why no spell checker?
+    let simplemde = new SimpleMDE({ editor, spellChecker: false });
+    simplemde.value();
+
+    editor.focus();
+
+}
+
+
+function doLoad() {
+
+    console.log("FIXME1");
+    document.getElementById("open-button").addEventListener("click", createModal);
 
 }
 
@@ -46,8 +110,9 @@ if (document.readyState === "complete" || document.readyState === "loaded" || do
     console.log("Waiting for DOM content to load");
     document.addEventListener('DOMContentLoaded', doLoad, true);
 }
+//
+// window.setTimeout(function () {
+//     console.log("FIXME2: SimpleMDE: ", SimpleMDE);
+//
+// }, 2500);
 
-window.setTimeout(function () {
-    console.log("FIXME2: SimpleMDE: ", SimpleMDE);
-
-}, 2500);

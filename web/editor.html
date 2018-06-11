@@ -2,18 +2,27 @@
 
 <head>
     <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link href="//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.css" type="text/css" rel="stylesheet" />
+
     <style>
 
 
         #editor {
             /*height: 500px;*/
-            height: 80%;
+            /*height: 80%;*/
+            /*width: 80%;*/
 
         }
 
         dialog {
             /*width: 80%;*/
             /*height: 80%;*/
+        }
+
+        .polar-lightbox {
+            padding: 10px;
         }
 
     </style>
@@ -35,9 +44,6 @@
 
     <hr>
 
-    <textarea id="editor"># this is markdown
-    </textarea>
-
     <div class="modal-footer">
         <button>save</button>
     </div>
@@ -45,11 +51,25 @@
 </div>
 
 </dialog>
+
+
+<!--
+
+TODO:
+
+- how do we get the source markdown and the generated HTML output?
+
+-->
+
 <script>
 
-    document.querySelector("dialog").showModal();
+
 
 </script>
+
+<button type="button" class="btn btn-primary" id="open-button" value="">Open</button>
+
+
 
 </body>
 </html>

@@ -10,14 +10,12 @@
 
 ## Next
 
-- offset windows each launch
+- ability to right click and 'add flashcard' to an annotation and enter the data
+  in markdown.
 
-    https://stackoverflow.com/questions/46949194/new-window-positioning-in-electron
 
 - Don't open developer tools by default when in development mode but instead
   ALWAYS handle it via a menu action.  Even for regular users.
-
-- 'open-file' event for mac and windows.
 
 - recent files
 
@@ -27,11 +25,21 @@
 
     - https://www.npmjs.com/package/electron-config
 
-- ability to right click and 'add flashcard' to an annotation...
 
-- get text extraction working
-    - I sort of need this working since
+- offset each new window from the previous one. It's not clear that a window
+  was actually opened.
+
+    https://stackoverflow.com/questions/46949194/new-window-positioning-in-electron
+
+- 'open-file' event for mac and windows?
+
+
+- get text extraction working for annotations
+    - I sort of need this working since we're capturing the data now but I
+      imagine I could build this into the future.
+
 - get end to end tests working
+
 - get the transaction logs working
 
 - get basic flashcards working so that I can easily create them.  Don't focus
@@ -99,14 +107,14 @@
 
 # Marketing
 
-- pdf.js
-- news.ycombinator
+- (pending) pdf.js
 - anki forum
-- anki reddit
 - /r/medicalschool group...
 - electronjs group
-- /r/adhd
 - other spaced repitition groups
+- (done) /r/adhd
+- (done) anki reddit
+- (done) news.ycombinator
 
 # Cleanup
 
