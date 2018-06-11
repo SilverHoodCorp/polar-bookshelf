@@ -29,7 +29,7 @@ linux:
     - ext: "pdf"
 
 win:
-  target: nsis, portable,
+  target: nsis, portable
   icon: ./icons/icon-512x512.png
   fileAssociations:
     - ext: "pdf"

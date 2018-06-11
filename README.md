@@ -52,6 +52,11 @@ The long term goal is to implement the following functionality:
  - Management UI for all the notes you've worked on (editing, changing them,
    adding metadata, etc).
 
+ - Ability to pull down ISBN metadata
+
+ - Abilty to pull down metadata by academic paper ID using various platform
+   APIs.
+
 # Principles
 
 We believe the following design principles are core to seeing this as a
@@ -94,7 +99,9 @@ Right now usage is only via keyboard bindings (for pagemarks).
 
 Packages for MacOS and Linux are available in [Releases](https://github.com/burtonator/polar-bookshelf/releases)
 
-We're working on Windows packages as well but don't have them ready just yet.
+Windows builds are still alpha quality as I can't test them.  The builds work
+and generate .exe setup files but I need feedback from the community on whether
+they work and how well they work.
 
 ## Build from source
 

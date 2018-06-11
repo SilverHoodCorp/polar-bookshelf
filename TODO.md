@@ -10,6 +10,10 @@
 
 ## Next
 
+- offset windows each launch
+
+    https://stackoverflow.com/questions/46949194/new-window-positioning-in-electron
+
 - Don't open developer tools by default when in development mode but instead
   ALWAYS handle it via a menu action.  Even for regular users.
 
@@ -48,9 +52,6 @@
     - with no app running
     - with existing app running
 
-### Windows Build
-
-- https://github.com/electron-userland/electron-builder/blob/master/docs/multi-platform-build.md#docker
 
 ## Site
 
