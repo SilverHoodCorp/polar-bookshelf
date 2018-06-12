@@ -8,6 +8,15 @@
 
 # Release (for myself)
 
+## Required editor functionality
+
+- paste images / screenshots from clipboard and save as data URL.
+ - https://stackoverflow.com/questions/28644340/how-do-i-get-base64-encoded-image-from-clipboard-in-internet-explorer
+ - https://matthewmoisen.com/blog/paste-js-example/
+
+ - I can detect the paste, then convert what's pasted to a data URL, then change
+   the CSS it so that the user doesn't need to deal with the full thing.
+
 ## Next
 
 - ability to right click and 'add flashcard' to an annotation and enter the data
@@ -99,7 +108,6 @@
 
 # Development productivity
 
-- get node.js testing working
 
 - get webapp testing working
 
@@ -133,3 +141,7 @@
       from chrome to polar.
 
 - change REMOVE to ERASE to avoid confusion with 'read'
+
+
+
+

@@ -70,6 +70,10 @@ function createModal() {
 
     let innerHTML = `<div id="mylightbox" class="polar-lightbox">
 
+        <div class="modal-header">
+            Create Flashcard
+        </div>
+
         <div id="editor-content">
             <textarea id="editor" autofocus># this is markdown</textarea>
         </div>
@@ -93,47 +97,9 @@ function createModal() {
     console.log("Setting up simplemde");
 
     // TODO: why no spell checker?
-    let simplemde = new SimpleMDE({ editor, spellChecker: false, hideIcons: ["side-by-side", "fullscreen"] });
-    //simplemde.toggleSideBySide(editor);
+    let simplemde = new SimpleMDE({ editor, spellChecker: false });
+    simplemde.toggleSideBySide(editor);
     simplemde.value();
-
-    attachImagePasteListener($(".CodeMirror"));
-
-    $(".CodeMirror").on('paste', function (e) {
-
-        console.log("Got paste event in editor... ");
-
-    });
-
-
-
-
-}
-
-function attachImagePasteListener(element) {
-
-    $(element).on('paste', function (e) {
-
-        console.log("Got paste event!")
-
-        let orgEvent = e.originalEvent;
-        for (let i = 0; i < orgEvent.clipboardData.items.length; i++) {
-            if (orgEvent.clipboardData.items[i].kind === "file" && orgEvent.clipboardData.items[i].type === "image/png") {
-                let imageFile = orgEvent.clipboardData.items[i].getAsFile();
-                let fileReader = new FileReader();
-
-                fileReader.onloadend = function () {
-
-                    console.log(fileReader.result);
-
-                    //$('#result').html();
-                }
-
-                fileReader.readAsDataURL(imageFile);
-                break;
-            }
-        }
-    });
 
 }
 
@@ -142,14 +108,6 @@ function doLoad() {
 
     console.log("FIXME1");
     document.getElementById("open-button").addEventListener("click", createModal);
-
-    $("textarea").on('paste', function (e) {
-
-        console.log("Got paste event!");
-
-    });
-
-    attachImagePasteListener(document.querySelector("textarea"));
 
 }
 
@@ -166,5 +124,4 @@ if (document.readyState === "complete" || document.readyState === "loaded" || do
 //     console.log("FIXME2: SimpleMDE: ", SimpleMDE);
 //
 // }, 2500);
-
 
