@@ -1,4 +1,5 @@
 const $ = require('jquery');
+const jcm = require("jquery-contextmenu");
 
 const {TextHighlightController} = require("../highlights/text/controller/TextHighlightController");
 const {PagemarkCoverageEventListener} = require("../PagemarkCoverageEventListener.js");
@@ -10,10 +11,7 @@ const {polar} = require("../polar");
 module.exports.WebController = class extends Controller {
 
     constructor(model) {
-
-        Preconditions.assertNotNull(model, "model");
-
-        super(model);
+        super(Preconditions.assertNotNull(model, "model"));
 
         /**
          * The document fingerprint that we have loaded to detect when the
@@ -26,11 +24,51 @@ module.exports.WebController = class extends Controller {
 
     }
 
+
     start() {
         this.listenForDocumentLoad();
         this.listenForKeyBindings();
+    }
 
-        console.log("Controller listeners registered.");
+
+    onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum) {
+
+        super.onDocumentLoaded(fingerprint, nrPages, currentlySelectedPageNum);
+        this.setupContextMenu();
+
+    }
+
+    setupContextMenu() {
+
+        console.log("Registered context listener...");
+
+        $(function() {
+            $.contextMenu({
+                selector: '.page .textLayer',
+                callback: function(key, options) {
+                    let m = "clicked: " + key;
+                    window.console && console.log(m) || alert(m);
+                },
+                items: {
+                    //"new-pagemark": {name: "New pagemark", icon: "edit"},
+                    "new-pagemark-from-here": {name: "New Pagemark Starting Here", icon: "edit"},
+                    // "cut": {name: "Cut", icon: "cut"},
+                    // copy: {name: "Copy", icon: "copy"},
+                    // "paste": {name: "Paste", icon: "paste"},
+                    // "delete": {name: "Delete", icon: "delete"},
+                    // "sep1": "---------",
+                    // "quit": {name: "Quit", icon: function() {
+                    //         return 'context-menu-icon context-menu-icon-quit';
+                    //     }
+                    // }
+                }
+            });
+
+            $('.page .textLayer').on('click', function(e){
+                console.log('clicked', this);
+            })
+        });
+
     }
 
     listenForDocumentLoad() {

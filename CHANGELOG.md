@@ -1,3 +1,10 @@
+
+# 1.0.0-beta10
+
+- ability to easily toggle the devtools.
+
+- --enable-dev-tools command line arg for starting with the dev tools already running
+
 # 1.0.0-beta9
 
 - reworked command line handling so that PDFs that are opened from the command

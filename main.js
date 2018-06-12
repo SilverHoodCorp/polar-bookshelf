@@ -68,14 +68,9 @@ webserver.start();
 
 //const DEFAULT_URL = 'file://' + __dirname + '/default.html';
 
-let enableConsoleLogging = false;
+let args = parseArgs();
 
-if (process.argv.includes("--enable-console-logging")) {
-    console.log("Console logging enabled.");
-    enableConsoleLogging = true;
-}
-
-if (process.argv.includes("--enable-remote-debugging")) {
+if (args.enableRemoteDebugging) {
 
     console.log(`Remote debugging port enabled on port ${REMOTE_DEBUGGING_PORT}.`);
     console.log(`You may connect via http://${DEFAULT_HOST}:${REMOTE_DEBUGGING_PORT}`);
@@ -197,6 +192,12 @@ const template = [{
         ]
     },
     {
+        label: 'Tools',
+        submenu: [
+            { label: 'Toggle Developer Tools', click: cmdToggleDevTools },
+        ]
+    },
+    {
         label: 'Help',
         role: 'help',
         submenu: [{
@@ -264,6 +265,10 @@ app.on('ready', function() {
     //appIcon.setContextMenu(contextMenu);
 
     mainWindow = createWindow();
+
+    if(args.enableDevTools) {
+        mainWindow.toggleDevTools();
+    }
 
     // if there is a PDF file to open, load that, otherwise, load the default URL.
 
@@ -372,16 +377,21 @@ function loadPDF(path, targetWindow) {
 
     targetWindow.loadURL(`http://${DEFAULT_HOST}:${WEBSERVER_PORT}/pdfviewer/web/viewer.html?file=` + encodeURIComponent(fileMeta.url), options);
 
-    if(enableConsoleLogging) {
+    if(args.enableConsoleLogging) {
+        console.log("Console logging enabled.");
         targetWindow.webContents.on("console-message", consoleListener);
     }
 
     targetWindow.webContents.on('did-finish-load', function() {
         console.log("Finished loading. Now injecting customizations.");
         console.log("Toggling dev tools...");
-        targetWindow.toggleDevTools();
+        //targetWindow.toggleDevTools();
     });
 
+}
+
+function cmdToggleDevTools(item, focusedWindow) {
+    focusedWindow.toggleDevTools();
 }
 
 /**
@@ -440,6 +450,21 @@ function getFileArg(cmdline) {
 
 }
 
+/**
+ * Process app command line args and return an object to work with them
+ * directly.
+ */
+function parseArgs() {
+
+    return {
+
+        enableConsoleLogging: process.argv.includes("--enable-console-logging"),
+        enableRemoteDebugging: process.argv.includes("--enable-remote-debugging"),
+        enableDevTools: process.argv.includes("--enable-dev-tools")
+
+    };
+
+}
 
 function createWindow() {
 
@@ -471,10 +496,10 @@ function createWindow() {
     });
 
     // TODO: we need SANE handling of dev tools.  Having it forced on us isn't fun.
-    newWindow.webContents.on('devtools-opened', function(e) {
-       e.preventDefault();
-       this.closeDevTools();
-    });
+    // newWindow.webContents.on('devtools-opened', function(e) {
+    //    e.preventDefault();
+    //    this.closeDevTools();
+    // });
 
     newWindow.webContents.on('will-navigate', function(e, url) {
         e.preventDefault();
