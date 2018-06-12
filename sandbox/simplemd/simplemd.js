@@ -108,7 +108,8 @@ function createModal() {
 
     });
 
-    handlePaste(editorElement);
+    handlePaste(simplemde);
+    //handlePaste(editorElement);
 
 }
 
@@ -187,7 +188,29 @@ function createImageMarkdownElement(url, altText) {
 
 }
 
-function handlePaste(editorElement) {
+function handlePaste(simplemde) {
+
+    if(!simplemde)
+        throw new Error("No simplemde");
+
+    let cm = simplemde.codemirror;
+    let stat = simplemde.getState(cm);
+    let options = simplemde.options;
+    let url = "http://";
+    // if(options.promptURLs) {
+    //     url = prompt(options.promptTexts.link);
+    //     if(!url) {
+    //         return false;
+    //     }
+    // }
+
+    console.log("simplemde: ", simplemde);
+
+    simplemde._replaceSelection(cm, stat.link, options.insertTexts.link, url);
+
+}
+
+function handlePaste2(editorElement) {
 
     let url = "https://cdn.cnn.com/cnnnext/dam/assets/180612003916-05-trump-kim-summit-unfurled-exlarge-tease.jpg";
     let altText = "alt text";
