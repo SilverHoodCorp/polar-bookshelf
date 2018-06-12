@@ -324,5 +324,6 @@ module.exports.Styles = class {
 
 }
 
-// @Deprecated. Use util/Objects instead.
+// @Deprecated.
 module.exports.Objects = require("./util/Objects.js").Objects;
+module.exports.Elements = require("./util/Elements.js").Objects;

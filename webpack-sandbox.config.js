@@ -4,6 +4,16 @@ module.exports = [
     {
         mode: 'development',
         entry: {
+            simplemd: './sandbox/simplemd/simplemd.js',
+        },
+        output: {
+            path: path.resolve(__dirname, 'sandbox/simplemd'),
+            filename: '[name]-bundle.js',
+        }
+    },
+    {
+        mode: 'development',
+        entry: {
             contextmenu: './sandbox/jquery-contextmenu/contextmenu.js',
         },
         output: {
@@ -11,17 +21,17 @@ module.exports = [
             filename: '[name]-bundle.js',
         }
     },
-    {
-        mode: 'development',
-        entry: {
-            editor: './sandbox/editormd/editormd.js',
-        },
-        output: {
-            path: path.resolve(__dirname, 'sandbox/editormd/'),
-            filename: '[name]-bundle.js',
-            publicPath: 'sandbox/editormd/'
-        }
-    },
+    // {
+    //     mode: 'development',
+    //     entry: {
+    //         editor: './sandbox/editormd/editormd.js',
+    //     },
+    //     output: {
+    //         path: path.resolve(__dirname, 'sandbox/editormd/'),
+    //         filename: '[name]-bundle.js',
+    //         publicPath: 'sandbox/editormd/'
+    //     }
+    // },
     {
         mode: 'development',
         entry: {

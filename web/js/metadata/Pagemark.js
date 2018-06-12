@@ -18,14 +18,18 @@ module.exports.Pagemark = class extends AnnotationWithNote {
         this.type = null;
 
         /**
-         * The vertical percentage of the page that is covered with the page
-         * mark.  From 0 to 100.
+         * The total percentage of the page that is covered with the page mark.
+         * From 0 to 100.  This factors in the total rows and columns on the
+         * page and is the raw percentage value of the page.
+         *
          * @type number
          */
         this.percentage = null;
 
         /**
-         * The column number we're working on.
+         * The column number on which this pagemark is rendered.  This is mostly
+         * metadata and we should be migrating to PagemarkBox and PagemarkRange
+         * which supports raw rendering of the pagemarks.
          *
          * @type {null}
          */

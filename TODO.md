@@ -23,8 +23,6 @@
   in markdown.
 
 
-- Don't open developer tools by default when in development mode but instead
-  ALWAYS handle it via a menu action.  Even for regular users.
 
 - recent files
 

@@ -3,10 +3,22 @@
 <head>
     <link rel="stylesheet" href="../../node_modules/jquery-contextmenu/dist/jquery.contextMenu.min.css">
     <script src="contextmenu-bundle.js"></script>
+    <style>
+        .context-menu-list * {
+            /*font-family: "MS Shell Dlg 2, Arial";*/
+            font-family: "Helvetica, Arial", sans-serif !important;
+            font-size: 17px;
+            background-color: #3E3D39;
+            color: white;
+        }
+    </style>
+
 </head>
 <body>
 
 <span class="context-menu-one btn btn-neutral">right click me</span>
+
+<ul class="context-menu-list context-menu-root" style="width: 209.021px; top: 18px; left: 57px; z-index: 1;"><li class="context-menu-item context-menu-icon context-menu-icon-edit"><span>Edit</span></li><li class="context-menu-item context-menu-icon context-menu-icon-cut"><span>Cut</span></li><li class="context-menu-item context-menu-icon context-menu-icon-copy"><span>Copy</span></li><li class="context-menu-item context-menu-icon context-menu-icon-paste"><span>Paste</span></li><li class="context-menu-item context-menu-icon context-menu-icon-delete"><span>Delete</span></li><li class="context-menu-item context-menu-separator context-menu-not-selectable"></li><li class="context-menu-item context-menu-icon context-menu-icon-quit"><span>Quit</span></li></ul>
 
 </body>
 </html>
