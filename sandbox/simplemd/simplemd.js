@@ -42,7 +42,7 @@ function createModal2() {
 
     let innerHTML = `<div id="mylightbox" class="polar-lightbox" style="">
         <div id="editor-content">
-            <textarea id="editor" autofocus># this is markdown</textarea>
+            <textarea id="editor" autofocus></textarea>
         </div>
     </div>
     `;
@@ -72,7 +72,7 @@ function createModal() {
     let innerHTML = `<div id="mylightbox" class="polar-lightbox">
 
         <div id="editor-content">
-            <textarea id="editor" autofocus># this is markdown</textarea>
+            <textarea id="editor" autofocus></textarea>
         </div>
         
         <div class="modal-footer">
@@ -142,26 +142,48 @@ function attachImagePasteListener(element) {
 function createImageMarkdownElement(url, altText) {
 
     let imageElementHTML = `
+    
+    <div class="CodeMirror-code polar-image-pasted" role="presentation">
         <pre class=" CodeMirror-line " role="presentation">
             <span role="presentation" style="padding-right: 0.1px;">
-            <span class="cm-formatting cm-formatting-image cm-image cm-image-marker">!</span>
-            <span class="cm-formatting cm-formatting-image cm-image cm-image-alt-text cm-link">[</span>
-            <span class="cm-image cm-image-alt-text cm-link">this is the text of the image</span>
-            <span class="cm-formatting cm-formatting-image cm-image cm-image-alt-text cm-link">]</span>
-            <span class="cm-formatting cm-formatting-link-string cm-string cm-url">(</span>
-            <span class="cm-string cm-url">https://example.com/image.jpg</span>
-            <span class="cm-formatting cm-formatting-link-string cm-string cm-url">)</span>
+                <span class="cm-formatting cm-formatting-image cm-image cm-image-marker">!</span>
+                <span class="cm-formatting cm-formatting-image cm-image cm-image-alt-text cm-link">[]</span>
+                <span class="cm-formatting cm-formatting-link-string cm-string cm-url">(</span>
+                <span class="cm-string cm-url">http://</span>
+                <span class="cm-formatting cm-formatting-link-string cm-string cm-url">)</span>
             </span>
-        </pre>    
+        </pre>
+    </div>
+
+    `
+
+    let imageElementHTMLolde = `
+        <div class="CodeMirror-code " role="presentation">
+            <pre class=" CodeMirror-line" role="presentation">
+                <span role="presentation" style="padding-right: 0.1px;">
+                <span class="cm-formatting cm-formatting-image cm-image cm-image-marker">!</span>
+                <span class="cm-formatting cm-formatting-image cm-image cm-image-alt-text cm-link">[</span>
+                <span class="cm-image cm-image-alt-text cm-link">this is the text of the image</span>
+                <span class="cm-formatting cm-formatting-image cm-image cm-image-alt-text cm-link">]</span>
+                <span class="cm-formatting cm-formatting-link-string cm-string cm-url">(</span>
+                <span class="cm-string cm-url">https://example.com/image.jpg</span>
+                <span class="cm-formatting cm-formatting-link-string cm-string cm-url">)</span>
+                </span>
+            </pre>
+        </div>    
     `;
 
     // create the markdown that we want to inject
-    let imageMarkdownElement = Elements.createElementHTML(imageElementHTML).firstChild;
+    // FIXME: I think this should be firstChild but for some reason it's #text..
+
+    let imageMarkdownElement
+        = Elements.createElementHTML(imageElementHTML)
+                  .querySelector(".CodeMirror-code");
 
     $(imageMarkdownElement).find(".cm-url").text();
     $(imageMarkdownElement).find(".cm-image-alt-text").text(altText);
 
-    return imageElementHTML;
+    return imageMarkdownElement;
 
 }
 
@@ -170,9 +192,9 @@ function handlePaste(editorElement) {
     let url = "https://cdn.cnn.com/cnnnext/dam/assets/180612003916-05-trump-kim-summit-unfurled-exlarge-tease.jpg";
     let altText = "alt text";
 
-    createImageMarkdownElement(url, altText);
+    let imageMarkdownElement = createImageMarkdownElement(url, altText);
 
-    console.log("FIXME", imageMarkdownElement)
+    console.log("FIXME the markdown element we're going to insert: ", imageMarkdownElement);
 
     let cursorElement = editorElement.querySelector(".CodeMirror-cursors");
 
@@ -181,9 +203,9 @@ function handlePaste(editorElement) {
         cursorElement.parentElement.insertBefore( imageMarkdownElement, cursorElement);
     } else {
         console.log("FIXME2");
-        console.log("FIXMe3", editorElement)
+        console.log("FIXMe3", editorElement);
 
-        let codemirrorLines = editorElement.parentElement.querySelector(".CodeMirror-lines");
+        let codemirrorLines = editorElement.parentElement.querySelector(".CodeMirror-lines div");
         codemirrorLines.appendChild(imageMarkdownElement);
         console.log("FIXMKE inserted", imageMarkdownElement);
     }
@@ -222,5 +244,10 @@ if (document.readyState === "complete" || document.readyState === "loaded" || do
 //     console.log("FIXME2: SimpleMDE: ", SimpleMDE);
 //
 // }, 2500);
+
+
+
+
+
 
 

@@ -13,7 +13,7 @@ module.exports.Pagemark = class extends AnnotationWithNote {
         /**
          * The type of pagemark.
          *
-         * @type PagemarkType
+         * @type {PagemarkType}
          */
         this.type = null;
 
